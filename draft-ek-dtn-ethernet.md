@@ -2,9 +2,6 @@
 ###
 # Internet-Draft Markdown Template
 #
-# Rename this file from draft-todo-yourname-protocol.md to get started.
-# Draft name format is "draft-<yourname>-<workgroup>-<name>.md".
-#
 # For initial setup, you only need to edit the first block of fields.
 # Only "title" needs to be changed; delete "abbrev" if your title is short.
 # Any other content can be edited, but be careful not to introduce errors.
@@ -19,22 +16,24 @@
 # Change the file extension to match the format (.xml for XML, etc...)
 #
 ###
-title: "TODO - Your title"
-abbrev: "TODO - Abbreviation"
+title: "Support for the Delay- and Disruption-Tolerant Networking (DTN) Bundle Protocol and Licklider Transmission Protocol (LTP) Datagrams over Ethernet"
+abbrev: "DTN-over-Ethernet"
 category: info
 
-docname: draft-todo-yourname-protocol-latest
-submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
+docname: draft-ek-dtn-ethernet-latest
+submissiontype: IETF
 number:
 date:
 consensus: true
 v: 3
-area: AREA
-workgroup: WG Working Group
+area: TSV
+workgroup: DTN Working Group
 keyword:
- - next generation
- - unicorn
- - sparkling distributed ledger
+ - Delay and Distruption Tolerant Networking
+ - DTN
+ - Bundle Protocl
+ - BP
+ - Ethernet
 venue:
   group: WG
   type: Working Group
@@ -45,9 +44,9 @@ venue:
 
 author:
  -
-    fullname: Your Name Here
-    organization: Your Organization Here
-    email: your.email@example.com
+    fullname: Erik Kline
+    organization: https://www.rfc-editor.org/rfc/rfc5325
+    email: ek@aalyria.com
 
 normative:
 
@@ -70,16 +69,25 @@ TODO Introduction
 
 {::boilerplate bcp14-tagged}
 
+# General Recommendation
+
+## Fragmentations
+
+## Congestion Control
+
+## Checksums
 
 # Security Considerations
 
 TODO Security
 
-
 # IANA Considerations
 
 This document has no IANA actions.
 
+## EtherType
+
+## Multicast MAC Address
 
 --- back
 
