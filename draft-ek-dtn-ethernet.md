@@ -9,8 +9,8 @@ number:
 date:
 consensus: true
 v: 3
-area: TSV
-workgroup: DTN Working Group
+area: "Transport"
+workgroup: "Delay/Disruption Tolerant Networking"
 keyword:
  - Delay and Distruption Tolerant Networking
  - DTN
@@ -18,12 +18,12 @@ keyword:
  - BP
  - Ethernet
 venue:
-  group: WG
-  type: Working Group
-  mail: WG@example.com
-  arch: https://example.com/WG
-  github: USER/REPO
-  latest: https://example.com/LATEST
+  group: "Delay/Disruption Tolerant Networking"
+  type: "Working Group"
+  mail: "dtn@ietf.org"
+  arch: "https://mailarchive.ietf.org/arch/browse/dtn/"
+  github: "ekline/draft-dtn-ethernet"
+  latest: "https://ekline.github.io/draft-dtn-ethernet/draft-ek-dtn-ethernet.html"
 
 author:
  -
