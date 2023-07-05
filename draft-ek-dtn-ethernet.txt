@@ -1,0 +1,147 @@
+
+
+
+
+Delay/Disruption Tolerant Networking                            E. Kline
+Internet-Draft                                Aalyria Technologies, Inc.
+Intended status: Experimental                                5 July 2023
+Expires: 6 January 2024
+
+
+ Support for the Delay- and Disruption-Tolerant Networking (DTN) Bundle
+   Protocol and Licklider Transmission Protocol (LTP) Datagrams over
+                                Ethernet
+                      draft-ek-dtn-ethernet-latest
+
+Abstract
+
+   TODO Abstract
+
+   Where two Bundle Protocol endpoints are connected by an Ethernet
+   link, or by a link that emulates Ethernet, it may be possible to
+   transmit bundles directly without additional converge layer adaptator
+   (CLA) overhead.  This memo requests an EtherType for bundles and
+   describes how bundles may be transmitted similar to existing datagram
+   CLAs.
+
+About This Document
+
+   This note is to be removed before publishing as an RFC.
+
+   The latest revision of this draft can be found at
+   https://ekline.github.io/draft-dtn-ethernet/draft-ek-dtn-
+   ethernet.html.  Status information for this document may be found at
+   https://datatracker.ietf.org/doc/draft-ek-dtn-ethernet/.
+
+   Discussion of this document takes place on the Delay/Disruption
+   Tolerant Networking Working Group mailing list (mailto:dtn@ietf.org),
+   which is archived at https://mailarchive.ietf.org/arch/browse/dtn/.
+   Subscribe at https://www.ietf.org/mailman/listinfo/dtn/.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/ekline/draft-dtn-ethernet.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 6 January 2024.
+
+Copyright Notice
+
+   Copyright (c) 2023 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+   2.  Conventions and Definitions
+   3.  General Recommendation
+     3.1.  Fragmentations
+     3.2.  Congestion Control
+     3.3.  Checksums
+   4.  Security Considerations
+   5.  IANA Considerations
+     5.1.  EtherType
+     5.2.  Multicast MAC Address
+   6.  Normative References
+   Acknowledgments
+   Author's Address
+
+1.  Introduction
+
+   TODO Introduction
+
+2.  Conventions and Definitions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+3.  General Recommendation
+
+3.1.  Fragmentations
+
+3.2.  Congestion Control
+
+3.3.  Checksums
+
+4.  Security Considerations
+
+   TODO Security
+
+   Bundles transmitted over any link may be subject to observation and
+   alteration.  Security must be applied to the bundle itself, either in
+   the form of BPSec or at a layer below the transmition of bundles,
+   e.g. 802.1AE MACsec.
+
+5.  IANA Considerations
+
+   This document has no IANA actions.
+
+5.1.  EtherType
+
+5.2.  Multicast MAC Address
+
+6.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+Acknowledgments
+
+   TODO acknowledge.
+
+Author's Address
+
+   Erik Kline
+   Aalyria Technologies, Inc.
+   Email: ek@aalyria.com
