@@ -1,6 +1,8 @@
 ---
-title: "Support for the Delay- and Disruption-Tolerant Networking (DTN) Bundle Protocol and Licklider Transmission Protocol (LTP) Datagrams over Ethernet"
-abbrev: "DTN-over-Ethernet"
+title: >
+  Support for the Delay- and Disruption-Tolerant Networking (DTN)
+  Bundle Protocol (BP) Datagrams over Ethernet
+abbrev: "BP-over-Ethernet"
 category: exp
 
 docname: draft-ek-dtn-ethernet-latest
@@ -14,7 +16,7 @@ workgroup: "Delay/Disruption Tolerant Networking"
 keyword:
  - Delay and Distruption Tolerant Networking
  - DTN
- - Bundle Protocl
+ - Bundle Protocol
  - BP
  - Ethernet
 venue:
@@ -37,62 +39,115 @@ informative:
 
 --- abstract
 
-When two Bundle nodes are connected by an Ethernet link, or by a logical
-link that emulates Ethernet, it may be possible for a Bundle Protocol
-Agent to transmit bundles directly over Ethernet, without higher layer
-Convergence-layer Adaptator (CLA) overhead.
-
-This memo specifies a CLA protocol for the encapsulation of Bundles and
-Licklider Transmission Protocol (LTP) segments over Ethernet, provides
-recommendations for operational considerations, and requests an
-EtherType for this protocol.
+This memo describes a mechanism for the transmission of Bundles over
+Ethernet links, provides recommendations for operational considerations,
+and requests some dedicated Ethernet parameters.
 
 --- middle
-
-*[BPv6]: RFC5050
-*[BPv7]: RFC9171
 
 # Introduction
 
 When two Bundle nodes are connected by an Ethernet link, or by a logical
 link that emulates Ethernet, it may be possible for a Bundle Protocol
 Agent to transmit bundles directly over Ethernet, without higher layer
-Convergence-layer Adaptator (CLA) overhead.
+Convergence-layer (CL) overhead.
 
-This memo specifies a CLA protocol for the encapsulation of Bundles and
-Licklider Transmission Protocol (LTP) segments over Ethernet, provides
-recommendations for operational considerations, and requests an
-EtherType for this protocol.
+This memo describes a mechanism for the transmission of Bundles over
+Ethernet links, provides recommendations for operational considerations,
+and requests some dedicated Ethernet parameters.
 
-The protocol described here is another datagram CLA, like those
-specified in {{!RFC7122}}. It is in essence a reduced overhead version
-of {{!RFC7122}}'s IP/UDP-based CLA (UDPCL), suitable for use only
-among directly-connected nodes (i.e. on-link communications only).
+The mechanism described here acts like a datagram CL, specifically the
+BP over UDP CL documented in section 3.2.2 of {{!DGRAMCL=RFC7122}},
+ableit suitable for use only among directly connected nodes
+(i.e. on-link communications only).
 
 # Conventions and Definitions
 
-<!-- {::boilerplate bcp14-tagged} -->
+{::boilerplate bcp14-tagged}
 
-This specification is experimental and does not make use of normative
-language.
+# General Recommendation
 
-# Specification
+Paraphrasing {{!DGRAMCL}}, in order to transmit Bundles
+({{!BPv6=RFC5050}}, {{!BPv7=RFC9171}})
+across the Internet it is necessary to encapsulate them in a
+Convergence Layer that utilizes one of the standard versions of the
+Internet Protocols (e.g., {{?TCPCL=RFC9174}}).
 
-~~~
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|      Type     |    Reserved   |            Checksum           |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-~~~
+When two Bundle nodes are directly connected via an Ethernet link,
+however, it is possible for Bundle Protocol Agents to forego Internet
+CL encapsulations and instead place Bundles directly in payload of
+an Ethernet frame.  Section {{<ethertype}} lists the IEEE-assigned
+EtherType used to indicate the Ethernet payload is a Bundle (or Bundle
+fragment).
+
+This Ethernet Convergence Layer (ETHCL) avoids incurring the IP and UDP
+header overhead (28 to 48 bytes, depending on Internet Protocol version
+and assuming no other headers or options).  These savings may, however,
+be offset by overhead introduced if Bundle fragmentation is necessary
+(see {{<mtu}}, {{<fragmentation}}).
+
+## Destination MAC Address
+
+When transmitting a Bundle directly in the payload of an Ethernet frame
+a suitable destination MAC address must be selected.  Provisioning the
+sending Bundle node with the correct destination MAC address of the
+recipient Bundle node is out of scope for this document.  There is no
+Bundle Protocol equivalent of {{?ARP=RFC0826}} or {{?ND=RFC4861}}.
+
+It is possible for a sender to address all BP-over-Ethernet listeners
+within the broadcast domain should the destination Bundle Endpoint ID
+refer to all of a group of nodes (sections 3.2 and 3.4 of
+{{!ARCH=RFC4838}}).  How a sending Bundle node determines when this is
+appropriate is out of scope of this document.
+
+This document does not prohibit the use of the broadcast MAC address
+for this function, but section {{<multicast_mac}} requests allocation
+of a multicast MAC address to represent "all Bundle Protocol capable
+stations" within a given Ethernet broadcast domain.  This may help
+reduce the number of stations awakened by multicast BP-over-Ethernet
+frames.
+
+## MTU
+{: #mtu}
+
+In the absence of Ethernet-layer fragmentation, no payload exceeding
+the local Ethernet MTU can be transmitted.  Consequently, the contents
+of the Ethernet payload MUST be complete Bundle, fragmenting at the
+sender as necessary ({{!BPv6}} section 5.8, {{!BPv7}} section 5.8).
+
+In practice the need for fragmentation may be reduced if the local
+Ethernet MTU can be increased beyond the typical 1500 bytes (e.g., by
+use of "jumbo frames").
+
+How a sending Bundle node learns the size of local Ethernet MTU is out
+of scope of this document.
 
 # Operational Considerations
 
+Conceptually, this Ethernet Convergence Layer (ETHCL) is analogous to
+the BP over UDPCL in section 3.2.2 of {{DGRAMCL}}, with many of the
+same limitations and considerations.
+
 ## Fragmentation and Reassembly
+{: #fragmentation}
+
+Transmission of Bundles exceeding the local Ethernet MTU MUST be
+fragmented by the sending node ({{<mtu}}).  If excessive fragmentation
+proves problematic, network operators may need to consider alternative
+Convergence Layers.
+
+TODO: expound.
 
 ## Congestion Control
 
+TODO: same as UDPCL; Ethernet flow control mechanisms exist but may
+not prevent the loss of Bundles.
+
 ## Checksums
+
+TODO: Frame Check Sequence minimally meets the requirements to ensure
+Bundles are not corrupted in transmission.  more checks at other
+layers SHOULD be employed.
 
 # Security Considerations
 
@@ -100,7 +155,7 @@ TODO Security
 
 Bundles transmitted over any link may be subject to observation and alteration.
 Security must be applied to the bundle itself, either in the form of BPSec or
-at a layer below the transmition of bundles, e.g. 802.1AE MACsec.
+at a layer below the transmission of bundles, e.g. 802.1AE MACsec.
 
 # IANA Considerations
 
@@ -114,6 +169,17 @@ No IANA registry is requested for Reserved field values.  This is
 deferred to a future specification wishing to utilize this field.
 
 ## EtherType
+{: #ethertype}
+
+IANA is requested to work its IEEE liaison magic to request allocation
+of an EtherType for this document's description of Bundle Protocol over
+Ethernet (BPoE).
+
+## Multicast MAC Address
+{: #multicast_mac}
+
+TODO: request a multicast MAC address for all Bundle Protocol capable
+capable stations within the broadcast domain.
 
 --- back
 
