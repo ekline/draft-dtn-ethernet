@@ -4,8 +4,8 @@
 
 Delay/Disruption Tolerant Networking                            E. Kline
 Internet-Draft                                Aalyria Technologies, Inc.
-Intended status: Experimental                                5 July 2023
-Expires: 6 January 2024
+Intended status: Experimental                                7 July 2023
+Expires: 8 January 2024
 
 
  Support for the Delay- and Disruption-Tolerant Networking (DTN) Bundle
@@ -15,14 +15,15 @@ Expires: 6 January 2024
 
 Abstract
 
-   TODO Abstract
+   When two Bundle nodes are connected by an Ethernet link, or by a
+   logical link that emulates Ethernet, it may be possible for a Bundle
+   Protocol Agent to transmit bundles directly over Ethernet, without
+   higher layer Convergence-layer Adaptator (CLA) overhead.
 
-   Where two Bundle Protocol endpoints are connected by an Ethernet
-   link, or by a link that emulates Ethernet, it may be possible to
-   transmit bundles directly without additional converge layer adaptator
-   (CLA) overhead.  This memo requests an EtherType for bundles and
-   describes how bundles may be transmitted similar to existing datagram
-   CLAs.
+   This memo specifies a CLA protocol for the encapsulation of Bundles
+   and Licklider Transmission Protocol (LTP) segments over Ethernet,
+   provides recommendations for operational considerations, and requests
+   an EtherType for this protocol.
 
 About This Document
 
@@ -56,7 +57,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 6 January 2024.
+   This Internet-Draft will expire on 8 January 2024.
 
 Copyright Notice
 
@@ -76,39 +77,59 @@ Table of Contents
 
    1.  Introduction
    2.  Conventions and Definitions
-   3.  General Recommendation
-     3.1.  Fragmentations
-     3.2.  Congestion Control
-     3.3.  Checksums
-   4.  Security Considerations
-   5.  IANA Considerations
-     5.1.  EtherType
-     5.2.  Multicast MAC Address
-   6.  Normative References
+   3.  Specification
+   4.  Operational Considerations
+     4.1.  Fragmentation and Reassembly
+     4.2.  Congestion Control
+     4.3.  Checksums
+   5.  Security Considerations
+   6.  IANA Considerations
+     6.1.  Type field
+     6.2.  Reserved field
+     6.3.  EtherType
+   7.  Normative References
    Acknowledgments
    Author's Address
 
 1.  Introduction
 
-   TODO Introduction
+   When two Bundle nodes are connected by an Ethernet link, or by a
+   logical link that emulates Ethernet, it may be possible for a Bundle
+   Protocol Agent to transmit bundles directly over Ethernet, without
+   higher layer Convergence-layer Adaptator (CLA) overhead.
+
+   This memo specifies a CLA protocol for the encapsulation of Bundles
+   and Licklider Transmission Protocol (LTP) segments over Ethernet,
+   provides recommendations for operational considerations, and requests
+   an EtherType for this protocol.
+
+   The protocol described here is another datagram CLA, like those
+   specified in [RFC7122].  It is in essence a reduced overhead version
+   of [RFC7122]'s IP/UDP-based CLA (UDPCL), suitable for use only among
+   directly-connected nodes (i.e. on-link communications only).
 
 2.  Conventions and Definitions
 
-   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
-   "OPTIONAL" in this document are to be interpreted as described in
-   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
-   capitals, as shown here.
+   This specification is experimental and does not make use of normative
+   language.
 
-3.  General Recommendation
+3.  Specification
 
-3.1.  Fragmentations
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |      Type     |    Reserved   |            Checksum           |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-3.2.  Congestion Control
+4.  Operational Considerations
 
-3.3.  Checksums
+4.1.  Fragmentation and Reassembly
 
-4.  Security Considerations
+4.2.  Congestion Control
+
+4.3.  Checksums
+
+5.  Security Considerations
 
    TODO Security
 
@@ -117,24 +138,27 @@ Table of Contents
    the form of BPSec or at a layer below the transmition of bundles,
    e.g. 802.1AE MACsec.
 
-5.  IANA Considerations
+6.  IANA Considerations
 
-   This document has no IANA actions.
+6.1.  Type field
 
-5.1.  EtherType
+   TODO: IANA registry for Type field.
 
-5.2.  Multicast MAC Address
+6.2.  Reserved field
 
-6.  Normative References
+   No IANA registry is requested for Reserved field values.  This is
+   deferred to a future specification wishing to utilize this field.
 
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/rfc/rfc2119>.
+6.3.  EtherType
 
-   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
-              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+7.  Normative References
+
+   [RFC7122]  Kruse, H., Jero, S., and S. Ostermann, "Datagram
+              Convergence Layers for the Delay- and Disruption-Tolerant
+              Networking (DTN) Bundle Protocol and Licklider
+              Transmission Protocol (LTP)", RFC 7122,
+              DOI 10.17487/RFC7122, March 2014,
+              <https://www.rfc-editor.org/rfc/rfc7122>.
 
 Acknowledgments
 
