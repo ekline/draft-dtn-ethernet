@@ -4,22 +4,17 @@
 <meta charset="utf-8">
 <meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
-<title>Support for the Delay- and Disruption-Tolerant Networking (DTN) Bundle Protocol and Licklider Transmission Protocol (LTP) Datagrams over Ethernet</title>
+<title>Support for the Delay- and Disruption-Tolerant Networking (DTN) Bundle Protocol (BP) Datagrams over Ethernet</title>
 <meta content="Erik Kline" name="author">
 <meta content="
-       When two Bundle nodes are connected by an Ethernet link, or by a logical
-link that emulates Ethernet, it may be possible for a Bundle Protocol
-Agent to transmit bundles directly over Ethernet, without higher layer
-Convergence-layer Adaptator (CLA) overhead. 
-       This memo specifies a CLA protocol for the encapsulation of Bundles and
-Licklider Transmission Protocol (LTP) segments over Ethernet, provides
-recommendations for operational considerations, and requests an
-EtherType for this protocol. 
+       This memo describes a mechanism for the transmission of Bundles over
+Ethernet links, provides recommendations for operational considerations,
+and requests some dedicated Ethernet parameters. 
     " name="description">
 <meta content="xml2rfc 3.17.4" name="generator">
 <meta content="Delay and Distruption Tolerant Networking" name="keyword">
 <meta content="DTN" name="keyword">
-<meta content="Bundle Protocl" name="keyword">
+<meta content="Bundle Protocol" name="keyword">
 <meta content="BP" name="keyword">
 <meta content="Ethernet" name="keyword">
 <meta content="draft-ek-dtn-ethernet-latest" name="ietf.draft">
@@ -1057,12 +1052,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <table class="ears">
 <thead><tr>
 <td class="left">Internet-Draft</td>
-<td class="center">DTN-over-Ethernet</td>
+<td class="center">BP-over-Ethernet</td>
 <td class="right">July 2023</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Kline</td>
-<td class="center">Expires 8 January 2024</td>
+<td class="center">Expires 9 January 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1075,12 +1070,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ek-dtn-ethernet-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-07-07" class="published">7 July 2023</time>
+<time datetime="2023-07-08" class="published">8 July 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Experimental</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-01-08">8 January 2024</time></dd>
+<dd class="expires"><time datetime="2024-01-09">9 January 2024</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1090,17 +1085,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </dd>
 </dl>
 </div>
-<h1 id="title">Support for the Delay- and Disruption-Tolerant Networking (DTN) Bundle Protocol and Licklider Transmission Protocol (LTP) Datagrams over Ethernet</h1>
+<h1 id="title">Support for the Delay- and Disruption-Tolerant Networking (DTN) Bundle Protocol (BP) Datagrams over Ethernet</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">When two Bundle nodes are connected by an Ethernet link, or by a logical
-link that emulates Ethernet, it may be possible for a Bundle Protocol
-Agent to transmit bundles directly over Ethernet, without higher layer
-Convergence-layer Adaptator (CLA) overhead.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
-<p id="section-abstract-2">This memo specifies a CLA protocol for the encapsulation of Bundles and
-Licklider Transmission Protocol (LTP) segments over Ethernet, provides
-recommendations for operational considerations, and requests an
-EtherType for this protocol.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This memo describes a mechanism for the transmission of Bundles over
+Ethernet links, provides recommendations for operational considerations,
+and requests some dedicated Ethernet parameters.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1137,7 +1127,7 @@ EtherType for this protocol.<a href="#section-abstract-2" class="pilcrow">¶</a>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 8 January 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 9 January 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1173,7 +1163,15 @@ EtherType for this protocol.<a href="#section-abstract-2" class="pilcrow">¶</a>
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-specification" class="internal xref">Specification</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-general-recommendation" class="internal xref">General Recommendation</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
+                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-destination-mac-address" class="internal xref">Destination MAC Address</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-mtu" class="internal xref">MTU</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-operational-considerations" class="internal xref">Operational Considerations</a></p>
@@ -1204,10 +1202,21 @@ EtherType for this protocol.<a href="#section-abstract-2" class="pilcrow">¶</a>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.3">
                 <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="auto internal xref">6.3</a>.  <a href="#name-ethertype" class="internal xref">EtherType</a></p>
 </li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.4">
+                <p id="section-toc.1-1.6.2.4.1"><a href="#section-6.4" class="auto internal xref">6.4</a>.  <a href="#name-multicast-mac-address" class="internal xref">Multicast MAC Address</a></p>
+</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
             <p id="section-toc.1-1.8.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
@@ -1227,15 +1236,14 @@ EtherType for this protocol.<a href="#section-abstract-2" class="pilcrow">¶</a>
 <p id="section-1-1">When two Bundle nodes are connected by an Ethernet link, or by a logical
 link that emulates Ethernet, it may be possible for a Bundle Protocol
 Agent to transmit bundles directly over Ethernet, without higher layer
-Convergence-layer Adaptator (CLA) overhead.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">This memo specifies a CLA protocol for the encapsulation of Bundles and
-Licklider Transmission Protocol (LTP) segments over Ethernet, provides
-recommendations for operational considerations, and requests an
-EtherType for this protocol.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">The protocol described here is another datagram CLA, like those
-specified in <span>[<a href="#RFC7122" class="cite xref">RFC7122</a>]</span>. It is in essence a reduced overhead version
-of <span>[<a href="#RFC7122" class="cite xref">RFC7122</a>]</span>'s IP/UDP-based CLA (UDPCL), suitable for use only
-among directly-connected nodes (i.e. on-link communications only).<a href="#section-1-3" class="pilcrow">¶</a></p>
+Convergence-layer (CL) overhead.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">This memo describes a mechanism for the transmission of Bundles over
+Ethernet links, provides recommendations for operational considerations,
+and requests some dedicated Ethernet parameters.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">The mechanism described here acts like a datagram CL, specifically the
+BP over UDP CL documented in section 3.2.2 of <span>[<a href="#DGRAMCL" class="cite xref">DGRAMCL</a>]</span>,
+ableit suitable for use only among directly connected nodes
+(i.e. on-link communications only).<a href="#section-1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1243,23 +1251,71 @@ among directly-connected nodes (i.e. on-link communications only).<a href="#sect
       <h2 id="name-conventions-and-definitions">
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-conventions-and-definitions" class="section-name selfRef">Conventions and Definitions</a>
       </h2>
-<p id="section-2-1">This specification is experimental and does not make use of normative
-language.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-1">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
+"<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
+described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
+appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="specification">
+<div id="general-recommendation">
 <section id="section-3">
-      <h2 id="name-specification">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-specification" class="section-name selfRef">Specification</a>
+      <h2 id="name-general-recommendation">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-general-recommendation" class="section-name selfRef">General Recommendation</a>
       </h2>
-<div class="alignLeft art-text artwork" id="section-3-1">
-<pre>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|      Type     |    Reserved   |            Checksum           |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-</pre><a href="#section-3-1" class="pilcrow">¶</a>
+<p id="section-3-1">Paraphrasing <span>[<a href="#DGRAMCL" class="cite xref">DGRAMCL</a>]</span>, in order to transmit Bundles
+(<span>[<a href="#BPv6" class="cite xref">BPv6</a>]</span>, <span>[<a href="#BPv7" class="cite xref">BPv7</a>]</span>)
+across the Internet it is necessary to encapsulate them in a
+Convergence Layer that utilizes one of the standard versions of the
+Internet Protocols (e.g., <span>[<a href="#TCPCL" class="cite xref">TCPCL</a>]</span>).<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">When two Bundle nodes are directly connected via an Ethernet link,
+however, it is possible for Bundle Protocol Agents to forego Internet
+CL encapsulations and instead place Bundles directly in payload of
+an Ethernet frame.  Section <a href="#ethertype" class="auto internal xref">6.3</a> lists the IEEE-assigned
+EtherType used to indicate the Ethernet payload is a Bundle (or Bundle
+fragment).<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-3">This Ethernet Convergence Layer (ETHCL) avoids incurring the IP and UDP
+header overhead (28 to 48 bytes, depending on Internet Protocol version
+and assuming no other headers or options).  These savings may, however,
+be offset by overhead introduced if Bundle fragmentation is necessary
+(see <a href="#mtu" class="auto internal xref">3.2</a>, <a href="#fragmentation" class="auto internal xref">4.1</a>).<a href="#section-3-3" class="pilcrow">¶</a></p>
+<div id="destination-mac-address">
+<section id="section-3.1">
+        <h3 id="name-destination-mac-address">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-destination-mac-address" class="section-name selfRef">Destination MAC Address</a>
+        </h3>
+<p id="section-3.1-1">When transmitting a Bundle directly in the payload of an Ethernet frame
+a suitable destination MAC address must be selected.  Provisioning the
+sending Bundle node with the correct destination MAC address of the
+recipient Bundle node is out of scope for this document.  There is no
+Bundle Protocol equivalent of <span>[<a href="#ARP" class="cite xref">ARP</a>]</span> or <span>[<a href="#ND" class="cite xref">ND</a>]</span>.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">It is possible for a sender to address all BP-over-Ethernet listeners
+within the broadcast domain should the destination Bundle Endpoint ID
+refer to all of a group of nodes (sections 3.2 and 3.4 of
+<span>[<a href="#ARCH" class="cite xref">ARCH</a>]</span>).  How a sending Bundle node determines when this is
+appropriate is out of scope of this document.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.1-3">This document does not prohibit the use of the broadcast MAC address
+for this function, but section <a href="#multicast_mac" class="auto internal xref">6.4</a> requests allocation
+of a multicast MAC address to represent "all Bundle Protocol capable
+stations" within a given Ethernet broadcast domain.  This may help
+reduce the number of stations awakened by multicast BP-over-Ethernet
+frames.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="mtu">
+<section id="section-3.2">
+        <h3 id="name-mtu">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-mtu" class="section-name selfRef">MTU</a>
+        </h3>
+<p id="section-3.2-1">In the absence of Ethernet-layer fragmentation, no payload exceeding
+the local Ethernet MTU can be transmitted.  Consequently, the contents
+of the Ethernet payload <span class="bcp14">MUST</span> be complete Bundle, fragmenting at the
+sender as necessary (<span>[<a href="#BPv6" class="cite xref">BPv6</a>]</span> section 5.8, <span>[<a href="#BPv7" class="cite xref">BPv7</a>]</span> section 5.8).<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">In practice the need for fragmentation may be reduced if the local
+Ethernet MTU can be increased beyond the typical 1500 bytes (e.g., by
+use of "jumbo frames").<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.2-3">How a sending Bundle node learns the size of local Ethernet MTU is out
+of scope of this document.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+</section>
 </div>
 </section>
 </div>
@@ -1268,25 +1324,38 @@ language.<a href="#section-2-1" class="pilcrow">¶</a></p>
       <h2 id="name-operational-considerations">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-operational-considerations" class="section-name selfRef">Operational Considerations</a>
       </h2>
-<div id="fragmentation-and-reassembly">
+<p id="section-4-1">Conceptually, this Ethernet Convergence Layer (ETHCL) is analogous to
+the BP over UDPCL in section 3.2.2 of <span>[<a href="#DGRAMCL" class="cite xref">DGRAMCL</a>]</span>, with many of the
+same limitations and considerations.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<div id="fragmentation">
 <section id="section-4.1">
         <h3 id="name-fragmentation-and-reassembl">
 <a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-fragmentation-and-reassembl" class="section-name selfRef">Fragmentation and Reassembly</a>
-      </h3>
+        </h3>
+<p id="section-4.1-1">Transmission of Bundles exceeding the local Ethernet MTU <span class="bcp14">MUST</span> be
+fragmented by the sending node (<a href="#mtu" class="auto internal xref">3.2</a>).  If excessive fragmentation
+proves problematic, network operators may need to consider alternative
+Convergence Layers.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">TODO: expound.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="congestion-control">
 <section id="section-4.2">
         <h3 id="name-congestion-control">
 <a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-congestion-control" class="section-name selfRef">Congestion Control</a>
-      </h3>
+        </h3>
+<p id="section-4.2-1">TODO: same as UDPCL; Ethernet flow control mechanisms exist but may
+not prevent the loss of Bundles.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="checksums">
 <section id="section-4.3">
         <h3 id="name-checksums">
 <a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-checksums" class="section-name selfRef">Checksums</a>
-      </h3>
+        </h3>
+<p id="section-4.3-1">TODO: Frame Check Sequence minimally meets the requirements to ensure
+Bundles are not corrupted in transmission.  more checks at other
+layers <span class="bcp14">SHOULD</span> be employed.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1299,7 +1368,7 @@ language.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <p id="section-5-1">TODO Security<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">Bundles transmitted over any link may be subject to observation and alteration.
 Security must be applied to the bundle itself, either in the form of BPSec or
-at a layer below the transmition of bundles, e.g. 802.1AE MACsec.<a href="#section-5-2" class="pilcrow">¶</a></p>
+at a layer below the transmission of bundles, e.g. 802.1AE MACsec.<a href="#section-5-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
@@ -1328,21 +1397,77 @@ deferred to a future specification wishing to utilize this field.<a href="#secti
 <section id="section-6.3">
         <h3 id="name-ethertype">
 <a href="#section-6.3" class="section-number selfRef">6.3. </a><a href="#name-ethertype" class="section-name selfRef">EtherType</a>
-      </h3>
+        </h3>
+<p id="section-6.3-1">IANA is requested to work its IEEE liaison magic to request allocation
+of an EtherType for this document's description of Bundle Protocol over
+Ethernet (BPoE).<a href="#section-6.3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="multicast_mac">
+<section id="section-6.4">
+        <h3 id="name-multicast-mac-address">
+<a href="#section-6.4" class="section-number selfRef">6.4. </a><a href="#name-multicast-mac-address" class="section-name selfRef">Multicast MAC Address</a>
+        </h3>
+<p id="section-6.4-1">TODO: request a multicast MAC address for all Bundle Protocol capable
+capable stations within the broadcast domain.<a href="#section-6.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <section id="section-7">
-      <h2 id="name-normative-references">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+      <h2 id="name-references">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
+<section id="section-7.1">
+        <h3 id="name-normative-references">
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
 <dl class="references">
-<dt id="RFC7122">[RFC7122]</dt>
-    <dd>
+<dt id="ARCH">[ARCH]</dt>
+        <dd>
+<span class="refAuthor">Cerf, V.</span>, <span class="refAuthor">Burleigh, S.</span>, <span class="refAuthor">Hooke, A.</span>, <span class="refAuthor">Torgerson, L.</span>, <span class="refAuthor">Durst, R.</span>, <span class="refAuthor">Scott, K.</span>, <span class="refAuthor">Fall, K.</span>, and <span class="refAuthor">H. Weiss</span>, <span class="refTitle">"Delay-Tolerant Networking Architecture"</span>, <span class="seriesInfo">RFC 4838</span>, <span class="seriesInfo">DOI 10.17487/RFC4838</span>, <time datetime="2007-04" class="refDate">April 2007</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4838">https://www.rfc-editor.org/rfc/rfc4838</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="BPv6">[BPv6]</dt>
+        <dd>
+<span class="refAuthor">Scott, K.</span> and <span class="refAuthor">S. Burleigh</span>, <span class="refTitle">"Bundle Protocol Specification"</span>, <span class="seriesInfo">RFC 5050</span>, <span class="seriesInfo">DOI 10.17487/RFC5050</span>, <time datetime="2007-11" class="refDate">November 2007</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5050">https://www.rfc-editor.org/rfc/rfc5050</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="BPv7">[BPv7]</dt>
+        <dd>
+<span class="refAuthor">Burleigh, S.</span>, <span class="refAuthor">Fall, K.</span>, and <span class="refAuthor">E. Birrane, III</span>, <span class="refTitle">"Bundle Protocol Version 7"</span>, <span class="seriesInfo">RFC 9171</span>, <span class="seriesInfo">DOI 10.17487/RFC9171</span>, <time datetime="2022-01" class="refDate">January 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9171">https://www.rfc-editor.org/rfc/rfc9171</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="DGRAMCL">[DGRAMCL]</dt>
+        <dd>
 <span class="refAuthor">Kruse, H.</span>, <span class="refAuthor">Jero, S.</span>, and <span class="refAuthor">S. Ostermann</span>, <span class="refTitle">"Datagram Convergence Layers for the Delay- and Disruption-Tolerant Networking (DTN) Bundle Protocol and Licklider Transmission Protocol (LTP)"</span>, <span class="seriesInfo">RFC 7122</span>, <span class="seriesInfo">DOI 10.17487/RFC7122</span>, <time datetime="2014-03" class="refDate">March 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7122">https://www.rfc-editor.org/rfc/rfc7122</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC2119">[RFC2119]</dt>
+        <dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8174">[RFC8174]</dt>
+      <dd>
+<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 </dl>
+</section>
+<section id="section-7.2">
+        <h3 id="name-informative-references">
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="ARP">[ARP]</dt>
+        <dd>
+<span class="refAuthor">Plummer, D.</span>, <span class="refTitle">"An Ethernet Address Resolution Protocol: Or Converting Network Protocol Addresses to 48.bit Ethernet Address for Transmission on Ethernet Hardware"</span>, <span class="seriesInfo">STD 37</span>, <span class="seriesInfo">RFC 826</span>, <span class="seriesInfo">DOI 10.17487/RFC0826</span>, <time datetime="1982-11" class="refDate">November 1982</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc826">https://www.rfc-editor.org/rfc/rfc826</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="ND">[ND]</dt>
+        <dd>
+<span class="refAuthor">Narten, T.</span>, <span class="refAuthor">Nordmark, E.</span>, <span class="refAuthor">Simpson, W.</span>, and <span class="refAuthor">H. Soliman</span>, <span class="refTitle">"Neighbor Discovery for IP version 6 (IPv6)"</span>, <span class="seriesInfo">RFC 4861</span>, <span class="seriesInfo">DOI 10.17487/RFC4861</span>, <time datetime="2007-09" class="refDate">September 2007</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4861">https://www.rfc-editor.org/rfc/rfc4861</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="TCPCL">[TCPCL]</dt>
+      <dd>
+<span class="refAuthor">Sipos, B.</span>, <span class="refAuthor">Demmer, M.</span>, <span class="refAuthor">Ott, J.</span>, and <span class="refAuthor">S. Perreault</span>, <span class="refTitle">"Delay-Tolerant Networking TCP Convergence-Layer Protocol Version 4"</span>, <span class="seriesInfo">RFC 9174</span>, <span class="seriesInfo">DOI 10.17487/RFC9174</span>, <time datetime="2022-01" class="refDate">January 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9174">https://www.rfc-editor.org/rfc/rfc9174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
 </section>
 <div id="acknowledgments">
 <section id="appendix-A">

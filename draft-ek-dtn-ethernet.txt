@@ -4,26 +4,19 @@
 
 Delay/Disruption Tolerant Networking                            E. Kline
 Internet-Draft                                Aalyria Technologies, Inc.
-Intended status: Experimental                                7 July 2023
-Expires: 8 January 2024
+Intended status: Experimental                                8 July 2023
+Expires: 9 January 2024
 
 
  Support for the Delay- and Disruption-Tolerant Networking (DTN) Bundle
-   Protocol and Licklider Transmission Protocol (LTP) Datagrams over
-                                Ethernet
+                 Protocol (BP) Datagrams over Ethernet
                       draft-ek-dtn-ethernet-latest
 
 Abstract
 
-   When two Bundle nodes are connected by an Ethernet link, or by a
-   logical link that emulates Ethernet, it may be possible for a Bundle
-   Protocol Agent to transmit bundles directly over Ethernet, without
-   higher layer Convergence-layer Adaptator (CLA) overhead.
-
-   This memo specifies a CLA protocol for the encapsulation of Bundles
-   and Licklider Transmission Protocol (LTP) segments over Ethernet,
-   provides recommendations for operational considerations, and requests
-   an EtherType for this protocol.
+   This memo describes a mechanism for the transmission of Bundles over
+   Ethernet links, provides recommendations for operational
+   considerations, and requests some dedicated Ethernet parameters.
 
 About This Document
 
@@ -57,7 +50,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 8 January 2024.
+   This Internet-Draft will expire on 9 January 2024.
 
 Copyright Notice
 
@@ -77,7 +70,9 @@ Table of Contents
 
    1.  Introduction
    2.  Conventions and Definitions
-   3.  Specification
+   3.  General Recommendation
+     3.1.  Destination MAC Address
+     3.2.  MTU
    4.  Operational Considerations
      4.1.  Fragmentation and Reassembly
      4.2.  Congestion Control
@@ -87,7 +82,10 @@ Table of Contents
      6.1.  Type field
      6.2.  Reserved field
      6.3.  EtherType
-   7.  Normative References
+     6.4.  Multicast MAC Address
+   7.  References
+     7.1.  Normative References
+     7.2.  Informative References
    Acknowledgments
    Author's Address
 
@@ -96,38 +94,103 @@ Table of Contents
    When two Bundle nodes are connected by an Ethernet link, or by a
    logical link that emulates Ethernet, it may be possible for a Bundle
    Protocol Agent to transmit bundles directly over Ethernet, without
-   higher layer Convergence-layer Adaptator (CLA) overhead.
+   higher layer Convergence-layer (CL) overhead.
 
-   This memo specifies a CLA protocol for the encapsulation of Bundles
-   and Licklider Transmission Protocol (LTP) segments over Ethernet,
-   provides recommendations for operational considerations, and requests
-   an EtherType for this protocol.
+   This memo describes a mechanism for the transmission of Bundles over
+   Ethernet links, provides recommendations for operational
+   considerations, and requests some dedicated Ethernet parameters.
 
-   The protocol described here is another datagram CLA, like those
-   specified in [RFC7122].  It is in essence a reduced overhead version
-   of [RFC7122]'s IP/UDP-based CLA (UDPCL), suitable for use only among
-   directly-connected nodes (i.e. on-link communications only).
+   The mechanism described here acts like a datagram CL, specifically
+   the BP over UDP CL documented in section 3.2.2 of [DGRAMCL], ableit
+   suitable for use only among directly connected nodes (i.e. on-link
+   communications only).
 
 2.  Conventions and Definitions
 
-   This specification is experimental and does not make use of normative
-   language.
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
 
-3.  Specification
+3.  General Recommendation
 
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |      Type     |    Reserved   |            Checksum           |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   Paraphrasing [DGRAMCL], in order to transmit Bundles ([BPv6], [BPv7])
+   across the Internet it is necessary to encapsulate them in a
+   Convergence Layer that utilizes one of the standard versions of the
+   Internet Protocols (e.g., [TCPCL]).
+
+   When two Bundle nodes are directly connected via an Ethernet link,
+   however, it is possible for Bundle Protocol Agents to forego Internet
+   CL encapsulations and instead place Bundles directly in payload of an
+   Ethernet frame.  Section 6.3 lists the IEEE-assigned EtherType used
+   to indicate the Ethernet payload is a Bundle (or Bundle fragment).
+
+   This Ethernet Convergence Layer (ETHCL) avoids incurring the IP and
+   UDP header overhead (28 to 48 bytes, depending on Internet Protocol
+   version and assuming no other headers or options).  These savings
+   may, however, be offset by overhead introduced if Bundle
+   fragmentation is necessary (see 3.2, 4.1).
+
+3.1.  Destination MAC Address
+
+   When transmitting a Bundle directly in the payload of an Ethernet
+   frame a suitable destination MAC address must be selected.
+   Provisioning the sending Bundle node with the correct destination MAC
+   address of the recipient Bundle node is out of scope for this
+   document.  There is no Bundle Protocol equivalent of [ARP] or [ND].
+
+   It is possible for a sender to address all BP-over-Ethernet listeners
+   within the broadcast domain should the destination Bundle Endpoint ID
+   refer to all of a group of nodes (sections 3.2 and 3.4 of [ARCH]).
+   How a sending Bundle node determines when this is appropriate is out
+   of scope of this document.
+
+   This document does not prohibit the use of the broadcast MAC address
+   for this function, but section 6.4 requests allocation of a multicast
+   MAC address to represent "all Bundle Protocol capable stations"
+   within a given Ethernet broadcast domain.  This may help reduce the
+   number of stations awakened by multicast BP-over-Ethernet frames.
+
+3.2.  MTU
+
+   In the absence of Ethernet-layer fragmentation, no payload exceeding
+   the local Ethernet MTU can be transmitted.  Consequently, the
+   contents of the Ethernet payload MUST be complete Bundle, fragmenting
+   at the sender as necessary ([BPv6] section 5.8, [BPv7] section 5.8).
+
+   In practice the need for fragmentation may be reduced if the local
+   Ethernet MTU can be increased beyond the typical 1500 bytes (e.g., by
+   use of "jumbo frames").
+
+   How a sending Bundle node learns the size of local Ethernet MTU is
+   out of scope of this document.
 
 4.  Operational Considerations
 
+   Conceptually, this Ethernet Convergence Layer (ETHCL) is analogous to
+   the BP over UDPCL in section 3.2.2 of [DGRAMCL], with many of the
+   same limitations and considerations.
+
 4.1.  Fragmentation and Reassembly
+
+   Transmission of Bundles exceeding the local Ethernet MTU MUST be
+   fragmented by the sending node (3.2).  If excessive fragmentation
+   proves problematic, network operators may need to consider
+   alternative Convergence Layers.
+
+   TODO: expound.
 
 4.2.  Congestion Control
 
+   TODO: same as UDPCL; Ethernet flow control mechanisms exist but may
+   not prevent the loss of Bundles.
+
 4.3.  Checksums
+
+   TODO: Frame Check Sequence minimally meets the requirements to ensure
+   Bundles are not corrupted in transmission.  more checks at other
+   layers SHOULD be employed.
 
 5.  Security Considerations
 
@@ -135,7 +198,7 @@ Table of Contents
 
    Bundles transmitted over any link may be subject to observation and
    alteration.  Security must be applied to the bundle itself, either in
-   the form of BPSec or at a layer below the transmition of bundles,
+   the form of BPSec or at a layer below the transmission of bundles,
    e.g. 802.1AE MACsec.
 
 6.  IANA Considerations
@@ -151,14 +214,65 @@ Table of Contents
 
 6.3.  EtherType
 
-7.  Normative References
+   IANA is requested to work its IEEE liaison magic to request
+   allocation of an EtherType for this document's description of Bundle
+   Protocol over Ethernet (BPoE).
 
-   [RFC7122]  Kruse, H., Jero, S., and S. Ostermann, "Datagram
+6.4.  Multicast MAC Address
+
+   TODO: request a multicast MAC address for all Bundle Protocol capable
+   capable stations within the broadcast domain.
+
+7.  References
+
+7.1.  Normative References
+
+   [ARCH]     Cerf, V., Burleigh, S., Hooke, A., Torgerson, L., Durst,
+              R., Scott, K., Fall, K., and H. Weiss, "Delay-Tolerant
+              Networking Architecture", RFC 4838, DOI 10.17487/RFC4838,
+              April 2007, <https://www.rfc-editor.org/rfc/rfc4838>.
+
+   [BPv6]     Scott, K. and S. Burleigh, "Bundle Protocol
+              Specification", RFC 5050, DOI 10.17487/RFC5050, November
+              2007, <https://www.rfc-editor.org/rfc/rfc5050>.
+
+   [BPv7]     Burleigh, S., Fall, K., and E. Birrane, III, "Bundle
+              Protocol Version 7", RFC 9171, DOI 10.17487/RFC9171,
+              January 2022, <https://www.rfc-editor.org/rfc/rfc9171>.
+
+   [DGRAMCL]  Kruse, H., Jero, S., and S. Ostermann, "Datagram
               Convergence Layers for the Delay- and Disruption-Tolerant
               Networking (DTN) Bundle Protocol and Licklider
               Transmission Protocol (LTP)", RFC 7122,
               DOI 10.17487/RFC7122, March 2014,
               <https://www.rfc-editor.org/rfc/rfc7122>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+7.2.  Informative References
+
+   [ARP]      Plummer, D., "An Ethernet Address Resolution Protocol: Or
+              Converting Network Protocol Addresses to 48.bit Ethernet
+              Address for Transmission on Ethernet Hardware", STD 37,
+              RFC 826, DOI 10.17487/RFC0826, November 1982,
+              <https://www.rfc-editor.org/rfc/rfc826>.
+
+   [ND]       Narten, T., Nordmark, E., Simpson, W., and H. Soliman,
+              "Neighbor Discovery for IP version 6 (IPv6)", RFC 4861,
+              DOI 10.17487/RFC4861, September 2007,
+              <https://www.rfc-editor.org/rfc/rfc4861>.
+
+   [TCPCL]    Sipos, B., Demmer, M., Ott, J., and S. Perreault, "Delay-
+              Tolerant Networking TCP Convergence-Layer Protocol Version
+              4", RFC 9174, DOI 10.17487/RFC9174, January 2022,
+              <https://www.rfc-editor.org/rfc/rfc9174>.
 
 Acknowledgments
 
