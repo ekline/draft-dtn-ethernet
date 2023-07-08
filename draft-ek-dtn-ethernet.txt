@@ -14,9 +14,10 @@ Expires: 9 January 2024
 
 Abstract
 
-   This memo describes a mechanism for the transmission of Bundles over
-   Ethernet links, provides recommendations for operational
-   considerations, and requests some dedicated Ethernet parameters.
+   This memo describes a mechanism for the transmission of Bundle
+   Protocol (BP) Bundles over Ethernet links (BP-over-Ethernet),
+   describes limitations and operational considerations, and requests
+   some dedicated Ethernet parameters.
 
 About This Document
 
@@ -79,10 +80,8 @@ Table of Contents
      4.3.  Checksums
    5.  Security Considerations
    6.  IANA Considerations
-     6.1.  Type field
-     6.2.  Reserved field
-     6.3.  EtherType
-     6.4.  Multicast MAC Address
+     6.1.  EtherType
+     6.2.  Multicast MAC Address
    7.  References
      7.1.  Normative References
      7.2.  Informative References
@@ -93,12 +92,13 @@ Table of Contents
 
    When two Bundle nodes are connected by an Ethernet link, or by a
    logical link that emulates Ethernet, it may be possible for a Bundle
-   Protocol Agent to transmit bundles directly over Ethernet, without
-   higher layer Convergence-layer (CL) overhead.
+   Protocol Agent to transmit Bundles directly in the payload of an
+   Ethernet frame, without higher layer Convergence Layer (CL) overhead.
 
-   This memo describes a mechanism for the transmission of Bundles over
-   Ethernet links, provides recommendations for operational
-   considerations, and requests some dedicated Ethernet parameters.
+   This memo describes a mechanism for the transmission of Bundle
+   Protocol (BP) Bundles over Ethernet links (BP-over-Ethernet),
+   describes limitations and operational considerations, and requests
+   some dedicated Ethernet parameters.
 
    The mechanism described here acts like a datagram CL, specifically
    the BP over UDP CL documented in section 3.2.2 of [DGRAMCL], ableit
@@ -122,15 +122,16 @@ Table of Contents
 
    When two Bundle nodes are directly connected via an Ethernet link,
    however, it is possible for Bundle Protocol Agents to forego Internet
-   CL encapsulations and instead place Bundles directly in payload of an
-   Ethernet frame.  Section 6.3 lists the IEEE-assigned EtherType used
-   to indicate the Ethernet payload is a Bundle (or Bundle fragment).
+   CL encapsulations and instead place Bundles directly in the payload
+   of an Ethernet frame.  Section 6.1 lists the IEEE-assigned EtherType
+   used to indicate the Ethernet payload is a [BPv6] or [BPv7] Bundle
+   (or Bundle fragment; section 3.2).
 
    This Ethernet Convergence Layer (ETHCL) avoids incurring the IP and
    UDP header overhead (28 to 48 bytes, depending on Internet Protocol
    version and assuming no other headers or options).  These savings
    may, however, be offset by overhead introduced if Bundle
-   fragmentation is necessary (see 3.2, 4.1).
+   fragmentation is necessary (see sections 3.2 and 4.1).
 
 3.1.  Destination MAC Address
 
@@ -142,29 +143,31 @@ Table of Contents
 
    It is possible for a sender to address all BP-over-Ethernet listeners
    within the broadcast domain should the destination Bundle Endpoint ID
-   refer to all of a group of nodes (sections 3.2 and 3.4 of [ARCH]).
+   refer to "all of a group of nodes" (sections 3.2 and 3.4 of [ARCH]).
    How a sending Bundle node determines when this is appropriate is out
    of scope of this document.
 
    This document does not prohibit the use of the broadcast MAC address
-   for this function, but section 6.4 requests allocation of a multicast
-   MAC address to represent "all Bundle Protocol capable stations"
-   within a given Ethernet broadcast domain.  This may help reduce the
-   number of stations awakened by multicast BP-over-Ethernet frames.
+   for this function, but section 6.2 requests the allocation of a
+   multicast MAC address to represent "all Bundle Protocol over Ethernet
+   capable stations" within a given Ethernet broadcast domain.  This may
+   help reduce the number of stations awakened by multicast BP-over-
+   Ethernet frames.
 
 3.2.  MTU
 
    In the absence of Ethernet-layer fragmentation, no payload exceeding
    the local Ethernet MTU can be transmitted.  Consequently, the
-   contents of the Ethernet payload MUST be complete Bundle, fragmenting
-   at the sender as necessary ([BPv6] section 5.8, [BPv7] section 5.8).
+   contents of the Ethernet payload MUST be a complete Bundle, employing
+   Bundle fragmention at the sender as necessary ([BPv6] section 5.8,
+   [BPv7] section 5.8).
 
    In practice the need for fragmentation may be reduced if the local
    Ethernet MTU can be increased beyond the typical 1500 bytes (e.g., by
-   use of "jumbo frames").
+   configured use of "jumbo frames").
 
-   How a sending Bundle node learns the size of local Ethernet MTU is
-   out of scope of this document.
+   How a sending Bundle node learns the size of the local Ethernet MTU
+   is out of scope of this document.
 
 4.  Operational Considerations
 
@@ -183,8 +186,8 @@ Table of Contents
 
 4.2.  Congestion Control
 
-   TODO: same as UDPCL; Ethernet flow control mechanisms exist but may
-   not prevent the loss of Bundles.
+   TODO: same as UDPCL: non-existent.  Ethernet flow control mechanisms
+   exist but may not prevent the loss of Bundles.
 
 4.3.  Checksums
 
@@ -203,25 +206,18 @@ Table of Contents
 
 6.  IANA Considerations
 
-6.1.  Type field
+   Allocation of the following Ethernet parameters is requested.
 
-   TODO: IANA registry for Type field.
-
-6.2.  Reserved field
-
-   No IANA registry is requested for Reserved field values.  This is
-   deferred to a future specification wishing to utilize this field.
-
-6.3.  EtherType
+6.1.  EtherType
 
    IANA is requested to work its IEEE liaison magic to request
    allocation of an EtherType for this document's description of Bundle
    Protocol over Ethernet (BPoE).
 
-6.4.  Multicast MAC Address
+6.2.  Multicast MAC Address
 
-   TODO: request a multicast MAC address for all Bundle Protocol capable
-   capable stations within the broadcast domain.
+   TODO: request a multicast MAC address for all Bundle Protocol over
+   Ethernet capable stations within the broadcast domain.
 
 7.  References
 
