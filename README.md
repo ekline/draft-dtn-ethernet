@@ -1,6 +1,6 @@
-# Support for the Delay- and Disruption-Tolerant Networking (DTN) Bundle Protocol and Licklider Transmission Protocol (LTP) Datagrams over Ethernet
+# Support for the Delay- and Disruption-Tolerant Networking (DTN) Bundle Protocol over Ethernet
 
-This is the working area for the individual Internet-Draft, "Support for the Delay- and Disruption-Tolerant Networking (DTN) Bundle Protocol and Licklider Transmission Protocol (LTP) Datagrams over Ethernet".
+This is the working area for the individual Internet-Draft, "Support for the Delay- and Disruption-Tolerant Networking (DTN) Bundle Protocol over Ethernet".
 
 * [Editor's Copy](https://ekline.github.io/draft-dtn-ethernet/#go.draft-ek-dtn-ethernet.html)
 * [Datatracker Page](https://datatracker.ietf.org/doc/draft-ek-dtn-ethernet)
