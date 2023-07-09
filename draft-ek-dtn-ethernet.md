@@ -63,6 +63,8 @@ BP over UDP CL documented in section 3.2.2 of {{!DGRAMCL=RFC7122}},
 ableit suitable for use only among directly connected nodes
 (i.e. on-link communications only).
 
+<!-- XXX mention cloud networks/virtual ethernet networks -->
+
 # Conventions and Definitions
 
 {::boilerplate bcp14-tagged}
@@ -87,6 +89,24 @@ header overhead (28 to 48 bytes, depending on Internet Protocol version
 and assuming no other headers or options).  These savings may, however,
 be offset by overhead introduced if Bundle fragmentation is necessary
 (see sections {{<mtu}} and {{<fragmentation}}).
+
+## Bundle Protocol Versions
+
+A single EtherType suffices for both {{BPv6}} and {{BPv7}} payloads.
+Current Bundle Protocol versions are readily distinguishable by the first
+byte of the payload.
+
+Encoding of {{BPv6}} bundles begins with the Version field of the Primary
+Bundle Block, which has a fixed value of 0x06 (sections 4, 4.5.1 of {{BPv6}}).
+
+Encoding of {{BPv7}} bundles "SHALL be a concatenated sequence of at least
+two blocks, represented as a CBOR indefinite-length array..." (section 4.1 of
+{{BPv7}}).  Per {{!RFC8949}}, an indefinite-length array begins with the
+octet value 0x9f.
+
+All other first octet values indicate some other content.  Bundle Protocol
+over Ethernet receivers MUST NOT attempt to interpret such payloads as bundles
+and SHOULD log an error for administrator review.
 
 ## Destination MAC Address
 
@@ -119,11 +139,12 @@ fragmention at the sender as necessary
 ({{!BPv6}} section 5.8, {{!BPv7}} section 5.8).
 
 In practice the need for fragmentation may be reduced if the local
-Ethernet MTU can be increased beyond the typical 1500 bytes (e.g., by
-configured use of "jumbo frames").
+Ethernet MTU can be increased beyond the typical 1500 bytes, e.g. by
+operator-configured use of "jumbo frames" or cloud management tuning of
+a virtual Ethernet network.
 
-How a sending Bundle node learns the size of the local Ethernet MTU is
-out of scope of this document.
+How a sending Bundle node learns the size of the local Ethernet MTU connected
+to a given interface is out of scope of this document.
 
 # Operational Considerations
 
@@ -174,15 +195,15 @@ Ethernet (BPoE).
 ## Multicast MAC Address
 {: #multicast_mac}
 
-TODO: request a multicast MAC address for all Bundle Protocol over
-Ethernet capable stations within the broadcast domain.
+TODO: request a multicast MAC address representing "all Bundle Protocol over
+Ethernet capable stations" within the broadcast domain.
 
 --- back
 
 # Acknowledgments
 {:numbered="false"}
 
-TODO acknowledge.
+Thanks to Wes Eddy for advice and early reviews.
 
 --- fluff
 
