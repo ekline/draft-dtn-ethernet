@@ -79,6 +79,7 @@ Table of Contents
      4.1.  Fragmentation and Reassembly
      4.2.  Congestion Control
      4.3.  Checksums
+     4.4.  Filtering
    5.  Security Considerations
    6.  IANA Considerations
      6.1.  EtherType
@@ -105,6 +106,11 @@ Table of Contents
    the BP over UDP CL documented in section 3.2.2 of [DGRAMCL], ableit
    suitable for use only among directly connected nodes (i.e. on-link
    communications only).
+
+   While hypothetically applicable to a physical Ethernet LAN, it may
+   find more use within Virtual Private Cloud (VPC) networks, which
+   allow novel software-define connectivity among a set of cooperating
+   Bundle processing cloud compute nodes (i.e.  VMs).
 
 2.  Conventions and Definitions
 
@@ -146,7 +152,7 @@ Table of Contents
 
    Encoding of [BPv7] bundles "SHALL be a concatenated sequence of at
    least two blocks, represented as a CBOR indefinite-length array..."
-   (section 4.1 of [BPv7]).  Per [RFC8949], an indefinite-length array
+   (section 4.1 of [BPv7]).  Per [CBOR], an indefinite-length array
    begins with the octet value 0x9f.
 
    All other first octet values indicate some other content.  Bundle
@@ -159,7 +165,8 @@ Table of Contents
    frame a suitable destination MAC address must be selected.
    Provisioning the sending Bundle node with the correct destination MAC
    address of the recipient Bundle node is out of scope for this
-   document.  There is no Bundle Protocol equivalent of [ARP] or [ND].
+   document.  There is no Bundle Protocol equivalent of [ARP] or
+   [IPv6ND].
 
    It is possible for a sender to address all BP-over-Ethernet listeners
    within the broadcast domain should the destination Bundle Endpoint ID
@@ -216,6 +223,15 @@ Table of Contents
    Bundles are not corrupted in transmission.  more checks at other
    layers SHOULD be employed.
 
+4.4.  Filtering
+
+   A common security paradigm is to "defaul deny" all traffic patterns
+   that, broadly, do not conform to operator expectations.  In such
+   environments it may be that this document's new EtherType needs to be
+   added to an allowlist or otherwise explicitly permitted to be used on
+   a given Ethernet segment before Bundles can be successfully
+   delivered.
+
 5.  Security Considerations
 
    TODO Security
@@ -237,8 +253,11 @@ Table of Contents
 
 6.2.  Multicast MAC Address
 
-   TODO: request a multicast MAC address representing "all Bundle
-   Protocol over Ethernet capable stations" within the broadcast domain.
+   In order to identify "all Bundle Protocol over Ethernet capable
+   stations" within the broadcast domain, IANA is requested to allocate
+   one 48-bit multicast MAC address, presumably from the 01-00-5E OUI.
+   The stated Usage is "Bundle Protocol over Ethernet" and the Reference
+   is this document.
 
 7.  References
 
@@ -257,6 +276,11 @@ Table of Contents
               Protocol Version 7", RFC 9171, DOI 10.17487/RFC9171,
               January 2022, <https://www.rfc-editor.org/rfc/rfc9171>.
 
+   [CBOR]     Bormann, C. and P. Hoffman, "Concise Binary Object
+              Representation (CBOR)", STD 94, RFC 8949,
+              DOI 10.17487/RFC8949, December 2020,
+              <https://www.rfc-editor.org/rfc/rfc8949>.
+
    [DGRAMCL]  Kruse, H., Jero, S., and S. Ostermann, "Datagram
               Convergence Layers for the Delay- and Disruption-Tolerant
               Networking (DTN) Bundle Protocol and Licklider
@@ -273,11 +297,6 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-   [RFC8949]  Bormann, C. and P. Hoffman, "Concise Binary Object
-              Representation (CBOR)", STD 94, RFC 8949,
-              DOI 10.17487/RFC8949, December 2020,
-              <https://www.rfc-editor.org/rfc/rfc8949>.
-
 7.2.  Informative References
 
    [ARP]      Plummer, D., "An Ethernet Address Resolution Protocol: Or
@@ -286,7 +305,7 @@ Table of Contents
               RFC 826, DOI 10.17487/RFC0826, November 1982,
               <https://www.rfc-editor.org/rfc/rfc826>.
 
-   [ND]       Narten, T., Nordmark, E., Simpson, W., and H. Soliman,
+   [IPv6ND]   Narten, T., Nordmark, E., Simpson, W., and H. Soliman,
               "Neighbor Discovery for IP version 6 (IPv6)", RFC 4861,
               DOI 10.17487/RFC4861, September 2007,
               <https://www.rfc-editor.org/rfc/rfc4861>.
