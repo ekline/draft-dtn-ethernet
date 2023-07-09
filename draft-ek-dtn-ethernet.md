@@ -63,7 +63,10 @@ BP over UDP CL documented in section 3.2.2 of {{!DGRAMCL=RFC7122}},
 ableit suitable for use only among directly connected nodes
 (i.e. on-link communications only).
 
-<!-- XXX mention cloud networks/virtual ethernet networks -->
+While hypothetically applicable to a physical Ethernet LAN, it may find
+more use within Virtual Private Cloud (VPC) networks, which allow novel
+software-define connectivity among a set of cooperating Bundle processing
+cloud compute nodes (i.e. VMs).
 
 # Conventions and Definitions
 
@@ -101,7 +104,7 @@ Bundle Block, which has a fixed value of 0x06 (sections 4, 4.5.1 of {{BPv6}}).
 
 Encoding of {{BPv7}} bundles "SHALL be a concatenated sequence of at least
 two blocks, represented as a CBOR indefinite-length array..." (section 4.1 of
-{{BPv7}}).  Per {{!RFC8949}}, an indefinite-length array begins with the
+{{BPv7}}).  Per {{!CBOR=RFC8949}}, an indefinite-length array begins with the
 octet value 0x9f.
 
 All other first octet values indicate some other content.  Bundle Protocol
@@ -114,7 +117,7 @@ When transmitting a Bundle directly in the payload of an Ethernet frame
 a suitable destination MAC address must be selected.  Provisioning the
 sending Bundle node with the correct destination MAC address of the
 recipient Bundle node is out of scope for this document.  There is no
-Bundle Protocol equivalent of {{?ARP=RFC0826}} or {{?ND=RFC4861}}.
+Bundle Protocol equivalent of {{?ARP=RFC0826}} or {{?IPv6ND=RFC4861}}.
 
 It is possible for a sender to address all BP-over-Ethernet listeners
 within the broadcast domain should the destination Bundle Endpoint ID
@@ -173,6 +176,14 @@ TODO: Frame Check Sequence minimally meets the requirements to ensure
 Bundles are not corrupted in transmission.  more checks at other
 layers SHOULD be employed.
 
+## Filtering
+
+A common security paradigm is to "defaul deny" all traffic patterns that,
+broadly, do not conform to operator expectations.  In such environments it
+may be that this document's new EtherType needs to be added to an allowlist
+or otherwise explicitly permitted to be used on a given Ethernet segment
+before Bundles can be successfully delivered.
+
 # Security Considerations
 
 TODO Security
@@ -195,8 +206,10 @@ Ethernet (BPoE).
 ## Multicast MAC Address
 {: #multicast_mac}
 
-TODO: request a multicast MAC address representing "all Bundle Protocol over
-Ethernet capable stations" within the broadcast domain.
+In order to identify "all Bundle Protocol over Ethernet capable stations"
+within the broadcast domain, IANA is requested to allocate one 48-bit
+multicast MAC address, presumably from the 01‑00‑5E OUI.  The stated
+Usage is "Bundle Protocol over Ethernet" and the Reference is this document.
 
 --- back
 
