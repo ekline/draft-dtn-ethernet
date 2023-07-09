@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-07-06T01:54:31.111087+00:00",
+  "timestamp": "2023-07-09T02:00:59.048519+00:00",
   "repo": "ekline/draft-dtn-ethernet",
   "labels": [
     {
@@ -49,6 +49,31 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
+  "issues": [
+    {
+      "number": 1,
+      "id": "I_kwDOJwhRGM5q1pe4",
+      "title": "check no existing BP/LTP EtherTypes",
+      "url": "https://github.com/ekline/draft-dtn-ethernet/issues/1",
+      "state": "CLOSED",
+      "author": "ekline",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2023-07-06T23:17:19Z",
+      "updatedAt": "2023-07-06T23:24:27Z",
+      "closedAt": "2023-07-06T23:24:26Z",
+      "comments": [
+        {
+          "author": "ekline",
+          "authorAssociation": "OWNER",
+          "body": "The [IANA EtherTypes](https://www.iana.org/assignments/ieee-802-numbers/ieee-802-numbers.xhtml) page shows no evidence of an allocation for anything Bundle/BP/Licklider/LTP related.\r\n\r\nBouncing through [various IEEE](https://regauth.standards.ieee.org/standards-ra-web/pub/view.html#registries) pages lands on [this text file](https://[standards-oui.ieee.org/ethertype/eth.txt](https://standards-oui.ieee.org/ethertype/eth.txt), which seems to be an exhaustive list.  No evidence of an allocation for anything Bundle/BP/Licklider/LTP related here either.",
+          "createdAt": "2023-07-06T23:19:12Z",
+          "updatedAt": "2023-07-06T23:24:17Z"
+        }
+      ]
+    }
+  ],
   "pulls": []
 }
