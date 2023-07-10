@@ -1304,7 +1304,7 @@ over Ethernet receivers <span class="bcp14">MUST NOT</span> attempt to interpret
 and <span class="bcp14">SHOULD</span> log an error for administrator review.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="destination-mac-address">
+<div id="dstaddr">
 <section id="section-3.2">
         <h3 id="name-destination-mac-address">
 <a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-destination-mac-address" class="section-name selfRef">Destination MAC Address</a>
@@ -1395,7 +1395,8 @@ all".<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 <p id="section-4.3-2">Ethernet's Frame Check Sequence (FCS) minimally meets this requirement to
 ensure Bundles are not corrupted in transmission.  However, use of stronger
 integrity checks are <span class="bcp14">RECOMMENDED</span>, especially the integrity provided by use
-of Bundle Protocol Security (<span>[<a href="#BPv6Sec" class="cite xref">BPv6Sec</a>]</span> and <span>[<a href="#BPv7Sec" class="cite xref">BPv7Sec</a>]</span>).<a href="#section-4.3-2" class="pilcrow">¶</a></p>
+of Bundle Protocol Security (BPSec) (<span>[<a href="#BPv6Sec" class="cite xref">BPv6Sec</a>]</span> and
+<span>[<a href="#BPv7Sec" class="cite xref">BPv7Sec</a>]</span>).<a href="#section-4.3-2" class="pilcrow">¶</a></p>
 <p id="section-4.3-3">Note that for <span>[<a href="#BPv7" class="cite xref">BPv7</a>]</span> Bundles, inclusion of a CRC covering the Primary
 Block is mandatory (<span>[<a href="#BPv7" class="cite xref">BPv7</a>]</span> §4.3.1) whenever a Bundle Integrity Block
 (BIB) (<span>[<a href="#BPv7Sec" class="cite xref">BPv7Sec</a>]</span> §3.7) covering the Primary Block is not present.  There
@@ -1421,10 +1422,31 @@ before Bundles can be successfully delivered.<a href="#section-4.4-1" class="pil
       <h2 id="name-security-considerations">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-5-1">TODO Security<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">Bundles transmitted over any link may be subject to observation and alteration.
-Security must be applied to the bundle itself, either in the form of BPSec or
-at a layer below the transmission of bundles, e.g. 802.1AE MACsec.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-1">This specification describes the transmission of Bundles as payloads in
+Ethernet frames.  Without the use of Bundle Protocol Security (BPSec)
+(<span>[<a href="#BPv6Sec" class="cite xref">BPv6Sec</a>]</span> and <span>[<a href="#BPv7Sec" class="cite xref">BPv7Sec</a>]</span>) there are no integrity, confidentiality,
+nor authentication guarantees.  The CRC field available in <span>[<a href="#BPv7" class="cite xref">BPv7</a>]</span> blocks is
+not sufficient to maintain integrity when an attacker has the ability to modify
+frames in transit.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">How a sender is configured with the correct destination MAC address for delivery
+of any given Bundle is out of scope for this document (see <a href="#dstaddr" class="auto internal xref">3.2</a>).
+Relatedly, there is also no mechanism to configure receivers with knowledge of
+authorized sender source MAC addresses nor any in-scope mechanism to require
+restriction of source Bundle Endpoint IDs (EIDs) to specifc source MAC
+addresses.  These control and management plane issues are left to
+implementations, and to future work.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-3">Any attacker with access to the link, or with sufficient knowledge of local
+Bundle fordwarding configuration so as to inject Bundles and cause them to be
+sent to an Ethernet peer may overwhelm the receiver to the point of Denial of
+Service to any other legitimate onlink senders.<a href="#section-5-3" class="pilcrow">¶</a></p>
+<p id="section-5-4">IEEE standards include several security mechanisms that may be used in Ethernet
+networks.  Examples of recommended Ethernet-level security mechanisms
+include: IEEE 802.1X (TODO: reference),
+which may be used restrict access to the link to authorized participants, and
+IEEE 802.1AE (TODO: reference), which
+offers confidentiality of the entire Ethernet payload (even if BPSec provides
+integrity and confidentiality of a Bundle, several header fields are readily
+observable).<a href="#section-5-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
