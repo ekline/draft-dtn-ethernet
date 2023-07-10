@@ -1058,7 +1058,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Kline</td>
-<td class="center">Expires 10 January 2024</td>
+<td class="center">Expires 11 January 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1071,12 +1071,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ek-dtn-ethernet-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-07-09" class="published">9 July 2023</time>
+<time datetime="2023-07-10" class="published">10 July 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Experimental</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-01-10">10 January 2024</time></dd>
+<dd class="expires"><time datetime="2024-01-11">11 January 2024</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1129,7 +1129,7 @@ Ethernet parameters.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 10 January 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 11 January 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1244,7 +1244,7 @@ without higher layer Convergence Layer (CL) overhead.<a href="#section-1-1" clas
 limitations and operational considerations, and requests some dedicated
 Ethernet parameters.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">The mechanism described here acts like a datagram CL, specifically the
-BP over UDP CL documented in section 3.2.2 of <span>[<a href="#DGRAMCL" class="cite xref">DGRAMCL</a>]</span>,
+BP over UDP CL documented in §3.2.2 of <span>[<a href="#DGRAMCL" class="cite xref">DGRAMCL</a>]</span>,
 ableit suitable for use only among directly connected nodes
 (i.e. on-link communications only).<a href="#section-1-3" class="pilcrow">¶</a></p>
 <p id="section-1-4">While hypothetically applicable to a physical Ethernet LAN, it may find
@@ -1294,11 +1294,11 @@ be offset by overhead introduced if Bundle fragmentation is necessary
 Current Bundle Protocol versions are readily distinguishable by the first
 byte of the payload.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1-2">Encoding of <span>[<a href="#BPv6" class="cite xref">BPv6</a>]</span> bundles begins with the Version field of the Primary
-Bundle Block, which has a fixed value of 0x06 (sections 4, 4.5.1 of <span>[<a href="#BPv6" class="cite xref">BPv6</a>]</span>).<a href="#section-3.1-2" class="pilcrow">¶</a></p>
+Bundle Block, which has a fixed value of 0x06 (§4 and §4.5.1 of <span>[<a href="#BPv6" class="cite xref">BPv6</a>]</span>).<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 <p id="section-3.1-3">Encoding of <span>[<a href="#BPv7" class="cite xref">BPv7</a>]</span> bundles "<span class="bcp14">SHALL</span> be a concatenated sequence of at least
-two blocks, represented as a CBOR indefinite-length array..." (section 4.1 of
-<span>[<a href="#BPv7" class="cite xref">BPv7</a>]</span>).  Per <span>[<a href="#CBOR" class="cite xref">CBOR</a>]</span>, an indefinite-length array begins with the
-octet value 0x9f.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+two blocks, represented as a CBOR indefinite-length array..." (§4.1 of
+<span>[<a href="#BPv7" class="cite xref">BPv7</a>]</span>).  Per <span>[<a href="#CBOR" class="cite xref">CBOR</a>]</span>, an indefinite-length array begins with
+the octet value 0x9f.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
 <p id="section-3.1-4">All other first octet values indicate some other content.  Bundle Protocol
 over Ethernet receivers <span class="bcp14">MUST NOT</span> attempt to interpret such payloads as bundles
 and <span class="bcp14">SHOULD</span> log an error for administrator review.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
@@ -1316,7 +1316,7 @@ recipient Bundle node is out of scope for this document.  There is no
 Bundle Protocol equivalent of <span>[<a href="#ARP" class="cite xref">ARP</a>]</span> or <span>[<a href="#IPv6ND" class="cite xref">IPv6ND</a>]</span>.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 <p id="section-3.2-2">It is possible for a sender to address all BP-over-Ethernet listeners
 within the broadcast domain should the destination Bundle Endpoint ID
-refer to "all of a group of nodes" (sections 3.2 and 3.4
+refer to "all of a group of nodes" (§3.2 and §3.4
 of <span>[<a href="#ARCH" class="cite xref">ARCH</a>]</span>).  How a sending Bundle node determines when this
 is appropriate is out of scope of this document.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
 <p id="section-3.2-3">This document does not prohibit the use of the broadcast MAC address
@@ -1336,7 +1336,7 @@ multicast BP-over-Ethernet frames.<a href="#section-3.2-3" class="pilcrow">¶</a
 the local Ethernet MTU can be transmitted.  Consequently, the contents
 of the Ethernet payload <span class="bcp14">MUST</span> be a complete Bundle, employing Bundle
 fragmention at the sender as necessary
-(<span>[<a href="#BPv6" class="cite xref">BPv6</a>]</span> section 5.8, <span>[<a href="#BPv7" class="cite xref">BPv7</a>]</span> section 5.8).<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+(<span>[<a href="#BPv6" class="cite xref">BPv6</a>]</span> §5.8, <span>[<a href="#BPv7" class="cite xref">BPv7</a>]</span> §5.8).<a href="#section-3.3-1" class="pilcrow">¶</a></p>
 <p id="section-3.3-2">In practice the need for fragmentation may be reduced if the local
 Ethernet MTU can be increased beyond the typical 1500 bytes, e.g. by
 operator-configured use of "jumbo frames" or cloud management tuning of
@@ -1353,7 +1353,7 @@ to a given interface is out of scope of this document.<a href="#section-3.3-3" c
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-operational-considerations" class="section-name selfRef">Operational Considerations</a>
       </h2>
 <p id="section-4-1">Conceptually, this Ethernet Convergence Layer (ETHCL) is analogous to
-the BP over UDPCL in section 3.2.2 of <span>[<a href="#DGRAMCL" class="cite xref">DGRAMCL</a>]</span>, with many of the
+the BP over UDPCL in §3.2.2 of <span>[<a href="#DGRAMCL" class="cite xref">DGRAMCL</a>]</span>, with many of the
 same limitations and considerations.<a href="#section-4-1" class="pilcrow">¶</a></p>
 <div id="fragmentation">
 <section id="section-4.1">
@@ -1381,9 +1381,18 @@ exist but may not prevent the loss of Bundles.<a href="#section-4.2-1" class="pi
         <h3 id="name-checksums">
 <a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-checksums" class="section-name selfRef">Checksums</a>
         </h3>
-<p id="section-4.3-1">TODO: Frame Check Sequence minimally meets the requirements to ensure
-Bundles are not corrupted in transmission.  more checks at other
-layers <span class="bcp14">SHOULD</span> be employed.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.3-1">To reiterate the observation in §3.5 of <span>[<a href="#DGRAMCL" class="cite xref">DGRAMCL</a>]</span>, the Bundle
+Protocol specifications assume that Bundles "are transmitted over an erasure
+channel, i.e., a channel that either delivers packets correctly or not at
+all".<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.3-2">Ethernet's Frame Check Sequence (FCS) minimally meets this requirement to
+ensure Bundles are not corrupted in transmission.  However, use of stronger
+integrity checks are <span class="bcp14">RECOMMENDED</span>, especially the integrity provided by use
+of Bundle Protocol Security (<span>[<a href="#BPv6Sec" class="cite xref">BPv6Sec</a>]</span> and <span>[<a href="#BPv7Sec" class="cite xref">BPv7Sec</a>]</span>).<a href="#section-4.3-2" class="pilcrow">¶</a></p>
+<p id="section-4.3-3">Note that for <span>[<a href="#BPv7" class="cite xref">BPv7</a>]</span> Bundles, inclusion of a CRC covering the Primary
+Block is mandatory (<span>[<a href="#BPv7" class="cite xref">BPv7</a>]</span> §4.3.1) whenever a Bundle Integrity Block
+(BIB) (<span>[<a href="#BPv7Sec" class="cite xref">BPv7Sec</a>]</span> §3.7) covering the Primary Block is not present.  There
+is no analogous requirement for <span>[<a href="#BPv6" class="cite xref">BPv6</a>]</span> Bundles.<a href="#section-4.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="filtering">
@@ -1487,6 +1496,14 @@ Usage is "Bundle Protocol over Ethernet" and the Reference is this document.<a h
 <dt id="ARP">[ARP]</dt>
         <dd>
 <span class="refAuthor">Plummer, D.</span>, <span class="refTitle">"An Ethernet Address Resolution Protocol: Or Converting Network Protocol Addresses to 48.bit Ethernet Address for Transmission on Ethernet Hardware"</span>, <span class="seriesInfo">STD 37</span>, <span class="seriesInfo">RFC 826</span>, <span class="seriesInfo">DOI 10.17487/RFC0826</span>, <time datetime="1982-11" class="refDate">November 1982</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc826">https://www.rfc-editor.org/rfc/rfc826</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="BPv6Sec">[BPv6Sec]</dt>
+        <dd>
+<span class="refAuthor">Symington, S.</span>, <span class="refAuthor">Farrell, S.</span>, <span class="refAuthor">Weiss, H.</span>, and <span class="refAuthor">P. Lovell</span>, <span class="refTitle">"Bundle Security Protocol Specification"</span>, <span class="seriesInfo">RFC 6257</span>, <span class="seriesInfo">DOI 10.17487/RFC6257</span>, <time datetime="2011-05" class="refDate">May 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6257">https://www.rfc-editor.org/rfc/rfc6257</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="BPv7Sec">[BPv7Sec]</dt>
+        <dd>
+<span class="refAuthor">Birrane, III, E.</span> and <span class="refAuthor">K. McKeever</span>, <span class="refTitle">"Bundle Protocol Security (BPSec)"</span>, <span class="seriesInfo">RFC 9172</span>, <span class="seriesInfo">DOI 10.17487/RFC9172</span>, <time datetime="2022-01" class="refDate">January 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9172">https://www.rfc-editor.org/rfc/rfc9172</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="IPv6ND">[IPv6ND]</dt>
         <dd>
