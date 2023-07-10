@@ -1360,11 +1360,10 @@ same limitations and considerations.<a href="#section-4-1" class="pilcrow">¶</a
         <h3 id="name-fragmentation-and-reassembl">
 <a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-fragmentation-and-reassembl" class="section-name selfRef">Fragmentation and Reassembly</a>
         </h3>
-<p id="section-4.1-1">Transmission of Bundles exceeding the local Ethernet MTU <span class="bcp14">MUST</span> be
-fragmented by the sending node (<a href="#mtu" class="auto internal xref">3.3</a>).  If excessive fragmentation
-proves problematic, network operators may need to consider alternative
+<p id="section-4.1-1">Transmission of Bundles exceeding the transmitting interface's Ethernet MTU
+<span class="bcp14">MUST</span> be fragmented by the sending node (<a href="#mtu" class="auto internal xref">3.3</a>).  If excessive fragmentation
+proves problematic, network operators may need to consider alternate
 Convergence Layers.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.1-2">TODO: expound.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="congestion-control">
@@ -1372,8 +1371,16 @@ Convergence Layers.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
         <h3 id="name-congestion-control">
 <a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-congestion-control" class="section-name selfRef">Congestion Control</a>
         </h3>
-<p id="section-4.2-1">TODO: same as UDPCL: non-existent.  Ethernet flow control mechanisms
-exist but may not prevent the loss of Bundles.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-1">Just as with BP over UDPCL, there is no congestion control that can be relied
+upon with this Ethernet CL.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-2">Ethernet flow control mechanisms exist but, even if in use, they may not be
+sufficient to avoid significant loss of Bundles in all situations.
+Additionally, a Bundle Protocol Agent may not be able to easily determine
+whether any Ethernet-level flow control mechanism is available; at best it may
+only be able to infer excessive Bundle delivery failures from the absence of
+requested status report Bundles and adapt according to local policy.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.2-3">If congestion control is an operational concern, network operators should
+to consider alternate Convergence Layers.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="checksums">
@@ -1443,7 +1450,7 @@ Ethernet (BPoE).<a href="#section-6.1-1" class="pilcrow">¶</a></p>
         </h3>
 <p id="section-6.2-1">In order to identify "all Bundle Protocol over Ethernet capable stations"
 within the broadcast domain, IANA is requested to allocate one 48-bit
-multicast MAC address, presumably from the 01‑00‑5E OUI.  The stated
+multicast MAC address, presumably from the 01-00-5E OUI.  The stated
 Usage is "Bundle Protocol over Ethernet" and the Reference is this document.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1521,7 +1528,7 @@ Usage is "Bundle Protocol over Ethernet" and the Reference is this document.<a h
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-A-1">Thanks to Wes Eddy for advice and early reviews.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-1">Thanks to Wes Eddy for discussions, advice, and early reviews.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
