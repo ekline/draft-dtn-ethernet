@@ -158,17 +158,25 @@ same limitations and considerations.
 ## Fragmentation and Reassembly
 {: #fragmentation}
 
-Transmission of Bundles exceeding the local Ethernet MTU MUST be
-fragmented by the sending node ({{<mtu}}).  If excessive fragmentation
-proves problematic, network operators may need to consider alternative
+Transmission of Bundles exceeding the transmitting interface's Ethernet MTU
+MUST be fragmented by the sending node ({{<mtu}}).  If excessive fragmentation
+proves problematic, network operators may need to consider alternate
 Convergence Layers.
-
-TODO: expound.
 
 ## Congestion Control
 
-TODO: same as UDPCL: non-existent.  Ethernet flow control mechanisms
-exist but may not prevent the loss of Bundles.
+Just as with BP over UDPCL, there is no congestion control that can be relied
+upon with this Ethernet CL.
+
+Ethernet flow control mechanisms exist but, even if in use, they may not be
+sufficient to avoid significant loss of Bundles in all situations.
+Additionally, a Bundle Protocol Agent may not be able to easily determine
+whether any Ethernet-level flow control mechanism is available; at best it may
+only be able to infer excessive Bundle delivery failures from the absence of
+requested status report Bundles and adapt according to local policy.
+
+If congestion control is an operational concern, network operators should
+to consider alternate Convergence Layers.
 
 ## Checksums
 
@@ -219,7 +227,7 @@ Ethernet (BPoE).
 
 In order to identify "all Bundle Protocol over Ethernet capable stations"
 within the broadcast domain, IANA is requested to allocate one 48-bit
-multicast MAC address, presumably from the 01‑00‑5E OUI.  The stated
+multicast MAC address, presumably from the 01-00-5E OUI.  The stated
 Usage is "Bundle Protocol over Ethernet" and the Reference is this document.
 
 --- back
@@ -227,7 +235,7 @@ Usage is "Bundle Protocol over Ethernet" and the Reference is this document.
 # Acknowledgments
 {:numbered="false"}
 
-Thanks to Wes Eddy for advice and early reviews.
+Thanks to Wes Eddy for discussions, advice, and early reviews.
 
 --- fluff
 
