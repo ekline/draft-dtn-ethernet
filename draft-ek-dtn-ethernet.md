@@ -59,7 +59,7 @@ limitations and operational considerations, and requests some dedicated
 Ethernet parameters.
 
 The mechanism described here acts like a datagram CL, specifically the
-BP over UDP CL documented in section 3.2.2 of {{!DGRAMCL=RFC7122}},
+BP over UDP CL documented in §3.2.2 of {{!DGRAMCL=RFC7122}},
 ableit suitable for use only among directly connected nodes
 (i.e. on-link communications only).
 
@@ -100,12 +100,12 @@ Current Bundle Protocol versions are readily distinguishable by the first
 byte of the payload.
 
 Encoding of {{BPv6}} bundles begins with the Version field of the Primary
-Bundle Block, which has a fixed value of 0x06 (sections 4, 4.5.1 of {{BPv6}}).
+Bundle Block, which has a fixed value of 0x06 (§4 and §4.5.1 of {{BPv6}}).
 
 Encoding of {{BPv7}} bundles "SHALL be a concatenated sequence of at least
-two blocks, represented as a CBOR indefinite-length array..." (section 4.1 of
-{{BPv7}}).  Per {{!CBOR=RFC8949}}, an indefinite-length array begins with the
-octet value 0x9f.
+two blocks, represented as a CBOR indefinite-length array..." (§4.1 of
+{{BPv7}}).  Per {{!CBOR=RFC8949}}, an indefinite-length array begins with
+the octet value 0x9f.
 
 All other first octet values indicate some other content.  Bundle Protocol
 over Ethernet receivers MUST NOT attempt to interpret such payloads as bundles
@@ -121,7 +121,7 @@ Bundle Protocol equivalent of {{?ARP=RFC0826}} or {{?IPv6ND=RFC4861}}.
 
 It is possible for a sender to address all BP-over-Ethernet listeners
 within the broadcast domain should the destination Bundle Endpoint ID
-refer to "all of a group of nodes" (sections 3.2 and 3.4
+refer to "all of a group of nodes" (§3.2 and §3.4
 of {{!ARCH=RFC4838}}).  How a sending Bundle node determines when this
 is appropriate is out of scope of this document.
 
@@ -139,7 +139,7 @@ In the absence of Ethernet-layer fragmentation, no payload exceeding
 the local Ethernet MTU can be transmitted.  Consequently, the contents
 of the Ethernet payload MUST be a complete Bundle, employing Bundle
 fragmention at the sender as necessary
-({{!BPv6}} section 5.8, {{!BPv7}} section 5.8).
+({{!BPv6}} §5.8, {{!BPv7}} §5.8).
 
 In practice the need for fragmentation may be reduced if the local
 Ethernet MTU can be increased beyond the typical 1500 bytes, e.g. by
@@ -152,7 +152,7 @@ to a given interface is out of scope of this document.
 # Operational Considerations
 
 Conceptually, this Ethernet Convergence Layer (ETHCL) is analogous to
-the BP over UDPCL in section 3.2.2 of {{DGRAMCL}}, with many of the
+the BP over UDPCL in §3.2.2 of {{DGRAMCL}}, with many of the
 same limitations and considerations.
 
 ## Fragmentation and Reassembly
@@ -172,9 +172,20 @@ exist but may not prevent the loss of Bundles.
 
 ## Checksums
 
-TODO: Frame Check Sequence minimally meets the requirements to ensure
-Bundles are not corrupted in transmission.  more checks at other
-layers SHOULD be employed.
+To reiterate the observation in §3.5 of {{DGRAMCL}}, the Bundle
+Protocol specifications assume that Bundles "are transmitted over an erasure
+channel, i.e., a channel that either delivers packets correctly or not at
+all".
+
+Ethernet's Frame Check Sequence (FCS) minimally meets this requirement to
+ensure Bundles are not corrupted in transmission.  However, use of stronger
+integrity checks are RECOMMENDED, especially the integrity provided by use
+of Bundle Protocol Security ({{?BPv6Sec=RFC6257}} and {{?BPv7Sec=RFC9172}}).
+
+Note that for {{!BPv7}} Bundles, inclusion of a CRC covering the Primary
+Block is mandatory ({{BPv7}} §4.3.1) whenever a Bundle Integrity Block
+(BIB) ({{?BPv7Sec}} §3.7) covering the Primary Block is not present.  There
+is no analogous requirement for {{!BPv6}} Bundles.
 
 ## Filtering
 
