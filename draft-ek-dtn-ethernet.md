@@ -112,6 +112,7 @@ over Ethernet receivers MUST NOT attempt to interpret such payloads as bundles
 and SHOULD log an error for administrator review.
 
 ## Destination MAC Address
+{: #dstaddr}
 
 When transmitting a Bundle directly in the payload of an Ethernet frame
 a suitable destination MAC address must be selected.  Provisioning the
@@ -188,7 +189,8 @@ all".
 Ethernet's Frame Check Sequence (FCS) minimally meets this requirement to
 ensure Bundles are not corrupted in transmission.  However, use of stronger
 integrity checks are RECOMMENDED, especially the integrity provided by use
-of Bundle Protocol Security ({{?BPv6Sec=RFC6257}} and {{?BPv7Sec=RFC9172}}).
+of Bundle Protocol Security (BPSec) ({{?BPv6Sec=RFC6257}} and
+{{?BPv7Sec=RFC9172}}).
 
 Note that for {{!BPv7}} Bundles, inclusion of a CRC covering the Primary
 Block is mandatory ({{BPv7}} §4.3.1) whenever a Bundle Integrity Block
@@ -205,11 +207,34 @@ before Bundles can be successfully delivered.
 
 # Security Considerations
 
-TODO Security
+This specification describes the transmission of Bundles as payloads in
+Ethernet frames.  Without the use of Bundle Protocol Security (BPSec)
+({{BPv6Sec}} and {{BPv7Sec}}) there are no integrity, confidentiality,
+nor authentication guarantees.  The CRC field available in {{BPv7}} blocks is
+not sufficient to maintain integrity when an attacker has the ability to modify
+frames in transit.
 
-Bundles transmitted over any link may be subject to observation and alteration.
-Security must be applied to the bundle itself, either in the form of BPSec or
-at a layer below the transmission of bundles, e.g. 802.1AE MACsec.
+How a sender is configured with the correct destination MAC address for delivery
+of any given Bundle is out of scope for this document (see {{<dstaddr}}).
+Relatedly, there is also no mechanism to configure receivers with knowledge of
+authorized sender source MAC addresses nor any in-scope mechanism to require
+restriction of source Bundle Endpoint IDs (EIDs) to specifc source MAC
+addresses.  These control and management plane issues are left to
+implementations, and to future work.
+
+Any attacker with access to the link, or with sufficient knowledge of local
+Bundle fordwarding configuration so as to inject Bundles and cause them to be
+sent to an Ethernet peer may overwhelm the receiver to the point of Denial of
+Service to any other legitimate onlink senders.
+
+IEEE standards include several security mechanisms that may be used in Ethernet
+networks.  Examples of recommended Ethernet-level security mechanisms
+include: IEEE 802.1X (TODO: reference),
+which may be used restrict access to the link to authorized participants, and
+IEEE 802.1AE (TODO: reference), which
+offers confidentiality of the entire Ethernet payload (even if BPSec provides
+integrity and confidentiality of a Bundle, several header fields are readily
+observable).
 
 # IANA Considerations
 
