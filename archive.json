@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-07-27T01:19:15.459943+00:00",
+  "timestamp": "2023-07-30T01:24:37.034463+00:00",
   "repo": "ekline/draft-dtn-ethernet",
   "labels": [
     {
@@ -73,6 +73,22 @@
           "updatedAt": "2023-07-06T23:24:17Z"
         }
       ]
+    },
+    {
+      "number": 2,
+      "id": "I_kwDOJwhRGM5s6vB_",
+      "title": "process feedback from IETF 117 presentation",
+      "url": "https://github.com/ekline/draft-dtn-ethernet/issues/2",
+      "state": "OPEN",
+      "author": "ekline",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "IETF 117 presentation [start](https://youtu.be/y2HcKP6nya4?t=5184), [feedback](https://youtu.be/y2HcKP6nya4?t=5428)\r\n\r\nSome points raised:\r\n* review Encapsulation Packet Protocol [CCSDS 133.1-B-3](https://public.ccsds.org/Pubs/133x1b3e1.pdf)\r\n* review Unified Space Data Link Protocol [CCSDS 732.1-B-2](https://public.ccsds.org/Pubs/732x1b2.pdf)\r\n* _TBD: rewatch and take notes_",
+      "createdAt": "2023-07-29T06:04:53Z",
+      "updatedAt": "2023-07-29T06:04:53Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": []
