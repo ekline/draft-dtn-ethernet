@@ -4,20 +4,22 @@
 
 Delay/Disruption Tolerant Networking                            E. Kline
 Internet-Draft                                Aalyria Technologies, Inc.
-Intended status: Experimental                            9 February 2025
-Expires: 13 August 2025
+Intended status: Informational                         28 September 2025
+Expires: 1 April 2026
 
 
- Support for the Delay- and Disruption-Tolerant Networking (DTN) Bundle
-                 Protocol (BP) Datagrams over Ethernet
+    Assignment of Ethernet Parameters for Bundle Transfer Protocol -
+                  Unidirectional (BTP-U) over Ethernet
                       draft-ek-dtn-ethernet-latest
 
 Abstract
 
-   This memo describes a mechanism for the transmission of Bundle
-   Protocol (BP) Bundles over Ethernet links (BP-over-Ethernet),
-   describes limitations and operational considerations, and requests
-   some dedicated Ethernet parameters.
+   This memo requests Ethernet parameters for Bundle Transfer Protocol -
+   Unidirectional [BTP-U] for use on Ethernet and Ethernet-like links.
+   This is not intended to replace existing IP-based Convergence Layer
+   (CLs).  Rather this makes it possible to use Ethernet with BTP-U as a
+   CL in environments where Ethernet-like operation better matches the
+   network infrastructure or operational constraints.
 
 About This Document
 
@@ -51,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 August 2025.
+   This Internet-Draft will expire on 1 April 2026.
 
 Copyright Notice
 
@@ -70,163 +72,130 @@ Copyright Notice
 Table of Contents
 
    1.  Introduction
-   2.  Conventions and Definitions
-   3.  General Recommendation
-     3.1.  Bundle Protocol Versions
-     3.2.  Destination MAC Address
-     3.3.  MTU
+     1.1.  Congestion Control
+     1.2.  Relationship to Other Convergence Layers
+   2.  Assignment of an EtherType by IEEE
+   3.  IANA Considerations
+     3.1.  EtherType
+     3.2.  Multicast MAC Address
    4.  Operational Considerations
-     4.1.  Fragmentation and Reassembly
-     4.2.  Congestion Control
-     4.3.  Checksums
-     4.4.  Filtering
+     4.1.  Checksums
+     4.2.  Filtering
    5.  Security Considerations
-   6.  IANA Considerations
-     6.1.  EtherType
-     6.2.  Multicast MAC Address
-   7.  References
-     7.1.  Normative References
-     7.2.  Informative References
+   6.  References
+     6.1.  Normative References
+     6.2.  Informative References
    Acknowledgments
    Author's Address
 
 1.  Introduction
 
    When two Bundle nodes are connected by an Ethernet link, or by a
-   logical link that emulates Ethernet, it may be possible for a Bundle
-   Protocol Agent to transmit Bundles directly in the payload of an
-   Ethernet frame, without higher layer Convergence Layer (CL) overhead.
+   technology can emulate aspects of Ethernet, it may be possible for a
+   Bundle Protocol Agent to transmit Bundles in the payload of an
+   Ethernet frame without higher layer protocol Convergence Layer (CL)
+   overhead.  Examples of "Ethernet-like" Technologies include Digital
+   Video Broadcast Generic Stream Encapsulation ([DVB-GSE]).
 
-   This memo describes a mechanism for the transmission of Bundle
-   Protocol (BP) Bundles over Ethernet links (BP-over-Ethernet),
-   describes limitations and operational considerations, and requests
-   some dedicated Ethernet parameters.
-
-   The mechanism described here acts like a datagram CL, specifically
-   the BP over UDP CL documented in §3.2.2 of [DGRAMCL], ableit suitable
-   for use only among directly connected nodes (i.e. on-link
-   communications only).
+   This memo recommends use of Bundle Transfer Protocol - Unidirectional
+   [BTP-U] for this purpose and requests some Ethernet parameters to
+   support this, specifically: an EtherType for identifying frames
+   carrying BTP-U payloads (3.1}) and a Multicast MAC address, for
+   indicating the frame is addressed to all BTP-U capable receivers
+   (3.2).
 
    While hypothetically applicable to a physical Ethernet LAN, it may
    find more use within Virtual Private Cloud (VPC) networks, which
    allow novel software-define connectivity among a set of cooperating
-   Bundle processing cloud compute nodes (i.e. VMs).
+   Bundle processing cloud compute nodes (i.e. VMs).  Such deployments
+   can be useful for mission modeling, testbed activities, and may also
+   integrate well with some Ground-Station-as-a-Service (GSaas) network
+   infrastructure.
 
-2.  Conventions and Definitions
+1.1.  Congestion Control
 
-   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
-   "OPTIONAL" in this document are to be interpreted as described in
-   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
-   capitals, as shown here.
+   BTP-U lacks a congestion control mechanism and presumes the sending
+   rate is controlled by a lower layer or mechanism otherwise out of
+   scope for BTP-U.
 
-3.  General Recommendation
+   Ethernet flow control mechanisms exist but, even if in use, they may
+   not be sufficient to avoid significant loss of BTP-U frames in all
+   situations.  Additionally, a Bundle Protocol Agent may not be able to
+   easily determine whether any Ethernet-level flow control mechanism is
+   available.
 
-   Paraphrasing [DGRAMCL], in order to transmit Bundles ([BPv6], [BPv7])
-   across the Internet it is necessary to encapsulate them in a
-   Convergence Layer that utilizes one of the standard versions of the
-   Internet Protocols (e.g., [TCPCL]).
+   For deployments where congestion control cannot be managed by a
+   mechanism outside of BTP-U, network operators should to consider
+   alternate Convergence Layers.
 
-   When two Bundle nodes are directly connected via an Ethernet link,
-   however, it is possible for Bundle Protocol Agents to forego Internet
-   CL encapsulations and instead place Bundles directly in the payload
-   of an Ethernet frame.  Section 6.1 lists the IEEE-assigned EtherType
-   used to indicate the Ethernet payload is a [BPv6] or [BPv7] Bundle
-   (or Bundle fragment; section 3.3).
+1.2.  Relationship to Other Convergence Layers
 
-   This Ethernet Convergence Layer (ETHCL) avoids incurring the IP and
-   UDP header overhead (28 to 48 bytes, depending on Internet Protocol
-   version and assuming no other headers or options).  These savings
-   may, however, be offset by overhead introduced if Bundle
-   fragmentation is necessary (see sections 3.3 and 4.1).
+   This "Ethernet Convergence Layer" is not intended to replace IP-based
+   CLs where their use would be more appropriate.  While use of direct
+   encapsulation within an Ethernet frame avoids incurring some IP and
+   UDP/TCP header overhead (28 to 48 bytes, or more, depending on
+   Internet Protocol version and other options).  These savings,
+   however, are not the primary motivation.  Rather, some Bundle
+   Protocol deployments utilize links which may not have any operational
+   IP addressing or routing.
 
-3.1.  Bundle Protocol Versions
+   Convergence Layers like [TCPCL] and [DGRAMCL] have many useful
+   features and are recommended wherever deployable.  This may include
+   some links where only IPv6 Link-Local Addresses are available, though
+   how a Bundle Protocol Agent obtains the IPv6 Link-Local Address of a
+   peer is a deployment-specific matter.
 
-   A single EtherType suffices for both [BPv6] and [BPv7] payloads.
-   Current Bundle Protocol versions are readily distinguishable by the
-   first byte of the payload.
+2.  Assignment of an EtherType by IEEE
 
-   Encoding of [BPv6] bundles begins with the Version field of the
-   Primary Bundle Block, which has a fixed value of 0x06 (§4 and §4.5.1
-   of [BPv6]).
+   The IESG is requested to approve applying to the IEEE Registration
+   Authority for an EtherType for BTP-Y.  The IESG should communicate
+   its approval to IANA and to those concerned with this document.  IANA
+   will forward the IESG Approval to the registry expert of the
+   "EtherType" registry from the "IEEE 802 Numbers" registry group who
+   will make the application to the IEEE Registration Authority, keeping
+   IANA informed.
 
-   Encoding of [BPv7] bundles "SHALL be a concatenated sequence of at
-   least two blocks, represented as a CBOR indefinite-length array..."
-   (§4.1 of [BPv7]).  Per [CBOR], an indefinite-length array begins with
-   the octet value 0x9f.
+3.  IANA Considerations
 
-   All other first octet values indicate some other content.  Bundle
-   Protocol over Ethernet receivers MUST NOT attempt to interpret such
-   payloads as bundles and SHOULD log an error for administrator review.
+   Allocation of the following Ethernet parameters is requested.
 
-3.2.  Destination MAC Address
+3.1.  EtherType
 
-   When transmitting a Bundle directly in the payload of an Ethernet
-   frame a suitable destination MAC address must be selected.
-   Provisioning the sending Bundle node with the correct destination MAC
-   address of the recipient Bundle node is out of scope for this
-   document.  There is no Bundle Protocol equivalent of [ARP] or
-   [IPv6ND].
+   (if approved) The following entry has been added to the "ETHER TYPES"
+   subregistry of the "IEEE 802 Numbers" registry [IANA-IEEE802]:
 
-   It is possible for a sender to address all BP-over-Ethernet listeners
-   within the broadcast domain should the destination Bundle Endpoint ID
-   refer to "all of a group of nodes" (§3.2 and §3.4 of [ARCH]).  How a
-   sending Bundle node determines when this is appropriate is out of
-   scope of this document.
+   Ethertype (decimal): YYYY Ethertype (hex): YYYY Exp. Ethernet
+   (decimal): - Exp. Ethernet (octal): - Description: BTP-U payloads
+   References: RFC ZZZZ (this document)
 
-   This document does not prohibit the use of the broadcast MAC address
-   for this function, but section 6.2 requests the allocation of a
-   multicast MAC address to represent "all Bundle Protocol over Ethernet
-   capable stations" within a given Ethernet broadcast domain.  This may
-   help reduce the number of stations awakened by multicast BP-over-
-   Ethernet frames.
+3.2.  Multicast MAC Address
 
-3.3.  MTU
+   In order to identify "all Bundle Transfer Protocol - Unicast over
+   Ethernet capable receivers" within a broadcast domain, IANA is
+   requested to allocate one Multicast MAC address.
 
-   In the absence of Ethernet-layer fragmentation, no payload exceeding
-   the local Ethernet MTU can be transmitted.  Consequently, the
-   contents of the Ethernet payload MUST be a complete Bundle, employing
-   Bundle fragmention at the sender as necessary ([BPv6] §5.8, [BPv7]
-   §5.8).
+   Following the recommended format given as the EUI-48 Identifier
+   template in [RFC9542]:
 
-   In practice the need for fragmentation may be reduced if the local
-   Ethernet MTU can be increased beyond the typical 1500 bytes, e.g. by
-   operator-configured use of "jumbo frames" or cloud management tuning
-   of a virtual Ethernet network.
+   Applicant Name: IETF DTN Working Group
 
-   How a sending Bundle node learns the size of the local Ethernet MTU
-   connected to a given interface is out of scope of this document.
+   Applicant Email: dtn@ietf.org
+
+   Applicant Telephone: (none)
+
+   Use Name: Bundle Transfer Protocol - Unidirectional
+
+   Document: [BTP-U]
+
+   This memo is an application for one multicast EUI-48 identifier.
 
 4.  Operational Considerations
 
-   Conceptually, this Ethernet Convergence Layer (ETHCL) is analogous to
-   the BP over UDPCL in §3.2.2 of [DGRAMCL], with many of the same
-   limitations and considerations.
+   In addition to issue around congenstion control and lack of feedback
+   about excess sending rate noted above (1.1), some addition
+   operational considerations are noted below.
 
-4.1.  Fragmentation and Reassembly
-
-   Transmission of Bundles exceeding the transmitting interface's
-   Ethernet MTU MUST be fragmented by the sending node (3.3).  If
-   excessive fragmentation proves problematic, network operators may
-   need to consider alternate Convergence Layers.
-
-4.2.  Congestion Control
-
-   Just as with BP over UDPCL, there is no congestion control that can
-   be relied upon with this Ethernet CL.
-
-   Ethernet flow control mechanisms exist but, even if in use, they may
-   not be sufficient to avoid significant loss of Bundles in all
-   situations.  Additionally, a Bundle Protocol Agent may not be able to
-   easily determine whether any Ethernet-level flow control mechanism is
-   available; at best it may only be able to infer excessive Bundle
-   delivery failures from the absence of requested status report Bundles
-   and adapt according to local policy.
-
-   If congestion control is an operational concern, network operators
-   should to consider alternate Convergence Layers.
-
-4.3.  Checksums
+4.1.  Checksums
 
    To reiterate the observation in §3.5 of [DGRAMCL], the Bundle
    Protocol specifications assume that Bundles "are transmitted over an
@@ -234,17 +203,10 @@ Table of Contents
    correctly or not at all".
 
    Ethernet's Frame Check Sequence (FCS) minimally meets this
-   requirement to ensure Bundles are not corrupted in transmission.
-   However, use of stronger integrity checks are RECOMMENDED, especially
-   the integrity provided by use of Bundle Protocol Security (BPSec)
-   ([BPv6Sec] and [BPv7Sec]).
+   requirement to ensure Bundles are not corrupted in transmission.  Use
+   of stronger integrity checks are left to BTP-U.
 
-   Note that for [BPv7] Bundles, inclusion of a CRC covering the Primary
-   Block is mandatory ([BPv7] §4.3.1) whenever a Bundle Integrity Block
-   (BIB) ([BPv7Sec] §3.7) covering the Primary Block is not present.
-   There is no analogous requirement for [BPv6] Bundles.
-
-4.4.  Filtering
+4.2.  Filtering
 
    A common security paradigm is to "defaul deny" all traffic patterns
    that, broadly, do not conform to operator expectations.  In such
@@ -255,83 +217,36 @@ Table of Contents
 
 5.  Security Considerations
 
-   This specification describes the transmission of Bundles as payloads
-   in Ethernet frames.  Without the use of Bundle Protocol Security
-   (BPSec) ([BPv6Sec] and [BPv7Sec]) there are no integrity,
-   confidentiality, nor authentication guarantees.  The CRC field
-   available in [BPv7] blocks is not sufficient to maintain integrity
-   when an attacker has the ability to modify frames in transit.
+   This document requests assignment of an EtherType and Multicast MAC
+   address for BTP-U datagrams.  It has no incremental implications for
+   security beyond those in the relevant protocols.
 
-   How a sender is configured with the correct destination MAC address
-   for delivery of any given Bundle is out of scope for this document
-   (see 3.2).  Relatedly, there is also no mechanism to configure
-   receivers with knowledge of authorized sender source MAC addresses
-   nor any in-scope mechanism to require restriction of source Bundle
-   Endpoint IDs (EIDs) to specifc source MAC addresses.  These control
-   and management plane issues are left to implementations, and to
-   future work.
+   BTP-U assumes sending rate is controlled by a mechanism out of scope
+   for the protocol and has no builtin mechanism for identifying or
+   mitigating any congestion a sender might cause.  Use of this protocol
+   on some networks, a shared LAN segment for example, may cause a
+   Denial-of-Service by flooding Ethernet switches and stations.
 
    Any attacker with access to the link, or with sufficient knowledge of
-   local Bundle fordwarding configuration so as to inject Bundles and
-   cause them to be sent to an Ethernet peer may overwhelm the receiver
-   to the point of Denial of Service to any other legitimate onlink
-   senders.
+   local Bundle fordwarding configuration so as to inject BTP-U frames
+   and cause them to be sent to an Ethernet peer, may overwhelm the
+   receiver to the point of Denial of Service to other onlink senders.
 
    IEEE standards include several security mechanisms that may be used
    in Ethernet networks.  Examples of recommended Ethernet-level
-   security mechanisms include: IEEE 802.1X (TODO: reference), which may
-   be used restrict access to the link to authorized participants, and
-   IEEE 802.1AE (TODO: reference), which offers confidentiality of the
-   entire Ethernet payload (even if BPSec provides integrity and
-   confidentiality of a Bundle, several header fields are readily
-   observable).
+   security mechanisms a network might deploy include: IEEE 802.1X
+   (TODO: reference), which may be used restrict access to the link to
+   authorized participants, and IEEE 802.1AE (TODO: reference), which
+   would offers confidentiality of the entire BTP-U payload.
 
-6.  IANA Considerations
+6.  References
 
-   Allocation of the following Ethernet parameters is requested.
+6.1.  Normative References
 
-6.1.  EtherType
-
-   IANA is requested to work its IEEE liaison magic to request
-   allocation of an EtherType for this document's description of Bundle
-   Protocol over Ethernet (BPoE).
-
-6.2.  Multicast MAC Address
-
-   In order to identify "all Bundle Protocol over Ethernet capable
-   stations" within the broadcast domain, IANA is requested to allocate
-   one 48-bit multicast MAC address, presumably from the 01-00-5E OUI.
-   The stated Usage is "Bundle Protocol over Ethernet" and the Reference
-   is this document.
-
-7.  References
-
-7.1.  Normative References
-
-   [ARCH]     Cerf, V., Burleigh, S., Hooke, A., Torgerson, L., Durst,
-              R., Scott, K., Fall, K., and H. Weiss, "Delay-Tolerant
-              Networking Architecture", RFC 4838, DOI 10.17487/RFC4838,
-              April 2007, <https://www.rfc-editor.org/rfc/rfc4838>.
-
-   [BPv6]     Scott, K. and S. Burleigh, "Bundle Protocol
-              Specification", RFC 5050, DOI 10.17487/RFC5050, November
-              2007, <https://www.rfc-editor.org/rfc/rfc5050>.
-
-   [BPv7]     Burleigh, S., Fall, K., and E. Birrane, III, "Bundle
-              Protocol Version 7", RFC 9171, DOI 10.17487/RFC9171,
-              January 2022, <https://www.rfc-editor.org/rfc/rfc9171>.
-
-   [CBOR]     Bormann, C. and P. Hoffman, "Concise Binary Object
-              Representation (CBOR)", STD 94, RFC 8949,
-              DOI 10.17487/RFC8949, December 2020,
-              <https://www.rfc-editor.org/rfc/rfc8949>.
-
-   [DGRAMCL]  Kruse, H., Jero, S., and S. Ostermann, "Datagram
-              Convergence Layers for the Delay- and Disruption-Tolerant
-              Networking (DTN) Bundle Protocol and Licklider
-              Transmission Protocol (LTP)", RFC 7122,
-              DOI 10.17487/RFC7122, March 2014,
-              <https://www.rfc-editor.org/rfc/rfc7122>.
+   [BTP-U]    Taylor, R., "Bundle Transfer Protocol - Unidirectional",
+              Work in Progress, Internet-Draft, draft-ietf-dtn-btpu-00,
+              19 June 2025, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-dtn-btpu-00>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -342,27 +257,20 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-7.2.  Informative References
+6.2.  Informative References
 
-   [ARP]      Plummer, D., "An Ethernet Address Resolution Protocol: Or
-              Converting Network Protocol Addresses to 48.bit Ethernet
-              Address for Transmission on Ethernet Hardware", STD 37,
-              RFC 826, DOI 10.17487/RFC0826, November 1982,
-              <https://www.rfc-editor.org/rfc/rfc826>.
+   [DGRAMCL]  Kruse, H., Jero, S., and S. Ostermann, "Datagram
+              Convergence Layers for the Delay- and Disruption-Tolerant
+              Networking (DTN) Bundle Protocol and Licklider
+              Transmission Protocol (LTP)", RFC 7122,
+              DOI 10.17487/RFC7122, March 2014,
+              <https://www.rfc-editor.org/rfc/rfc7122>.
 
-   [BPv6Sec]  Symington, S., Farrell, S., Weiss, H., and P. Lovell,
-              "Bundle Security Protocol Specification", RFC 6257,
-              DOI 10.17487/RFC6257, May 2011,
-              <https://www.rfc-editor.org/rfc/rfc6257>.
-
-   [BPv7Sec]  Birrane, III, E. and K. McKeever, "Bundle Protocol
-              Security (BPSec)", RFC 9172, DOI 10.17487/RFC9172, January
-              2022, <https://www.rfc-editor.org/rfc/rfc9172>.
-
-   [IPv6ND]   Narten, T., Nordmark, E., Simpson, W., and H. Soliman,
-              "Neighbor Discovery for IP version 6 (IPv6)", RFC 4861,
-              DOI 10.17487/RFC4861, September 2007,
-              <https://www.rfc-editor.org/rfc/rfc4861>.
+   [RFC9542]  Eastlake 3rd, D., Abley, J., and Y. Li, "IANA
+              Considerations and IETF Protocol and Documentation Usage
+              for IEEE 802 Parameters", BCP 141, RFC 9542,
+              DOI 10.17487/RFC9542, April 2024,
+              <https://www.rfc-editor.org/rfc/rfc9542>.
 
    [TCPCL]    Sipos, B., Demmer, M., Ott, J., and S. Perreault, "Delay-
               Tolerant Networking TCP Convergence-Layer Protocol Version
@@ -371,10 +279,11 @@ Table of Contents
 
 Acknowledgments
 
-   Thanks to Wes Eddy for discussions, advice, and early reviews.
+   Thanks to Wes Eddy, and Rick Taylor for numerous discussions and
+   contributions.
 
 Author's Address
 
    Erik Kline
    Aalyria Technologies, Inc.
-   Email: ek@aalyria.com
+   Email: ek.ietf@gmail.com
