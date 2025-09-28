@@ -78,7 +78,7 @@ network infrastructure or operational constraints.
 # Introduction
 
 When two Bundle nodes are connected by an Ethernet link, or by a technology
-can emulate aspects of Ethernet, it may be possible for a Bundle Protocol
+that emulates Ethernet, it may be possible for a Bundle Protocol
 Agent to transmit Bundles in the payload of an Ethernet frame without
 higher layer protocol Convergence Layer (CL) overhead.  Examples of
 "Ethernet-like" Technologies include Digital Video Broadcast Generic
@@ -91,16 +91,20 @@ links.
 
 This memo recommends use of Bundle Transfer Protocol - Unidirectional
 [BTP-U] for this purpose and requests some Ethernet parameters to support
-this, specifically: an EtherType for identifying frames carrying BTP-U
-payloads ({{<ethertype}}}) and a Multicast MAC address, for indicating the
-frame is addressed to all BTP-U capable receivers ({{<multicast_mac}}).
+this.
+Specifically, it requests:
+an EtherType for identifying frames carrying BTP-U payloads
+({{<ethertype}}})
+and
+a Multicast MAC address, for indicating the frame is addressed to all BTP-U
+capable receivers ({{<multicast_mac}}).
 
-While hypothetically applicable to a physical Ethernet LAN, it may find
-more use within Virtual Private Cloud (VPC) networks, which allow novel
+While hypothetically applicable to a physical Ethernet LAN, it may be better
+utilized within Virtual Private Cloud (VPC) networks, which allow novel
 software-define connectivity among a set of cooperating Bundle processing
 cloud compute nodes (i.e. VMs).  Such deployments can be useful for mission
 modeling, testbed activities, and may also integrate well with some
-Ground-Station-as-a-Service (GSaas) network infrastructure.
+Ground-Station-as-a-Service (GSaaS) network infrastructure.
 
 ## Congestion Control
 {: #cc}
@@ -209,9 +213,9 @@ checks are left to BTP-U.
 
 A common security paradigm is to "defaul deny" all traffic patterns that,
 broadly, do not conform to operator expectations.  In such environments it
-may be that this document's new EtherType needs to be added to an allowlist
+may be that the BTP-U EtherType needs to be added to an allowlist
 or otherwise explicitly permitted to be used on a given Ethernet segment
-before Bundles can be successfully delivered.
+before BTP-U messages can be successfully delivered.
 
 # Security Considerations
 
@@ -219,8 +223,8 @@ This document requests assignment of an EtherType and Multicast MAC address
 for BTP-U datagrams.  It has no incremental implications for security
 beyond those in the relevant protocols.
 
-BTP-U assumes sending rate is controlled by a mechanism out of scope for the
-protocol and has no builtin mechanism for identifying or mitigating any
+BTP-U assumes the sending rate is controlled by a mechanism out of scope for
+the protocol and has no builtin mechanism for identifying or mitigating any
 congestion a sender might cause. Use of this protocol on some networks,
 a shared LAN segment for example, may cause a Denial-of-Service by
 flooding Ethernet switches and stations.
