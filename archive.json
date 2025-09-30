@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-09-28T01:58:05.061886+00:00",
+  "timestamp": "2025-09-30T01:46:37.215090+00:00",
   "repo": "ekline/draft-dtn-ethernet",
   "labels": [
     {
@@ -105,24 +105,54 @@
       "id": "PR_kwDOJwhRGM6q4yO8",
       "title": "rework for BTP-U",
       "url": "https://github.com/ekline/draft-dtn-ethernet/pull/3",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "ekline",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2025-09-28T01:37:31Z",
-      "updatedAt": "2025-09-28T01:57:03Z",
+      "updatedAt": "2025-09-28T01:58:39Z",
       "baseRepository": "ekline/draft-dtn-ethernet",
       "baseRefName": "main",
       "baseRefOid": "493bebb30fc37ece6ce9ef492043398ce0c2e723",
       "headRepository": "ekline/draft-dtn-ethernet",
       "headRefName": "ek_rev01",
       "headRefOid": "1ece63b0f4516d89bc340a972789453f899154ed",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2025-09-28T01:58:39Z",
+      "mergedAt": "2025-09-28T01:58:39Z",
+      "mergedBy": "ekline",
+      "mergeCommit": {
+        "oid": "101f8625201daaeadf7471cef0cfcb2eac1607db"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 4,
+      "id": "PR_kwDOJwhRGM6q43N_",
+      "title": "A few more tweaks and some rewording",
+      "url": "https://github.com/ekline/draft-dtn-ethernet/pull/4",
+      "state": "MERGED",
+      "author": "ekline",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-09-28T02:07:07Z",
+      "updatedAt": "2025-09-28T02:09:29Z",
+      "baseRepository": "ekline/draft-dtn-ethernet",
+      "baseRefName": "main",
+      "baseRefOid": "101f8625201daaeadf7471cef0cfcb2eac1607db",
+      "headRepository": "ekline/draft-dtn-ethernet",
+      "headRefName": "ek_rev01",
+      "headRefOid": "76e7843abdb054f925f8e86800f42eef599fa651",
+      "closedAt": "2025-09-28T02:09:29Z",
+      "mergedAt": "2025-09-28T02:09:29Z",
+      "mergedBy": "ekline",
+      "mergeCommit": {
+        "oid": "c7108bd1dfb2d962f799b92029e3905414645199"
+      },
       "comments": [],
       "reviews": []
     }
