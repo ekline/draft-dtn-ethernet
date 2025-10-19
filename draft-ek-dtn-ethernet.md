@@ -93,11 +93,9 @@ This memo recommends use of Bundle Transfer Protocol - Unidirectional
 [BTP-U] for this purpose and requests some Ethernet parameters to support
 this.
 Specifically, it requests:
-an EtherType for identifying frames carrying BTP-U payloads
-({{<ethertype}}})
-and
-a Multicast MAC address, for indicating the frame is addressed to all BTP-U
-capable receivers ({{<multicast_mac}}).
+an EtherType for identifying frames carrying BTP-U payloads ({{<ethertype}})
+and a multicast MAC address, for indicating the frame is addressed to all
+BTP-U capable receivers ({{<multicast_mac}}).
 
 While hypothetically applicable to a physical Ethernet LAN, it may be better
 utilized within Virtual Private Cloud (VPC) networks, which allow novel
@@ -132,7 +130,7 @@ Rather, some Bundle Protocol deployments utilize links which may not have
 any operational IP addressing or routing.
 
 Convergence Layers like {{TCPCL}} and {{DGRAMCL}} have many useful features
-and are recommended wherever deployable.  This may include some links
+and remain recommended wherever deployable.  This may include some links
 where only IPv6 Link-Local Addresses are available, though how a Bundle
 Protocol Agent obtains the IPv6 Link-Local Address of a peer is a
 deployment-specific matter.
@@ -211,7 +209,7 @@ checks are left to BTP-U.
 
 ## Filtering
 
-A common security paradigm is to "defaul deny" all traffic patterns that,
+A common security paradigm is to "default deny" all traffic patterns that,
 broadly, do not conform to operator expectations.  In such environments it
 may be that the BTP-U EtherType needs to be added to an allowlist
 or otherwise explicitly permitted to be used on a given Ethernet segment
