@@ -4,8 +4,8 @@
 
 Delay/Disruption Tolerant Networking                            E. Kline
 Internet-Draft                                Aalyria Technologies, Inc.
-Intended status: Informational                         28 September 2025
-Expires: 1 April 2026
+Intended status: Informational                           19 October 2025
+Expires: 22 April 2026
 
 
     Assignment of Ethernet Parameters for Bundle Transfer Protocol -
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 1 April 2026.
+   This Internet-Draft will expire on 22 April 2026.
 
 Copyright Notice
 
@@ -100,7 +100,7 @@ Table of Contents
    This memo recommends use of Bundle Transfer Protocol - Unidirectional
    [BTP-U] for this purpose and requests some Ethernet parameters to
    support this.  Specifically, it requests: an EtherType for
-   identifying frames carrying BTP-U payloads (3.1}) and a Multicast MAC
+   identifying frames carrying BTP-U payloads (3.1) and a multicast MAC
    address, for indicating the frame is addressed to all BTP-U capable
    receivers (3.2).
 
@@ -140,10 +140,10 @@ Table of Contents
    IP addressing or routing.
 
    Convergence Layers like [TCPCL] and [DGRAMCL] have many useful
-   features and are recommended wherever deployable.  This may include
-   some links where only IPv6 Link-Local Addresses are available, though
-   how a Bundle Protocol Agent obtains the IPv6 Link-Local Address of a
-   peer is a deployment-specific matter.
+   features and remain recommended wherever deployable.  This may
+   include some links where only IPv6 Link-Local Addresses are
+   available, though how a Bundle Protocol Agent obtains the IPv6 Link-
+   Local Address of a peer is a deployment-specific matter.
 
 2.  Assignment of an EtherType by IEEE
 
@@ -208,7 +208,7 @@ Table of Contents
 
 4.2.  Filtering
 
-   A common security paradigm is to "defaul deny" all traffic patterns
+   A common security paradigm is to "default deny" all traffic patterns
    that, broadly, do not conform to operator expectations.  In such
    environments it may be that the BTP-U EtherType needs to be added to
    an allowlist or otherwise explicitly permitted to be used on a given
