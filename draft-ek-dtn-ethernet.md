@@ -126,9 +126,9 @@ For deployments where congestion control cannot be managed by a mechanism
 outside of BTP-U, network operators must consider alternate
 Convergence Layers.
 
-## Relationship to Other Convergence Layers
+## Relationship to IP-based Convergence Layers
 
-This "Ethernet Convergence Layer" is not intended to replace IP-based CLs
+This Ethernet Convergence Layer is not intended to replace IP-based CLs
 where their use would be more appropriate. While use of direct encapsulation
 within an Ethernet frame avoids incurring some IP and UDP/TCP header
 overhead (28 to 48 bytes, or more, depending on Internet Protocol version
@@ -281,7 +281,7 @@ a shared LAN segment for example, may cause a Denial-of-Service by
 flooding Ethernet switches and stations.
 
 Any attacker with access to the link, or with sufficient knowledge of local
-Bundle fordwarding configuration so as to inject BTP-U frames and cause them
+Bundle forwarding configuration so as to inject BTP-U frames and cause them
 to be sent to an Ethernet peer, may overwhelm the receiver to the point of
 Denial of Service to other onlink senders.
 
