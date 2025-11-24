@@ -73,7 +73,7 @@ Table of Contents
 
    1.  Introduction
      1.1.  Congestion Control
-     1.2.  Relationship to Other Convergence Layers
+     1.2.  Relationship to IP-based Convergence Layers
    2.  Assignment of an EtherType by IEEE
    3.  IANA Considerations
      3.1.  EtherType
@@ -131,9 +131,9 @@ Table of Contents
    mechanism outside of BTP-U, network operators must consider alternate
    Convergence Layers.
 
-1.2.  Relationship to Other Convergence Layers
+1.2.  Relationship to IP-based Convergence Layers
 
-   This "Ethernet Convergence Layer" is not intended to replace IP-based
+   This Ethernet Convergence Layer is not intended to replace IP-based
    CLs where their use would be more appropriate.  While use of direct
    encapsulation within an Ethernet frame avoids incurring some IP and
    UDP/TCP header overhead (28 to 48 bytes, or more, depending on
@@ -277,7 +277,7 @@ Table of Contents
    cause a Denial-of-Service by flooding Ethernet switches and stations.
 
    Any attacker with access to the link, or with sufficient knowledge of
-   local Bundle fordwarding configuration so as to inject BTP-U frames
+   local Bundle forwarding configuration so as to inject BTP-U frames
    and cause them to be sent to an Ethernet peer, may overwhelm the
    receiver to the point of Denial of Service to other onlink senders.
 

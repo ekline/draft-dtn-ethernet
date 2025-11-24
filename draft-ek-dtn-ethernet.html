@@ -1167,7 +1167,7 @@ network infrastructure or operational constraints.<a href="#section-abstract-1" 
                 <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="auto internal xref">1.1</a>.  <a href="#name-congestion-control" class="internal xref">Congestion Control</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.2">
-                <p id="section-toc.1-1.1.2.2.1" class="keepWithNext"><a href="#section-1.2" class="auto internal xref">1.2</a>.  <a href="#name-relationship-to-other-conve" class="internal xref">Relationship to Other Convergence Layers</a></p>
+                <p id="section-toc.1-1.1.2.2.1" class="keepWithNext"><a href="#section-1.2" class="auto internal xref">1.2</a>.  <a href="#name-relationship-to-ip-based-co" class="internal xref">Relationship to IP-based Convergence Layers</a></p>
 </li>
             </ul>
 </li>
@@ -1269,12 +1269,12 @@ outside of BTP-U, network operators must consider alternate
 Convergence Layers.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="relationship-to-other-convergence-layers">
+<div id="relationship-to-ip-based-convergence-layers">
 <section id="section-1.2">
-        <h3 id="name-relationship-to-other-conve">
-<a href="#section-1.2" class="section-number selfRef">1.2. </a><a href="#name-relationship-to-other-conve" class="section-name selfRef">Relationship to Other Convergence Layers</a>
+        <h3 id="name-relationship-to-ip-based-co">
+<a href="#section-1.2" class="section-number selfRef">1.2. </a><a href="#name-relationship-to-ip-based-co" class="section-name selfRef">Relationship to IP-based Convergence Layers</a>
         </h3>
-<p id="section-1.2-1">This "Ethernet Convergence Layer" is not intended to replace IP-based CLs
+<p id="section-1.2-1">This Ethernet Convergence Layer is not intended to replace IP-based CLs
 where their use would be more appropriate. While use of direct encapsulation
 within an Ethernet frame avoids incurring some IP and UDP/TCP header
 overhead (28 to 48 bytes, or more, depending on Internet Protocol version
@@ -1451,7 +1451,7 @@ congestion a sender might cause. Use of this protocol on some networks,
 a shared LAN segment for example, may cause a Denial-of-Service by
 flooding Ethernet switches and stations.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <p id="section-5-3">Any attacker with access to the link, or with sufficient knowledge of local
-Bundle fordwarding configuration so as to inject BTP-U frames and cause them
+Bundle forwarding configuration so as to inject BTP-U frames and cause them
 to be sent to an Ethernet peer, may overwhelm the receiver to the point of
 Denial of Service to other onlink senders.<a href="#section-5-3" class="pilcrow">¶</a></p>
 <p id="section-5-4">IEEE standards include several security mechanisms that may be used in
