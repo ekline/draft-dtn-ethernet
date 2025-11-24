@@ -80,7 +80,8 @@ Table of Contents
      3.2.  Multicast MAC Address
    4.  Operational Considerations
      4.1.  Checksums
-     4.2.  Filtering
+     4.2.  MTU and Jumbo Frames
+     4.3.  Filtering
    5.  Security Considerations
    6.  References
      6.1.  Normative References
@@ -206,7 +207,24 @@ Table of Contents
    requirement to ensure Bundles are not corrupted in transmission.  Use
    of stronger integrity checks are left to BTP-U.
 
-4.2.  Filtering
+4.2.  MTU and Jumbo Frames
+
+   Implementations must support transmission and reception of frames
+   with payload sizes up to 1500 octets (standard Ethernet MTU minus
+   Ethernet header), as required by [IEEE802dot3].  Implementations may
+   support jumbo frames with payload sizes up to 9000 octets or larger,
+   but should only enable this capability when explicitly configured by
+   operators who have verified that the network path supports the larger
+   frame size.
+
+   MTU mismatches in Ethernet networks result in frame drops, and
+   [BTP-U] does not have any mechanism to probe for Path MTU.
+   Implementations may use Ethernet-specific protocols, like Link Layer
+   Discovery Protocol (LLDP), to discover supported frame sizes on
+   directly connected links, but should default to conservative MTU
+   values (1500 octets).
+
+4.3.  Filtering
 
    A common security paradigm is to "default deny" all traffic patterns
    that, broadly, do not conform to operator expectations.  In such
@@ -242,11 +260,6 @@ Table of Contents
 
 6.1.  Normative References
 
-   [BTP-U]    Taylor, R., "Bundle Transfer Protocol - Unidirectional",
-              Work in Progress, Internet-Draft, draft-ietf-dtn-btpu-01,
-              5 November 2025, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-dtn-btpu-01>.
-
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -257,6 +270,11 @@ Table of Contents
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
 6.2.  Informative References
+
+   [BTP-U]    Taylor, R., "Bundle Transfer Protocol - Unidirectional",
+              Work in Progress, Internet-Draft, draft-ietf-dtn-btpu-01,
+              5 November 2025, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-dtn-btpu-01>.
 
    [DGRAMCL]  Kruse, H., Jero, S., and S. Ostermann, "Datagram
               Convergence Layers for the Delay- and Disruption-Tolerant
@@ -278,8 +296,8 @@ Table of Contents
 
 Acknowledgments
 
-   Thanks to Wes Eddy, and Rick Taylor for numerous discussions and
-   contributions.
+   Thanks to Wes Eddy, Jeorg Ott, Brian Sipos, and Rick Taylor for
+   numerous discussions and contributions.
 
 Author's Address
 
