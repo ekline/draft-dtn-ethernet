@@ -116,7 +116,7 @@ Additionally, a Bundle Protocol Agent may not be able to easily determine
 whether any Ethernet-level flow control mechanism is available.
 
 For deployments where congestion control cannot be managed by a mechanism
-outside of BTP-U, network operators should to consider alternate
+outside of BTP-U, network operators must consider alternate
 Convergence Layers.
 
 ## Relationship to Other Convergence Layers
