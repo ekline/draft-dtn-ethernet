@@ -80,9 +80,10 @@ Table of Contents
      3.2.  Multicast MAC Address
    4.  Operational Considerations
      4.1.  Checksums
-     4.2.  MTU and Jumbo Frames
-     4.3.  Fragmentation and Segmentation
-     4.4.  Filtering
+     4.2.  BTP-U Channels
+     4.3.  MTU and Jumbo Frames
+     4.4.  Fragmentation and Segmentation
+     4.5.  Filtering
    5.  Security Considerations
    6.  References
      6.1.  Normative References
@@ -208,7 +209,24 @@ Table of Contents
    requirement to ensure Bundles are not corrupted in transmission.  Use
    of stronger integrity checks are left to BTP-U.
 
-4.2.  MTU and Jumbo Frames
+4.2.  BTP-U Channels
+
+   All [BTP-U] Transfers are implicitly scoped to a "virtual channel"
+   within which a given Transfer Number is unique (modulo 32-bit roll-
+   over).  In the case of an Ethernet frame containing the EtherType
+   value given in 3.1, the virtual channel is identified by the
+   combination of the Source MAC address, Destination MAC address, and
+   optional C-VLAN ID (if present).
+
+   Other Ethernet-like link-layer protocols must define the combination
+   of elements that identify a virtual channel whenever specifying use
+   of this EtherType 3.1.  In principle this would comprise a source
+   identifier, a destination identifer, and any additional elements or
+   extensions specific to the given protocol that distinguish one
+   logical link-layer "channel" from another.  The exact details are out
+   of scope of this document.
+
+4.3.  MTU and Jumbo Frames
 
    Implementations must support transmission and reception of frames
    with payload sizes up to 1500 octets (standard Ethernet MTU minus
@@ -225,7 +243,7 @@ Table of Contents
    directly connected links, but should default to conservative MTU
    values (1500 octets).
 
-4.3.  Fragmentation and Segmentation
+4.4.  Fragmentation and Segmentation
 
    When transmitting Bundles that exceed the Ethernet CL's MTU, a BP
    agent must decide how to break up a Bundle into multiple
@@ -238,7 +256,7 @@ Table of Contents
    exceed the Ethernet MTU.  For this reason, [BTP-U] Segmentation is
    recommended.
 
-4.4.  Filtering
+4.5.  Filtering
 
    A common security paradigm is to "default deny" all traffic patterns
    that, broadly, do not conform to operator expectations.  In such
