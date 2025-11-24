@@ -214,20 +214,22 @@ Ethernet's Frame Check Sequence (FCS) minimally meets this requirement to
 ensure Bundles are not corrupted in transmission.  Use of stronger integrity
 checks are left to BTP-U.
 
-<!--
-## Session Identification
+## BTP-U Channels
 
-given a datagram in which the BTP-U Ethertype address appears, a session
-is identified by the logical source and destination associated with that
-datagram.  In the case of an Ethernet frame, the Source MAC, Destination
-MAC, and optional C-VLAN ID (if present) comprise the identification of
-a unique Convergence Layer session.
+All {{BTP-U}} Transfers are implicitly scoped to a "virtual channel"
+within which a given Transfer Number is unique (modulo 32-bit roll-over).
+In the case of an Ethernet frame containing the EtherType value given in
+{{<ethertype}}, the virtual channel is identified by the combination of
+the Source MAC address, Destination MAC address, and optional C-VLAN ID
+(if present).
 
-Other situations in which an Ethertype might appear are out of scope of
-this document.  Nevertheless, a CL session is conceptually uniquely
-identified by the session-identifying attributes of the context in which
-the Ethernet type appears. For example: GRE (1701)...
--->
+Other Ethernet-like link-layer protocols must define the combination of
+elements that identify a virtual channel whenever specifying use of
+this EtherType {{<ethertype}}.
+In principle this would comprise a source identifier, a destination
+identifer, and any additional elements or extensions specific to the given
+protocol that distinguish one logical link-layer "channel" from another.
+The exact details are out of scope of this document.
 
 ## MTU and Jumbo Frames
 
