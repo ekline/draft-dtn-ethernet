@@ -36,6 +36,7 @@ author:
     email: ek.ietf@gmail.com
 
 normative:
+informative:
   BTP-U: I-D.ietf-dtn-btpu
 #  IANA-IEEE802:
 #    author:
@@ -50,7 +51,6 @@ normative:
 #    title: "EtherType"
 #    target: http://standards-oui.ieee.org/ethertype/eth.txt
 
-informative:
 #  DVB-GSE:
 #    author:
 #     -
@@ -60,6 +60,12 @@ informative:
   DGRAMCL: RFC7122
   TCPCL: RFC9174
   RFC9542:
+#  IEEE802dot3:
+#    author:
+#      -
+#        org: IEEE
+#    title: "IEEE Standard for Ethernet, IEEE Std 802.3-2018 (or latest edition)"
+#    target: https://standards.ieee.org/standard/802_3-2018.html
 
 --- abstract
 
@@ -207,6 +213,44 @@ Ethernet's Frame Check Sequence (FCS) minimally meets this requirement to
 ensure Bundles are not corrupted in transmission.  Use of stronger integrity
 checks are left to BTP-U.
 
+<!--
+## Session Identification
+
+given a datagram in which the BTP-U Ethertype address appears, a session
+is identified by the logical source and destination associated with that
+datagram.  In the case of an Ethernet frame, the Source MAC, Destination
+MAC, and optional C-VLAN ID (if present) comprise the identification of
+a unique Convergence Layer session.
+
+Other situations in which an Ethertype might appear are out of scope of
+this document.  Nevertheless, a CL session is conceptually uniquely
+identified by the session-identifying attributes of the context in which
+the Ethernet type appears. For example: GRE (1701)...
+-->
+
+## MTU and Jumbo Frames
+
+Implementations must support transmission and reception of frames with
+payload sizes up to 1500 octets (standard Ethernet MTU minus Ethernet
+header), as required by [IEEE802dot3].
+Implementations may support jumbo frames with payload sizes up to 9000
+octets or larger, but should only enable this capability when explicitly
+configured by operators who have verified that the network path supports
+the larger frame size.
+
+MTU mismatches in Ethernet networks result in frame drops,
+and {{BTP-U}} does not have any mechanism to probe for Path MTU.
+Implementations may use Ethernet-specific protocols, like
+Link Layer Discovery Protocol (LLDP),
+to discover supported frame sizes on directly connected links, but should
+default to conservative MTU values (1500 octets).
+
+<!--
+## Fragmentation and Segmentation
+how and when BTP-U should segment
+segmentation vs BP fragmentation
+-->
+
 ## Filtering
 
 A common security paradigm is to "default deny" all traffic patterns that,
@@ -246,14 +290,9 @@ the entire BTP-U payload.
 
 Thanks to
 Wes Eddy,
+Jeorg Ott,
+Brian Sipos,
 and
 Rick Taylor
 for numerous discussions and contributions.
 
---- fluff
-
-# check for existing EtherType allocations for BP/LTP
-
-[Issue 1](https://github.com/ekline/draft-dtn-ethernet/issues/1) records
-the links checked (IANA and IEEE) and the absence of any clear
-allocation specifically for use by BP/LTP.
