@@ -37,6 +37,7 @@ author:
 
 normative:
 informative:
+  BPv7: RFC9171
   BTP-U: I-D.ietf-dtn-btpu
 #  IANA-IEEE802:
 #    author:
@@ -245,11 +246,17 @@ Link Layer Discovery Protocol (LLDP),
 to discover supported frame sizes on directly connected links, but should
 default to conservative MTU values (1500 octets).
 
-<!--
 ## Fragmentation and Segmentation
-how and when BTP-U should segment
-segmentation vs BP fragmentation
--->
+
+When transmitting Bundles that exceed the Ethernet CL's MTU, a BP agent
+must decide how to break up a Bundle into multiple transmissible frames.
+Both {{BPv7}} Fragmentation and {{BTP-U}} Segmentation may be viable
+options.  However, Bundle Fragmentation may not always result in a
+transmissible frame: Bundle Processing Control Flags may prohibit
+fragmentation, and Block Processing Control Flags may require extension
+blocks to be replicated with every fragment, either of which may result
+in Bundle Fragments that exceed the Ethernet MTU.
+For this reason, {{BTP-U}} Segmentation is recommended.
 
 ## Filtering
 
