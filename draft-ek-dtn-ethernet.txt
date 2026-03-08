@@ -72,25 +72,26 @@ Copyright Notice
 Table of Contents
 
    1.  Introduction
-     1.1.  Congestion Control
-     1.2.  Relationship to IP-based Convergence Layers
-   2.  Conventions and Definitions
-   3.  Assignment of an EtherType by IEEE
-   4.  IANA Considerations
-     4.1.  EtherType
-     4.2.  Multicast MAC Address
-   5.  Operational Considerations
-     5.1.  Checksums
-     5.2.  BTP-U Virtual Channels
-     5.3.  MTU and Jumbo Frames
-     5.4.  Fragmentation and Segmentation
-   6.  Security Considerations
-     6.1.  Denial of Service
-     6.2.  Link-layer Security
-     6.3.  Filtering
-   7.  References
-     7.1.  Normative References
-     7.2.  Informative References
+   2.  Applicability and Limitations
+     2.1.  BTP-U Protocol Compliance
+     2.2.  Congestion Control
+     2.3.  Relationship to IP-based Convergence Layers
+   3.  Conventions and Definitions
+   4.  Assignment of an EtherType by IEEE
+   5.  IANA Considerations
+     5.1.  EtherType
+     5.2.  Multicast MAC Address
+   6.  Operational Considerations
+     6.1.  Checksums
+     6.2.  BTP-U Virtual Channels
+     6.3.  MTU and Jumbo Frames
+   7.  Security Considerations
+     7.1.  Denial of Service
+     7.2.  Link-layer Security
+     7.3.  Filtering
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
    Acknowledgments
    Author's Address
 
@@ -100,10 +101,10 @@ Table of Contents
    Convergence Layer for environments where Bundle Protocol nodes are
    connected by Ethernet or Ethernet-like technologies.  Specifically:
 
-   *  an EtherType to identify frames carrying BTP-U payloads (4.1)
+   *  an EtherType to identify frames carrying BTP-U payloads (5.1)
 
    *  a multicast MAC address for neighbor discovery and announcements
-      (4.2)
+      (5.2)
 
    This convergence layer is applicable to: - Physical Ethernet LANs -
    Virtual Private Cloud (VPC) networks connecting bundle agents -
@@ -114,7 +115,19 @@ Table of Contents
    deployments where IP routing is unavailable or adds unnecessary
    complexity.
 
-1.1.  Congestion Control
+2.  Applicability and Limitations
+
+2.1.  BTP-U Protocol Compliance
+
+   This document specifies Ethernet encapsulation for [BTP-U].  All
+   protocol requirements, features, and recommendations defined in
+   [BTP-U] apply to this Ethernet profile.
+
+   Implementations MUST implement all mandatory [BTP-U] features and
+   SHOULD implement all recommended features, including [BTP-U]
+   Segmentation for handling bundles that exceed the Ethernet MTU.
+
+2.2.  Congestion Control
 
    BTP-U lacks a congestion control mechanism and presumes sending rate
    is externally managed.  Ethernet flow control mechanisms exist but,
@@ -125,9 +138,9 @@ Table of Contents
    mechanism outside of BTP-U, network operators MUST consider alternate
    Convergence Layers.
 
-1.2.  Relationship to IP-based Convergence Layers
+2.3.  Relationship to IP-based Convergence Layers
 
-   IP-based convergence layers (TCPCL [TCPCL], DGRAMCL [DGRAMCL]) remain
+   IP-based convergence layers (TCPCL [TCPCL], UDPCLv2 [UDPCLv2]) remain
    recommended where IP infrastructure exists.  This Ethernet
    convergence layer addresses scenarios where:
 
@@ -141,7 +154,7 @@ Table of Contents
    Header overhead savings (28-48+ bytes) are secondary to operational
    utility in non-IP environments.
 
-2.  Conventions and Definitions
+3.  Conventions and Definitions
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
@@ -152,16 +165,16 @@ Table of Contents
    As this memo is Informational it uses BCP14 langauge only for
    clarity.
 
-3.  Assignment of an EtherType by IEEE
+4.  Assignment of an EtherType by IEEE
 
    The IESG is requested to approve an application to the IEEE
    Registration Authority for an EtherType for BTP-U.
 
-4.  IANA Considerations
+5.  IANA Considerations
 
    Allocation of the following Ethernet parameters is requested.
 
-4.1.  EtherType
+5.1.  EtherType
 
    (if approved) The following entry has been added to the "ETHER TYPES"
    subregistry of the "IEEE 802 Numbers" registry [IANA-IEEE802]:
@@ -178,7 +191,7 @@ Table of Contents
 
    References: RFC ZZZZ (this document)
 
-4.2.  Multicast MAC Address
+5.2.  Multicast MAC Address
 
    One multicast MAC address is requested to enable neighbor discovery
    and bundle availability announcements within a broadcast domain.
@@ -200,9 +213,9 @@ Table of Contents
 
    This memo is an application for one multicast EUI-48 identifier.
 
-5.  Operational Considerations
+6.  Operational Considerations
 
-5.1.  Checksums
+6.1.  Checksums
 
    To reiterate the observation in §3.5 of [DGRAMCL], the Bundle
    Protocol specifications assume that Bundles "are transmitted over an
@@ -213,7 +226,7 @@ Table of Contents
    requirement to ensure Bundles are not corrupted in transmission.  Use
    of stronger integrity checks are left to BTP-U and its extensions.
 
-5.2.  BTP-U Virtual Channels
+6.2.  BTP-U Virtual Channels
 
    [BTP-U] Transfer Numbers are unique within a "virtual channel."  For
    Ethernet, the virtual channel is identified by:
@@ -228,7 +241,7 @@ Table of Contents
    independent Transfer Number sequencing.
 
    Other technologies that support Ethernet-like framing and use of this
-   EtherType (4.1) but which lack the above virtual channel identifers
+   EtherType (5.1) but which lack the above virtual channel identifers
    MUST define the equivalent virtual channel identifiers, e.g.
    technology-specific source and/or destination as well as any
    protocol-specific channel discriminators.
@@ -242,7 +255,7 @@ Table of Contents
    Once a sender learns a peer's MAC address, implementations SHOULD
    switch to unicast transmission.
 
-5.3.  MTU and Jumbo Frames
+6.3.  MTU and Jumbo Frames
 
    Implementations MUST support transmission and reception of frames
    with payload sizes up to 1500 octets (standard Ethernet MTU minus
@@ -258,26 +271,13 @@ Table of Contents
    default to 1500 octets.  Link Layer Discovery Protocol (LLDP) MAY be
    used to discover directly-connected link and neighbor parameters.
 
-5.4.  Fragmentation and Segmentation
-
-   When Bundles exceed the Ethernet CL's MTU, BP agent implementations
-   have two options: [BPv7] Fragmentation and [BTP-U] Segmentation.
-
-   Bundle Fragmentation may not always result in a transmissible frame,
-   e.g. Bundle Processing Control Flags may prohibit fragmentation or
-   Block Processing Control Flags may require extension blocks to be
-   replicated with every fragment, either of which may result in Bundle
-   Fragments that exceed the Ethernet MTU.
-
-   For this reason, [BTP-U] Segmentation is RECOMMENDED.
-
-6.  Security Considerations
+7.  Security Considerations
 
    This document requests assignment of an EtherType and Multicast MAC
    address for BTP-U datagrams.  It has no incremental implications for
    security beyond those already documented in [BPv7] and [BTP-U].
 
-6.1.  Denial of Service
+7.1.  Denial of Service
 
    BTP-U assumes the sending rate is controlled by a mechanism out of
    scope for the protocol and has no built-in mechanism for identifying
@@ -285,7 +285,7 @@ Table of Contents
    protocol on some networks, a shared LAN segment for example, may
    cause a Denial-of-Service by flooding Ethernet switches and stations.
 
-6.2.  Link-layer Security
+7.2.  Link-layer Security
 
    Any attacker with access to the link, or with sufficient knowledge of
    local Bundle forwarding configuration so as to inject BTP-U frames
@@ -299,7 +299,7 @@ Table of Contents
    authorized participants, and IEEE 802.1AE ([IEEE802dot1AE]), which
    offers confidentiality of the entire BTP-U payload.
 
-6.3.  Filtering
+7.3.  Filtering
 
    A common security paradigm is to "default deny" all traffic patterns
    that, broadly, do not conform to operator expectations.  In such
@@ -307,9 +307,9 @@ Table of Contents
    be used on a given Ethernet segment before BTP-U messages can be
    successfully transmitted.
 
-7.  References
+8.  References
 
-7.1.  Normative References
+8.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -320,7 +320,7 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-7.2.  Informative References
+8.2.  Informative References
 
    [BPv7]     Burleigh, S., Fall, K., and E. Birrane, III, "Bundle
               Protocol Version 7", RFC 9171, DOI 10.17487/RFC9171,
@@ -371,6 +371,12 @@ Table of Contents
               Tolerant Networking TCP Convergence-Layer Protocol Version
               4", RFC 9174, DOI 10.17487/RFC9174, January 2022,
               <https://www.rfc-editor.org/rfc/rfc9174>.
+
+   [UDPCLv2]  Sipos, B. and J. Deaton, "Delay-Tolerant Networking UDP
+              Convergence Layer Protocol Version 2", Work in Progress,
+              Internet-Draft, draft-ietf-dtn-udpcl-03, 17 December 2025,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-dtn-
+              udpcl-03>.
 
 Acknowledgments
 
