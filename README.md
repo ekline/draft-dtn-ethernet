@@ -1,6 +1,8 @@
-# Support for the Delay- and Disruption-Tolerant Networking (DTN) Bundle Protocol over Ethernet
+<!-- regenerate: on (set to off if you edit this file) -->
 
-This is the working area for the individual Internet-Draft, "Support for the Delay- and Disruption-Tolerant Networking (DTN) Bundle Protocol over Ethernet".
+# Assignment of Ethernet Parameters for Bundle Transfer Protocol - Unidirectional (BTP-U) over Ethernet
+
+This is the working area for the individual Internet-Draft, "Assignment of Ethernet Parameters for Bundle Transfer Protocol - Unidirectional (BTP-U) over Ethernet".
 
 * [Editor's Copy](https://ekline.github.io/draft-dtn-ethernet/#go.draft-ek-dtn-ethernet.html)
 * [Datatracker Page](https://datatracker.ietf.org/doc/draft-ek-dtn-ethernet)
@@ -13,9 +15,8 @@ This is the working area for the individual Internet-Draft, "Support for the Del
 See the
 [guidelines for contributions](https://github.com/ekline/draft-dtn-ethernet/blob/main/CONTRIBUTING.md).
 
-Contributions can be made by creating pull requests.
-The GitHub interface supports creating pull requests using the Edit (✏) button.
-
+The contributing file also has tips on how to make contributions, if you
+don't already know how to do that.
 
 ## Command Line Usage
 
