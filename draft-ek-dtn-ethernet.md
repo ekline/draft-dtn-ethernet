@@ -40,6 +40,7 @@ informative:
   BPv7: RFC9171
   BTP-U: I-D.ietf-dtn-btpu
   DGRAMCL: RFC7122
+  UDPCLv2: I-D.ietf-dtn-udpcl
   TCPCL: RFC9174
   RFC9542:
   IANA-IEEE802:
@@ -114,6 +115,18 @@ This convergence layer is applicable to:
 Primary use cases include mission modeling, testbed environments, and
 deployments where IP routing is unavailable or adds unnecessary complexity.
 
+# Applicability and Limitations
+
+## BTP-U Protocol Compliance
+
+This document specifies Ethernet encapsulation for {{BTP-U}}. All protocol
+requirements, features, and recommendations defined in {{BTP-U}} apply to
+this Ethernet profile.
+
+Implementations MUST implement all mandatory {{BTP-U}} features and SHOULD
+implement all recommended features, including {{BTP-U}} Segmentation for
+handling bundles that exceed the Ethernet MTU.
+
 ## Congestion Control
 {: #cc}
 
@@ -127,7 +140,7 @@ Convergence Layers.
 
 ## Relationship to IP-based Convergence Layers
 
-IP-based convergence layers (TCPCL {{TCPCL}}, DGRAMCL {{DGRAMCL}}) remain
+IP-based convergence layers (TCPCL {{TCPCL}}, UDPCLv2 {{UDPCLv2}}) remain
 recommended where IP infrastructure exists. This Ethernet convergence
 layer addresses scenarios where:
 
@@ -253,19 +266,6 @@ Since {{BTP-U}} has no path MTU discovery mechanism and Ethernet networks
 silently drop oversized frames, implementations SHOULD default to 1500
 octets. Link Layer Discovery Protocol (LLDP) MAY be used to discover
 directly-connected link and neighbor parameters.
-
-## Fragmentation and Segmentation
-
-When Bundles exceed the Ethernet CL's MTU, BP agent implementations
-have two options: {{BPv7}} Fragmentation and {{BTP-U}} Segmentation.
-
-Bundle Fragmentation may not always result in a transmissible frame, e.g.
-Bundle Processing Control Flags may prohibit fragmentation or
-Block Processing Control Flags may require extension blocks to be replicated
-with every fragment, either of which may result in Bundle Fragments that
-exceed the Ethernet MTU.
-
-For this reason, {{BTP-U}} Segmentation is RECOMMENDED.
 
 # Security Considerations
 
