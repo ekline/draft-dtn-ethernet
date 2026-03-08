@@ -39,43 +39,55 @@ normative:
 informative:
   BPv7: RFC9171
   BTP-U: I-D.ietf-dtn-btpu
-#  IANA-IEEE802:
-#    author:
-#     -
-#        org: IANA
-#    title: "IEEE 802 Numbers",
-#    target: http://www.iana.org/assignments/ieee-802-numbers
-#  IEEE-ETHERTYPES:
-#    author:
-#     -
-#        org: IEEE
-#    title: "EtherType"
-#    target: http://standards-oui.ieee.org/ethertype/eth.txt
-
-#  DVB-GSE:
-#    author:
-#     -
-#        org: DVB
-#    title: "TODO"
-#    target: http://todo.example/find-suitable-biblio-link
   DGRAMCL: RFC7122
   TCPCL: RFC9174
   RFC9542:
-#  IEEE802dot3:
-#    author:
-#      -
-#        org: IEEE
-#    title: "IEEE Standard for Ethernet, IEEE Std 802.3-2018 (or latest edition)"
-#    target: https://standards.ieee.org/standard/802_3-2018.html
+  IANA-IEEE802:
+    title: "IEEE 802 Numbers"
+    author:
+      org: IANA
+    target: https://www.iana.org/assignments/ieee-802-numbers/
+  IEEE802dot3:
+    title: "IEEE Standard for Ethernet"
+    author:
+      org: IEEE
+    date: 2018-08
+    seriesinfo:
+      IEEE: Std 802.3-2018
+    target: https://standards.ieee.org/standard/802_3-2018.html
+
+  IEEE802dot1X:
+    title: "IEEE Standard for Local and Metropolitan Area Networks--Port-Based Network Access Control"
+    author:
+      org: IEEE
+    date: 2020-02
+    seriesinfo:
+      IEEE: Std 802.1X-2020
+
+  IEEE802dot1AE:
+    title: "IEEE Standard for Local and Metropolitan Area Networks--Media Access Control (MAC) Security"
+    author:
+      org: IEEE
+    date: 2018-12
+    seriesinfo:
+      IEEE: Std 802.1AE-2018
+
+  DVB-GSE:
+    title: "Digital Video Broadcasting (DVB); Generic Stream Encapsulation (GSE) Protocol"
+    author:
+      org: ETSI
+    date: 2007-10
+    seriesinfo:
+      ETSI: TS 102 606
 
 --- abstract
 
-This memo requests Ethernet parameters for Bundle Transfer Protocol -
-Unidirectional {{BTP-U}} for use on Ethernet and Ethernet-like links.  This
-is not intended to replace existing IP-based Convergence Layer (CLs).
-Rather this makes it possible to use Ethernet with BTP-U as a
-CL in environments where Ethernet-like operation better matches the
-network infrastructure or operational constraints.
+This memo requests allocation of an EtherType and multicast MAC address
+for Bundle Transfer Protocol - Unidirectional (BTP-U) to enable its use
+as a Convergence Layer on Ethernet networks. This provides an alternative
+to IP-based convergence layers for environments where Ethernet forwarding
+is operationally feasible but IP routing is unavailable or operationally
+undesirable.
 
 --- middle
 
@@ -84,78 +96,61 @@ network infrastructure or operational constraints.
 
 # Introduction
 
-When two Bundle nodes are connected by an Ethernet link, or by a technology
-that emulates Ethernet, it may be possible for a Bundle Protocol
-Agent to transmit Bundles in the payload of an Ethernet frame without
-higher layer protocol Convergence Layer (CL) overhead.  Examples of
-"Ethernet-like" Technologies include Digital Video Broadcast Generic
-Stream Encapsulation ([DVB-GSE]).
+This memo requests Ethernet parameters to enable BTP-U [BTP-U] as a
+Convergence Layer for environments where Bundle Protocol nodes are
+connected by Ethernet or Ethernet-like technologies. Specifically:
 
-<!--
-TODO: find some more biblio references other than just GSE for Ethernet-like
-links.
--->
+- an EtherType to identify frames carrying BTP-U payloads
+  ({{<ethertype}})
+- a multicast MAC address for neighbor discovery and announcements
+  ({{<multicast_mac}})
 
-This memo recommends use of Bundle Transfer Protocol - Unidirectional
-[BTP-U] for this purpose and requests some Ethernet parameters to support
-this.
-Specifically, it requests:
-an EtherType for identifying frames carrying BTP-U payloads ({{<ethertype}})
-and a multicast MAC address, for indicating the frame is addressed to all
-BTP-U capable receivers ({{<multicast_mac}}).
+This convergence layer is applicable to:
+- Physical Ethernet LANs
+- Virtual Private Cloud (VPC) networks connecting bundle agents
+- Ground-Station-as-a-Service (GSaaS) infrastructure
+- Technologies supporting Ethernet framing, e.g., DVB-GSE ({{DVB-GSE}})
 
-While hypothetically applicable to a physical Ethernet LAN, it may be better
-utilized within Virtual Private Cloud (VPC) networks, which allow novel
-software-define connectivity among a set of cooperating Bundle processing
-cloud compute nodes (i.e. VMs).  Such deployments can be useful for mission
-modeling, testbed activities, and may also integrate well with some
-Ground-Station-as-a-Service (GSaaS) network infrastructure.
+Primary use cases include mission modeling, testbed environments, and
+deployments where IP routing is unavailable or adds unnecessary complexity.
 
 ## Congestion Control
 {: #cc}
 
-BTP-U lacks a congestion control mechanism and presumes the sending rate is
-controlled by a lower layer or mechanism otherwise out of scope for BTP-U.
-
-Ethernet flow control mechanisms exist but, even if in use, they may not be
-sufficient to avoid significant loss of BTP-U frames in all situations.
-Additionally, a Bundle Protocol Agent may not be able to easily determine
-whether any Ethernet-level flow control mechanism is available.
+BTP-U lacks a congestion control mechanism and presumes sending rate is
+externally managed. Ethernet flow control mechanisms exist but, may not be
+operationally applicable in all situations (e.g. high delay links).
 
 For deployments where congestion control cannot be managed by a mechanism
-outside of BTP-U, network operators must consider alternate
+outside of BTP-U, network operators MUST consider alternate
 Convergence Layers.
 
 ## Relationship to IP-based Convergence Layers
 
-This Ethernet Convergence Layer is not intended to replace IP-based CLs
-where their use would be more appropriate. While use of direct encapsulation
-within an Ethernet frame avoids incurring some IP and UDP/TCP header
-overhead (28 to 48 bytes, or more, depending on Internet Protocol version
-and other options).  These savings, however, are not the primary motivation.
-Rather, some Bundle Protocol deployments utilize links which may not have
-any operational IP addressing or routing.
+IP-based convergence layers (TCPCL {{TCPCL}}, DGRAMCL {{DGRAMCL}}) remain
+recommended where IP infrastructure exists. This Ethernet convergence
+layer addresses scenarios where:
 
-Convergence Layers like {{TCPCL}} and {{DGRAMCL}} have many useful features
-and remain recommended wherever deployable.  This may include some links
-where only IPv6 Link-Local Addresses are available, though how a Bundle
-Protocol Agent obtains the IPv6 Link-Local Address of a peer is a
-deployment-specific matter.
+- no operational IP addressing or routing is available
+- only IPv4 or IPv6 link-local addresses exist and peer discovery is
+  unspecified
+- direct Ethernet operation simplifies deployment and management
 
-<!--
+Header overhead savings (28-48+ bytes) are secondary to operational
+utility in non-IP environments.
+
+<!-- XXX -->
+
 # Conventions and Definitions
 
 {::boilerplate bcp14-tagged}
--->
+
+As this memo is Informational it uses BCP14 langauge only for clarity.
 
 # Assignment of an EtherType by IEEE
 
-The IESG is requested to approve applying to the IEEE Registration Authority
-for an EtherType for BTP-Y.  The IESG should communicate its approval to
-IANA and to those concerned with this document.  IANA will forward the IESG
-Approval to the registry expert of the "EtherType" registry from the "IEEE
-802 Numbers" registry group who will make the application to the IEEE
-Registration Authority, keeping IANA informed.
+The IESG is requested to approve an application to the IEEE Registration
+Authority for an EtherType for BTP-U.
 
 # IANA Considerations
 
@@ -166,7 +161,7 @@ Allocation of the following Ethernet parameters is requested.
 
 (if approved)
 The following entry has been added to the "ETHER TYPES" subregistry
-of the "IEEE 802 Numbers" registry [IANA-IEEE802]:
+of the "IEEE 802 Numbers" registry {{IANA-IEEE802}}:
 
    Ethertype (decimal): YYYY
    Ethertype (hex): YYYY
@@ -178,9 +173,10 @@ of the "IEEE 802 Numbers" registry [IANA-IEEE802]:
 ## Multicast MAC Address
 {: #multicast_mac}
 
-In order to identify "all Bundle Transfer Protocol - Unicast over Ethernet
-capable receivers" within a broadcast domain, IANA is requested to allocate
-one Multicast MAC address.
+One multicast MAC address is requested to enable neighbor discovery and
+bundle availability announcements within a broadcast domain. This allows
+BTP-U senders to reach all capable receivers without prior knowledge of
+individual MAC addresses.
 
 Following the recommended format given as the EUI-48 Identifier template
 in [RFC9542]:
@@ -199,10 +195,6 @@ This memo is an application for one multicast EUI-48 identifier.
 
 # Operational Considerations
 
-In addition to issue around congenstion control and lack of feedback about
-excess sending rate noted above ({{<cc}}), some addition operational
-considerations are noted below.
-
 ## Checksums
 
 To reiterate the observation in §3.5 of {{DGRAMCL}}, the Bundle Protocol
@@ -212,73 +204,70 @@ all".
 
 Ethernet's Frame Check Sequence (FCS) minimally meets this requirement to
 ensure Bundles are not corrupted in transmission.  Use of stronger integrity
-checks are left to BTP-U.
+checks are left to BTP-U and its extensions.
 
-## BTP-U Channels
+## BTP-U Virtual Channels
 
-All {{BTP-U}} Transfers are implicitly scoped to a "virtual channel"
-within which a given Transfer Number is unique (modulo 32-bit roll-over).
-In the case of an Ethernet frame containing the EtherType value given in
-{{<ethertype}}, the virtual channel is identified by the combination of
-the Source MAC address, Destination MAC address, and optional C-VLAN ID
-(if present).
+{{BTP-U}} Transfer Numbers are unique within a "virtual channel." For
+Ethernet, the virtual channel is identified by:
 
-Other Ethernet-like link-layer protocols must define the combination of
-elements that identify a virtual channel whenever specifying use of
-this EtherType {{<ethertype}}.
-In principle this would comprise a source identifier, a destination
-identifer, and any additional elements or extensions specific to the given
-protocol that distinguish one logical link-layer "channel" from another.
-The exact details are out of scope of this document.
+- Source MAC address (6 octets)
+- Destination MAC address (6 octets)
+- C-VLAN ID (12 bits, if 802.1Q tag present)
+
+Each unique combination defines a separate virtual channel with
+independent Transfer Number sequencing.
+
+Other technologies that support Ethernet-like framing and use of this
+EtherType ({{<ethertype}}) but which lack the above virtual channel
+identifers MUST define the equivalent virtual channel identifiers,
+e.g. technology-specific source and/or destination as well as any
+protocol-specific channel discriminators.
 
 ## MTU and Jumbo Frames
 
-Implementations must support transmission and reception of frames with
+Implementations MUST support transmission and reception of frames with
 payload sizes up to 1500 octets (standard Ethernet MTU minus Ethernet
-header), as required by [IEEE802dot3].
-Implementations may support jumbo frames with payload sizes up to 9000
-octets or larger, but should only enable this capability when explicitly
-configured by operators who have verified that the network path supports
+header), as required by {{IEEE802dot3}}.
+
+Implementations MAY support jumbo frames with payload sizes up to 9000
+octets or larger, but SHOULD only enable this capability when explicitly
+configured where operators have verified that the network path supports
 the larger frame size.
 
-MTU mismatches in Ethernet networks result in frame drops,
-and {{BTP-U}} does not have any mechanism to probe for Path MTU.
-Implementations may use Ethernet-specific protocols, like
-Link Layer Discovery Protocol (LLDP),
-to discover supported frame sizes on directly connected links, but should
-default to conservative MTU values (1500 octets).
+Since {{BTP-U}} has no path MTU discovery mechanism and Ethernet networks
+silently drop oversized frames, implementations SHOULD default to 1500
+octets. Link Layer Discovery Protocol (LLDP) MAY be used to discover
+directly-connected link and neighbor parameters.
 
 ## Fragmentation and Segmentation
 
-When transmitting Bundles that exceed the Ethernet CL's MTU, a BP agent
-must decide how to break up a Bundle into multiple transmissible frames.
-Both {{BPv7}} Fragmentation and {{BTP-U}} Segmentation may be viable
-options.  However, Bundle Fragmentation may not always result in a
-transmissible frame: Bundle Processing Control Flags may prohibit
-fragmentation, and Block Processing Control Flags may require extension
-blocks to be replicated with every fragment, either of which may result
-in Bundle Fragments that exceed the Ethernet MTU.
-For this reason, {{BTP-U}} Segmentation is recommended.
+When Bundles exceed the Ethernet CL's MTU, BP agent implementations
+have two options: {{BPv7}} Fragmentation and {{BTP-U}} Segmentation.
 
-## Filtering
+Bundle Fragmentation may not always result in a transmissible frame, e.g.
+Bundle Processing Control Flags may prohibit fragmentation or
+Block Processing Control Flags may require extension blocks to be replicated
+with every fragment, either of which may result in Bundle Fragments that
+exceed the Ethernet MTU.
 
-A common security paradigm is to "default deny" all traffic patterns that,
-broadly, do not conform to operator expectations.  In such environments it
-may be that the BTP-U EtherType needs to be added to an allowlist
-or otherwise explicitly permitted to be used on a given Ethernet segment
-before BTP-U messages can be successfully delivered.
+For this reason, {{BTP-U}} Segmentation is RECOMMENDED.
 
 # Security Considerations
 
 This document requests assignment of an EtherType and Multicast MAC address
 for BTP-U datagrams.  It has no incremental implications for security
-beyond those in the relevant protocols.
+beyond those already documented in {{BPv7}} and {{BTP-U}}.
+
+## Denial of Service
 
 BTP-U assumes the sending rate is controlled by a mechanism out of scope for
-the protocol and has no builtin mechanism for identifying or mitigating any
+the protocol and has no built-in mechanism for identifying or mitigating any
 congestion a sender might cause. Use of this protocol on some networks,
 a shared LAN segment for example, may cause a Denial-of-Service by
 flooding Ethernet switches and stations.
+
+## Link-layer Security
 
 Any attacker with access to the link, or with sufficient knowledge of local
 Bundle forwarding configuration so as to inject BTP-U frames and cause them
@@ -287,10 +276,17 @@ Denial of Service to other onlink senders.
 
 IEEE standards include several security mechanisms that may be used in
 Ethernet networks.  Examples of recommended Ethernet-level security
-mechanisms a network might deploy include: IEEE 802.1X (TODO: reference),
+mechanisms a network might deploy include: IEEE 802.1X ({{IEEE802dot1X}}),
 which may be used restrict access to the link to authorized participants,
-and IEEE 802.1AE (TODO: reference), which would offers confidentiality of
+and IEEE 802.1AE ({{IEEE802dot1AE}}), which offers confidentiality of
 the entire BTP-U payload.
+
+## Filtering
+
+A common security paradigm is to "default deny" all traffic patterns that,
+broadly, do not conform to operator expectations.  In such environments the
+BTP-U EtherType needs to be explicitly permitted to be used on a given
+Ethernet segment before BTP-U messages can be successfully transmitted.
 
 --- back
 
