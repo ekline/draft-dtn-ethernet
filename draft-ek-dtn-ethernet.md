@@ -164,10 +164,15 @@ The following entry has been added to the "ETHER TYPES" subregistry
 of the "IEEE 802 Numbers" registry {{IANA-IEEE802}}:
 
    Ethertype (decimal): YYYY
+
    Ethertype (hex): YYYY
+
    Exp. Ethernet (decimal): -
+
    Exp. Ethernet (octal): -
+
    Description: BTP-U payloads
+
    References: RFC ZZZZ (this document)
 
 ## Multicast MAC Address
@@ -223,6 +228,15 @@ EtherType ({{<ethertype}}) but which lack the above virtual channel
 identifers MUST define the equivalent virtual channel identifiers,
 e.g. technology-specific source and/or destination as well as any
 protocol-specific channel discriminators.
+
+When using the multicast MAC address for transmitting to receivers
+whose MAC addresses have not yet been learned, all receivers in the
+broadcast domain share the same destination address (and therefore the
+same virtual channel). Implementations relying on multicast SHOULD use
+additional mechanisms, i.e. the Bundle destination EID, to determine
+whether received bundles are intended for local processing. Once a
+sender learns a peer's MAC address, implementations SHOULD switch to
+unicast transmission.
 
 ## MTU and Jumbo Frames
 
