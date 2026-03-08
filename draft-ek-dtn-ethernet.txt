@@ -4,8 +4,8 @@
 
 Delay/Disruption Tolerant Networking                            E. Kline
 Internet-Draft                                Aalyria Technologies, Inc.
-Intended status: Informational                          24 November 2025
-Expires: 28 May 2026
+Intended status: Informational                              8 March 2026
+Expires: 9 September 2026
 
 
     Assignment of Ethernet Parameters for Bundle Transfer Protocol -
@@ -53,11 +53,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 May 2026.
+   This Internet-Draft will expire on 9 September 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -308,9 +308,9 @@ Table of Contents
               January 2022, <https://www.rfc-editor.org/rfc/rfc9171>.
 
    [BTP-U]    Taylor, R., "Bundle Transfer Protocol - Unidirectional",
-              Work in Progress, Internet-Draft, draft-ietf-dtn-btpu-01,
-              5 November 2025, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-dtn-btpu-01>.
+              Work in Progress, Internet-Draft, draft-ietf-dtn-btpu-02,
+              17 February 2026, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-dtn-btpu-02>.
 
    [DGRAMCL]  Kruse, H., Jero, S., and S. Ostermann, "Datagram
               Convergence Layers for the Delay- and Disruption-Tolerant
