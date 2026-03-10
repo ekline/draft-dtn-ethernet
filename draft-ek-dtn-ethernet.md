@@ -38,16 +38,23 @@ author:
 normative:
 informative:
   BPv7: RFC9171
+
   BTP-U: I-D.ietf-dtn-btpu
+
   DGRAMCL: RFC7122
+
   UDPCLv2: I-D.ietf-dtn-udpcl
+
   TCPCL: RFC9174
+
   RFC9542:
+
   IANA-IEEE802:
     title: "IEEE 802 Numbers"
     author:
       org: IANA
     target: https://www.iana.org/assignments/ieee-802-numbers/
+
   IEEE802dot3:
     title: "IEEE Standard for Ethernet"
     author:
@@ -81,6 +88,15 @@ informative:
     seriesinfo:
       ETSI: TS 102 606
 
+  3GPP-TS-23.501:
+    title: "System Architecture for the 5G System (5GS)"
+    author:
+      org: 3GPP
+    date: 2018-06
+    seriesinfo:
+      3GPP: TS 23.501 V15.2.0
+    target: https://www.3gpp.org/ftp/Specs/archive/23_series/23.501/
+
 --- abstract
 
 This memo requests allocation of an EtherType and multicast MAC address
@@ -111,6 +127,7 @@ This convergence layer is applicable to:
 - Virtual Private Cloud (VPC) networks connecting bundle agents
 - Ground-Station-as-a-Service (GSaaS) infrastructure
 - Technologies supporting Ethernet framing, e.g., DVB-GSE ({{DVB-GSE}})
+  and 3GPP 5G Ethernet PDU Session types ({{3GPP-TS-23.501}} §5.6.10.2).
 
 Primary use cases include mission modeling, testbed environments, and
 deployments where IP routing is unavailable or adds unnecessary complexity.
@@ -165,12 +182,23 @@ As this memo is Informational it uses BCP14 langauge only for clarity.
 The IESG is requested to approve an application to the IEEE Registration
 Authority for an EtherType for BTP-U.
 
-# IANA Considerations
+# Assignment Considerations
 
 Allocation of the following Ethernet parameters is requested.
 
-## EtherType
+## IEEE Assignment Considerations
+
+### EtherType
 {: #ethertype}
+
+(per {{RFC9542}})
+The IESG is requested to approve applying to the IEEE
+Registration Authority for an EtherType for BTP-U.  (The IESG
+should communicate its approval to IANA and to those concerned
+with this document.  IANA will forward the IESG Approval to the
+registry expert of the "EtherType" registry from the "IEEE 802
+Numbers" registry group who will make the application to the
+IEEE Registration Authority, keeping IANA informed.)
 
 (if approved)
 The following entry has been added to the "ETHER TYPES" subregistry
@@ -188,7 +216,9 @@ of the "IEEE 802 Numbers" registry {{IANA-IEEE802}}:
 
    References: RFC ZZZZ (this document)
 
-## Multicast MAC Address
+## IANA Considerations
+
+### Multicast MAC Address
 {: #multicast_mac}
 
 One multicast MAC address is requested to enable neighbor discovery and
@@ -197,7 +227,7 @@ BTP-U senders to reach all capable receivers without prior knowledge of
 individual MAC addresses.
 
 Following the recommended format given as the EUI-48 Identifier template
-in [RFC9542]:
+in {{RFC9542}}:
 
 Applicant Name: IETF DTN Working Group
 
