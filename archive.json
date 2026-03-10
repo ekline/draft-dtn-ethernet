@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-11-25T01:58:14.328700+00:00",
+  "timestamp": "2026-03-10T00:56:42.989652+00:00",
   "repo": "ekline/draft-dtn-ethernet",
   "labels": [
     {
@@ -167,16 +167,24 @@
       "id": "I_kwDOJwhRGM7Z83Z2",
       "title": "address any multicast considerations",
       "url": "https://github.com/ekline/draft-dtn-ethernet/issues/9",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ekline",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "From [discussion](https://mailarchive.ietf.org/arch/msg/dtn/WOqqtOprNtuIW3wSTAZKgubdNkw/):\n\n```there could also be some explanation about any multicast-specific considerations```",
       "createdAt": "2025-11-23T23:47:26Z",
-      "updatedAt": "2025-11-23T23:47:26Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2026-03-08T01:55:03Z",
+      "closedAt": "2026-03-08T01:55:03Z",
+      "comments": [
+        {
+          "author": "ekline",
+          "authorAssociation": "OWNER",
+          "body": "latest update has a small comment about use of multicast destination",
+          "createdAt": "2026-03-08T01:55:03Z",
+          "updatedAt": "2026-03-08T01:55:03Z"
+        }
+      ]
     }
   ],
   "pulls": [
