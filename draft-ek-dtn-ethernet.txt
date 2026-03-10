@@ -107,11 +107,18 @@ Table of Contents
    *  a multicast MAC address for neighbor discovery and announcements
       (4.2.1)
 
-   This convergence layer is applicable to: - Physical Ethernet LANs -
-   Virtual Private Cloud (VPC) networks connecting bundle agents -
-   Ground-Station-as-a-Service (GSaaS) infrastructure - Technologies
-   supporting Ethernet framing, e.g., DVB-GSE ([DVB-GSE]) and 3GPP 5G
-   Ethernet PDU Session types ([_3GPP-TS-23.501] §5.6.10.2).
+   This convergence layer is applicable to:
+
+   *  Physical Ethernet LANs
+
+   *  Virtual Private Cloud (VPC) networks connecting bundle agents
+
+   *  Ground-Station-as-a-Service (GSaaS) infrastructure
+
+   *  Technologies supporting Ethernet framing, e.g., DVB-GSE
+      ([DVB-GSE]), 3GPP 5G Ethernet PDU Session types ([_3GPP-TS-23.501]
+      §5.6.10.2), and the US Space Development Agency's Optical
+      Communications Terminal standard ([SDA-OCT] §3.4.8).
 
    Primary use cases include mission modeling, testbed environments, and
    deployments where IP routing is unavailable or adds unnecessary
@@ -375,6 +382,11 @@ Table of Contents
               for IEEE 802 Parameters", BCP 141, RFC 9542,
               DOI 10.17487/RFC9542, April 2024,
               <https://www.rfc-editor.org/rfc/rfc9542>.
+
+   [SDA-OCT]  Space Development Agency, "Optical Communications Terminal
+              (OCT) Standard", SDA OCT Standard Version 4.0.0, July
+              2024, <https://www.sda.mil/wp-content/uploads/2024/07/
+              SDA_OCT_Standard_4.0.0_final-20240701.pdf>.
 
    [TCPCL]    Sipos, B., Demmer, M., Ott, J., and S. Perreault, "Delay-
               Tolerant Networking TCP Convergence-Layer Protocol Version
