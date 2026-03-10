@@ -177,11 +177,6 @@ utility in non-IP environments.
 
 As this memo is Informational it uses BCP14 langauge only for clarity.
 
-# Assignment of an EtherType by IEEE
-
-The IESG is requested to approve an application to the IEEE Registration
-Authority for an EtherType for BTP-U.
-
 # Assignment Considerations
 
 Allocation of the following Ethernet parameters is requested.
