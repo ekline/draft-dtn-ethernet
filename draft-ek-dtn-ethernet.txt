@@ -4,8 +4,8 @@
 
 Delay/Disruption Tolerant Networking                            E. Kline
 Internet-Draft                                Aalyria Technologies, Inc.
-Intended status: Informational                              8 March 2026
-Expires: 9 September 2026
+Intended status: Informational                             10 March 2026
+Expires: 11 September 2026
 
 
     Assignment of Ethernet Parameters for Bundle Transfer Protocol -
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 9 September 2026.
+   This Internet-Draft will expire on 11 September 2026.
 
 Copyright Notice
 
@@ -78,9 +78,11 @@ Table of Contents
      2.3.  Relationship to IP-based Convergence Layers
    3.  Conventions and Definitions
    4.  Assignment of an EtherType by IEEE
-   5.  IANA Considerations
-     5.1.  EtherType
-     5.2.  Multicast MAC Address
+   5.  Assignment Considerations
+     5.1.  IEEE Assignment Considerations
+       5.1.1.  EtherType
+     5.2.  IANA Considerations
+       5.2.1.  Multicast MAC Address
    6.  Operational Considerations
      6.1.  Checksums
      6.2.  BTP-U Virtual Channels
@@ -101,15 +103,16 @@ Table of Contents
    Convergence Layer for environments where Bundle Protocol nodes are
    connected by Ethernet or Ethernet-like technologies.  Specifically:
 
-   *  an EtherType to identify frames carrying BTP-U payloads (5.1)
+   *  an EtherType to identify frames carrying BTP-U payloads (5.1.1)
 
    *  a multicast MAC address for neighbor discovery and announcements
-      (5.2)
+      (5.2.1)
 
    This convergence layer is applicable to: - Physical Ethernet LANs -
    Virtual Private Cloud (VPC) networks connecting bundle agents -
    Ground-Station-as-a-Service (GSaaS) infrastructure - Technologies
-   supporting Ethernet framing, e.g., DVB-GSE ([DVB-GSE])
+   supporting Ethernet framing, e.g., DVB-GSE ([DVB-GSE]) and 3GPP 5G
+   Ethernet PDU Session types ([_3GPP-TS-23.501] §5.6.10.2).
 
    Primary use cases include mission modeling, testbed environments, and
    deployments where IP routing is unavailable or adds unnecessary
@@ -170,11 +173,21 @@ Table of Contents
    The IESG is requested to approve an application to the IEEE
    Registration Authority for an EtherType for BTP-U.
 
-5.  IANA Considerations
+5.  Assignment Considerations
 
    Allocation of the following Ethernet parameters is requested.
 
-5.1.  EtherType
+5.1.  IEEE Assignment Considerations
+
+5.1.1.  EtherType
+
+   (per [RFC9542]) The IESG is requested to approve applying to the IEEE
+   Registration Authority for an EtherType for BTP-U.  (The IESG should
+   communicate its approval to IANA and to those concerned with this
+   document.  IANA will forward the IESG Approval to the registry expert
+   of the "EtherType" registry from the "IEEE 802 Numbers" registry
+   group who will make the application to the IEEE Registration
+   Authority, keeping IANA informed.)
 
    (if approved) The following entry has been added to the "ETHER TYPES"
    subregistry of the "IEEE 802 Numbers" registry [IANA-IEEE802]:
@@ -191,7 +204,9 @@ Table of Contents
 
    References: RFC ZZZZ (this document)
 
-5.2.  Multicast MAC Address
+5.2.  IANA Considerations
+
+5.2.1.  Multicast MAC Address
 
    One multicast MAC address is requested to enable neighbor discovery
    and bundle availability announcements within a broadcast domain.
@@ -241,7 +256,7 @@ Table of Contents
    independent Transfer Number sequencing.
 
    Other technologies that support Ethernet-like framing and use of this
-   EtherType (5.1) but which lack the above virtual channel identifers
+   EtherType (5.1.1) but which lack the above virtual channel identifers
    MUST define the equivalent virtual channel identifiers, e.g.
    technology-specific source and/or destination as well as any
    protocol-specific channel discriminators.
@@ -377,6 +392,12 @@ Table of Contents
               Internet-Draft, draft-ietf-dtn-udpcl-03, 17 December 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-dtn-
               udpcl-03>.
+
+   [_3GPP-TS-23.501]
+              3GPP, "System Architecture for the 5G System (5GS)",
+              3GPP TS 23.501 V15.2.0, June 2018,
+              <https://www.3gpp.org/ftp/Specs/
+              archive/23_series/23.501/>.
 
 Acknowledgments
 

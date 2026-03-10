@@ -1060,7 +1060,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Kline</td>
-<td class="center">Expires 9 September 2026</td>
+<td class="center">Expires 11 September 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1073,12 +1073,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ek-dtn-ethernet-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-03-08" class="published">8 March 2026</time>
+<time datetime="2026-03-10" class="published">10 March 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-09-09">9 September 2026</time></dd>
+<dd class="expires"><time datetime="2026-09-11">11 September 2026</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1133,7 +1133,7 @@ undesirable.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 9 September 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 11 September 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1186,13 +1186,23 @@ undesirable.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-assignment-of-an-ethertype-" class="internal xref">Assignment of an EtherType by IEEE</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-assignment-considerations" class="internal xref">Assignment Considerations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-ethertype" class="internal xref">EtherType</a></p>
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-ieee-assignment-considerati" class="internal xref">IEEE Assignment Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.1">
+                    <p id="section-toc.1-1.5.2.1.2.1.1"><a href="#section-5.1.1" class="auto internal xref">5.1.1</a>.  <a href="#name-ethertype" class="internal xref">EtherType</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
-                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-multicast-mac-address" class="internal xref">Multicast MAC Address</a></p>
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.1">
+                    <p id="section-toc.1-1.5.2.2.2.1.1"><a href="#section-5.2.1" class="auto internal xref">5.2.1</a>.  <a href="#name-multicast-mac-address" class="internal xref">Multicast MAC Address</a></p>
+</li>
+                </ul>
 </li>
             </ul>
 </li>
@@ -1256,18 +1266,19 @@ connected by Ethernet or Ethernet-like technologies. Specifically:<a href="#sect
 <ul class="normal">
 <li class="normal" id="section-1-2.1">
           <p id="section-1-2.1.1">an EtherType to identify frames carrying BTP-U payloads
-(<a href="#ethertype" class="auto internal xref">5.1</a>)<a href="#section-1-2.1.1" class="pilcrow">¶</a></p>
+(<a href="#ethertype" class="auto internal xref">5.1.1</a>)<a href="#section-1-2.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-1-2.2">
           <p id="section-1-2.2.1">a multicast MAC address for neighbor discovery and announcements
-(<a href="#multicast_mac" class="auto internal xref">5.2</a>)<a href="#section-1-2.2.1" class="pilcrow">¶</a></p>
+(<a href="#multicast_mac" class="auto internal xref">5.2.1</a>)<a href="#section-1-2.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-1-3">This convergence layer is applicable to:
 - Physical Ethernet LANs
 - Virtual Private Cloud (VPC) networks connecting bundle agents
 - Ground-Station-as-a-Service (GSaaS) infrastructure
-- Technologies supporting Ethernet framing, e.g., DVB-GSE (<span>[<a href="#DVB-GSE" class="cite xref">DVB-GSE</a>]</span>)<a href="#section-1-3" class="pilcrow">¶</a></p>
+- Technologies supporting Ethernet framing, e.g., DVB-GSE (<span>[<a href="#DVB-GSE" class="cite xref">DVB-GSE</a>]</span>)
+  and 3GPP 5G Ethernet PDU Session types (<span>[<a href="#_3GPP-TS-23.501" class="cite xref">_3GPP-TS-23.501</a>]</span> §5.6.10.2).<a href="#section-1-3" class="pilcrow">¶</a></p>
 <p id="section-1-4">Primary use cases include mission modeling, testbed environments, and
 deployments where IP routing is unavailable or adds unnecessary complexity.<a href="#section-1-4" class="pilcrow">¶</a></p>
 </section>
@@ -1350,45 +1361,67 @@ appear in all capitals, as shown here.<a href="#section-3-1" class="pilcrow">¶<
 Authority for an EtherType for BTP-U.<a href="#section-4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="iana-considerations">
+<div id="assignment-considerations">
 <section id="section-5">
-      <h2 id="name-iana-considerations">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      <h2 id="name-assignment-considerations">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-assignment-considerations" class="section-name selfRef">Assignment Considerations</a>
       </h2>
 <p id="section-5-1">Allocation of the following Ethernet parameters is requested.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<div id="ethertype">
+<div id="ieee-assignment-considerations">
 <section id="section-5.1">
-        <h3 id="name-ethertype">
-<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-ethertype" class="section-name selfRef">EtherType</a>
+        <h3 id="name-ieee-assignment-considerati">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-ieee-assignment-considerati" class="section-name selfRef">IEEE Assignment Considerations</a>
         </h3>
-<p id="section-5.1-1">(if approved)
+<div id="ethertype">
+<section id="section-5.1.1">
+          <h4 id="name-ethertype">
+<a href="#section-5.1.1" class="section-number selfRef">5.1.1. </a><a href="#name-ethertype" class="section-name selfRef">EtherType</a>
+          </h4>
+<p id="section-5.1.1-1">(per <span>[<a href="#RFC9542" class="cite xref">RFC9542</a>]</span>)
+The IESG is requested to approve applying to the IEEE
+Registration Authority for an EtherType for BTP-U.  (The IESG
+should communicate its approval to IANA and to those concerned
+with this document.  IANA will forward the IESG Approval to the
+registry expert of the "EtherType" registry from the "IEEE 802
+Numbers" registry group who will make the application to the
+IEEE Registration Authority, keeping IANA informed.)<a href="#section-5.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-2">(if approved)
 The following entry has been added to the "ETHER TYPES" subregistry
-of the "IEEE 802 Numbers" registry <span>[<a href="#IANA-IEEE802" class="cite xref">IANA-IEEE802</a>]</span>:<a href="#section-5.1-1" class="pilcrow">¶</a></p>
-<p id="section-5.1-2">Ethertype (decimal): YYYY<a href="#section-5.1-2" class="pilcrow">¶</a></p>
-<p id="section-5.1-3">Ethertype (hex): YYYY<a href="#section-5.1-3" class="pilcrow">¶</a></p>
-<p id="section-5.1-4">Exp. Ethernet (decimal): -<a href="#section-5.1-4" class="pilcrow">¶</a></p>
-<p id="section-5.1-5">Exp. Ethernet (octal): -<a href="#section-5.1-5" class="pilcrow">¶</a></p>
-<p id="section-5.1-6">Description: BTP-U payloads<a href="#section-5.1-6" class="pilcrow">¶</a></p>
-<p id="section-5.1-7">References: RFC ZZZZ (this document)<a href="#section-5.1-7" class="pilcrow">¶</a></p>
+of the "IEEE 802 Numbers" registry <span>[<a href="#IANA-IEEE802" class="cite xref">IANA-IEEE802</a>]</span>:<a href="#section-5.1.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-3">Ethertype (decimal): YYYY<a href="#section-5.1.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-4">Ethertype (hex): YYYY<a href="#section-5.1.1-4" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-5">Exp. Ethernet (decimal): -<a href="#section-5.1.1-5" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-6">Exp. Ethernet (octal): -<a href="#section-5.1.1-6" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-7">Description: BTP-U payloads<a href="#section-5.1.1-7" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-8">References: RFC ZZZZ (this document)<a href="#section-5.1.1-8" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="multicast_mac">
+</section>
+</div>
+<div id="iana-considerations">
 <section id="section-5.2">
-        <h3 id="name-multicast-mac-address">
-<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-multicast-mac-address" class="section-name selfRef">Multicast MAC Address</a>
+        <h3 id="name-iana-considerations">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
         </h3>
-<p id="section-5.2-1">One multicast MAC address is requested to enable neighbor discovery and
+<div id="multicast_mac">
+<section id="section-5.2.1">
+          <h4 id="name-multicast-mac-address">
+<a href="#section-5.2.1" class="section-number selfRef">5.2.1. </a><a href="#name-multicast-mac-address" class="section-name selfRef">Multicast MAC Address</a>
+          </h4>
+<p id="section-5.2.1-1">One multicast MAC address is requested to enable neighbor discovery and
 bundle availability announcements within a broadcast domain. This allows
 BTP-U senders to reach all capable receivers without prior knowledge of
-individual MAC addresses.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.2-2">Following the recommended format given as the EUI-48 Identifier template
-in <span>[<a href="#RFC9542" class="cite xref">RFC9542</a>]</span>:<a href="#section-5.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.2-3">Applicant Name: IETF DTN Working Group<a href="#section-5.2-3" class="pilcrow">¶</a></p>
-<p id="section-5.2-4">Applicant Email: dtn@ietf.org<a href="#section-5.2-4" class="pilcrow">¶</a></p>
-<p id="section-5.2-5">Applicant Telephone: (none)<a href="#section-5.2-5" class="pilcrow">¶</a></p>
-<p id="section-5.2-6">Use Name: Bundle Transfer Protocol - Unidirectional<a href="#section-5.2-6" class="pilcrow">¶</a></p>
-<p id="section-5.2-7">Document: <span>[<a href="#BTP-U" class="cite xref">BTP-U</a>]</span><a href="#section-5.2-7" class="pilcrow">¶</a></p>
-<p id="section-5.2-8">This memo is an application for one multicast EUI-48 identifier.<a href="#section-5.2-8" class="pilcrow">¶</a></p>
+individual MAC addresses.<a href="#section-5.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-2">Following the recommended format given as the EUI-48 Identifier template
+in <span>[<a href="#RFC9542" class="cite xref">RFC9542</a>]</span>:<a href="#section-5.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-3">Applicant Name: IETF DTN Working Group<a href="#section-5.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-4">Applicant Email: dtn@ietf.org<a href="#section-5.2.1-4" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-5">Applicant Telephone: (none)<a href="#section-5.2.1-5" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-6">Use Name: Bundle Transfer Protocol - Unidirectional<a href="#section-5.2.1-6" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-7">Document: <span>[<a href="#BTP-U" class="cite xref">BTP-U</a>]</span><a href="#section-5.2.1-7" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-8">This memo is an application for one multicast EUI-48 identifier.<a href="#section-5.2.1-8" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 </section>
@@ -1433,7 +1466,7 @@ Ethernet, the virtual channel is identified by:<a href="#section-6.2-1" class="p
 <p id="section-6.2-3">Each unique combination defines a separate virtual channel with
 independent Transfer Number sequencing.<a href="#section-6.2-3" class="pilcrow">¶</a></p>
 <p id="section-6.2-4">Other technologies that support Ethernet-like framing and use of this
-EtherType (<a href="#ethertype" class="auto internal xref">5.1</a>) but which lack the above virtual channel
+EtherType (<a href="#ethertype" class="auto internal xref">5.1.1</a>) but which lack the above virtual channel
 identifers <span class="bcp14">MUST</span> define the equivalent virtual channel identifiers,
 e.g. technology-specific source and/or destination as well as any
 protocol-specific channel discriminators.<a href="#section-6.2-4" class="pilcrow">¶</a></p>
@@ -1586,8 +1619,12 @@ Ethernet segment before BTP-U messages can be successfully transmitted.<a href="
 <span class="refAuthor">Sipos, B.</span>, <span class="refAuthor">Demmer, M.</span>, <span class="refAuthor">Ott, J.</span>, and <span class="refAuthor">S. Perreault</span>, <span class="refTitle">"Delay-Tolerant Networking TCP Convergence-Layer Protocol Version 4"</span>, <span class="seriesInfo">RFC 9174</span>, <span class="seriesInfo">DOI 10.17487/RFC9174</span>, <time datetime="2022-01" class="refDate">January 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9174">https://www.rfc-editor.org/rfc/rfc9174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="UDPCLv2">[UDPCLv2]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Sipos, B.</span> and <span class="refAuthor">J. Deaton</span>, <span class="refTitle">"Delay-Tolerant Networking UDP Convergence Layer Protocol Version 2"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-dtn-udpcl-03</span>, <time datetime="2025-12-17" class="refDate">17 December 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-dtn-udpcl-03">https://datatracker.ietf.org/doc/html/draft-ietf-dtn-udpcl-03</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="_3GPP-TS-23.501">[_3GPP-TS-23.501]</dt>
+      <dd>
+<span class="refAuthor">3GPP</span>, <span class="refTitle">"System Architecture for the 5G System (5GS)"</span>, <span class="seriesInfo">3GPP TS 23.501 V15.2.0</span>, <time datetime="2018-06" class="refDate">June 2018</time>, <span>&lt;<a href="https://www.3gpp.org/ftp/Specs/archive/23_series/23.501/">https://www.3gpp.org/ftp/Specs/archive/23_series/23.501/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
