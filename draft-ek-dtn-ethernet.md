@@ -134,7 +134,7 @@ connected by Ethernet or Ethernet-like technologies. Specifically:
 This convergence layer is applicable to:
 
 - Physical Ethernet LANs
-- Virtual Private Cloud (VPC) networks connecting bundle agents
+- Virtual Private Cloud (VPC) networks connecting Bundle Protocol Agents
 - Ground-Station-as-a-Service (GSaaS) infrastructure
 - Technologies supporting Ethernet framing, e.g., DVB-GSE ({{DVB-GSE}}),
   3GPP 5G Ethernet PDU Session types ({{3GPP-TS-23.501}} §5.6.10.2), and
@@ -154,7 +154,35 @@ this Ethernet profile.
 
 Implementations MUST implement all mandatory {{BTP-U}} features and SHOULD
 implement all recommended features, including {{BTP-U}} Segmentation for
-handling bundles that exceed the Ethernet MTU.
+handling Bundles that exceed the Ethernet MTU.
+
+## BTP-U Virtual Channels
+
+{{BTP-U}} Transfer Numbers are unique within a "virtual channel." For
+Ethernet, the virtual channel is identified by:
+
+- Source MAC address (6 octets)
+- Destination MAC address (6 octets)
+- C-VLAN ID (12 bits, if 802.1Q tag present)
+
+Each unique combination defines a separate virtual channel with
+independent Transfer Number sequencing.
+
+Other technologies that support Ethernet-like framing and use of this
+EtherType ({{<ethertype}}) but which lack the above virtual channel
+identifers MUST define the equivalent virtual channel identifiers,
+e.g. technology-specific source and/or destination as well as any
+protocol-specific channel discriminators.
+
+When using the multicast MAC address ({{<multicast_mac}}) for
+transmitting to receivers whose MAC addresses have not yet been learned,
+all receivers in the broadcast domain share the same destination address
+(and therefore the same virtual channel).
+Receiving Bundle Protocol Agents validate the Bundle destination EID,
+to determine whether received bundles are intended for local processing.
+Once a sender learns a peer's MAC address, implementations SHOULD switch to
+unicast transmission so as to minimize processing overhead by other
+listeners.
 
 ## Congestion Control
 {: #cc}
@@ -229,7 +257,7 @@ of the "IEEE 802 Numbers" registry {{IANA-IEEE802}}:
 {: #multicast_mac}
 
 One multicast MAC address is requested to enable neighbor discovery and
-bundle availability announcements within a broadcast domain. This allows
+Bundle availability announcements within a broadcast domain. This allows
 BTP-U senders to reach all capable receivers without prior knowledge of
 individual MAC addresses.
 
@@ -260,33 +288,6 @@ all".
 Ethernet's Frame Check Sequence (FCS) minimally meets this requirement to
 ensure Bundles are not corrupted in transmission.  Use of stronger integrity
 checks are left to BTP-U and its extensions.
-
-## BTP-U Virtual Channels
-
-{{BTP-U}} Transfer Numbers are unique within a "virtual channel." For
-Ethernet, the virtual channel is identified by:
-
-- Source MAC address (6 octets)
-- Destination MAC address (6 octets)
-- C-VLAN ID (12 bits, if 802.1Q tag present)
-
-Each unique combination defines a separate virtual channel with
-independent Transfer Number sequencing.
-
-Other technologies that support Ethernet-like framing and use of this
-EtherType ({{<ethertype}}) but which lack the above virtual channel
-identifers MUST define the equivalent virtual channel identifiers,
-e.g. technology-specific source and/or destination as well as any
-protocol-specific channel discriminators.
-
-When using the multicast MAC address for transmitting to receivers
-whose MAC addresses have not yet been learned, all receivers in the
-broadcast domain share the same destination address (and therefore the
-same virtual channel). Implementations relying on multicast SHOULD use
-additional mechanisms, i.e. the Bundle destination EID, to determine
-whether received bundles are intended for local processing. Once a
-sender learns a peer's MAC address, implementations SHOULD switch to
-unicast transmission.
 
 ## MTU and Jumbo Frames
 
@@ -319,6 +320,7 @@ a shared LAN segment for example, may cause a Denial-of-Service by
 flooding Ethernet switches and stations.
 
 ## Link-layer Security
+{: #link-security}
 
 Any attacker with access to the link, or with sufficient knowledge of local
 Bundle forwarding configuration so as to inject BTP-U frames and cause them
@@ -330,7 +332,21 @@ Ethernet networks.  Examples of recommended Ethernet-level security
 mechanisms a network might deploy include: IEEE 802.1X ({{IEEE802dot1X}}),
 which may be used restrict access to the link to authorized participants,
 and IEEE 802.1AE ({{IEEE802dot1AE}}), which offers confidentiality of
-the entire BTP-U payload.
+the entire BTP-U payload. In some deployments, and link may be considered
+secure against on-link attackers by virtue of its architecture, e.g. in
+cloud networking configurations where access to the virtual link is the
+responsibility of cloud security functions.
+
+## Packet Reordering, Duplication, and Replay
+
+Packet reordering and duplicaton are handled by the BTP-U protocol.
+However, an on-link attacker may replay traffic to effectively repeat a
+Bundle transfer. Even if a link can be made secure ({{<link-security}})
+repeat delivery of specific Bundles may happen for other reasons.
+Duplicate Bundle detection is handled by the Bundle Protocol Agent as
+specified in {{BPv7}} using the Bundle's unique identifier (source node
+ID and creation timestamp). This mechanism operates independently of
+the convergence layer.
 
 ## Filtering
 
