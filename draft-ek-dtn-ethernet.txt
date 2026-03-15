@@ -4,8 +4,8 @@
 
 Delay/Disruption Tolerant Networking                            E. Kline
 Internet-Draft                                Aalyria Technologies, Inc.
-Intended status: Informational                             10 March 2026
-Expires: 11 September 2026
+Intended status: Informational                             15 March 2026
+Expires: 16 September 2026
 
 
     Assignment of Ethernet Parameters for Bundle Transfer Protocol -
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 11 September 2026.
+   This Internet-Draft will expire on 16 September 2026.
 
 Copyright Notice
 
@@ -74,8 +74,9 @@ Table of Contents
    1.  Introduction
    2.  Applicability and Limitations
      2.1.  BTP-U Protocol Compliance
-     2.2.  Congestion Control
-     2.3.  Relationship to IP-based Convergence Layers
+     2.2.  BTP-U Virtual Channels
+     2.3.  Congestion Control
+     2.4.  Relationship to IP-based Convergence Layers
    3.  Conventions and Definitions
    4.  Assignment Considerations
      4.1.  IEEE Assignment Considerations
@@ -84,12 +85,12 @@ Table of Contents
        4.2.1.  Multicast MAC Address
    5.  Operational Considerations
      5.1.  Checksums
-     5.2.  BTP-U Virtual Channels
-     5.3.  MTU and Jumbo Frames
+     5.2.  MTU and Jumbo Frames
    6.  Security Considerations
      6.1.  Denial of Service
      6.2.  Link-layer Security
-     6.3.  Filtering
+     6.3.  Packet Reordering, Duplication, and Replay
+     6.4.  Filtering
    7.  References
      7.1.  Normative References
      7.2.  Informative References
@@ -111,7 +112,8 @@ Table of Contents
 
    *  Physical Ethernet LANs
 
-   *  Virtual Private Cloud (VPC) networks connecting bundle agents
+   *  Virtual Private Cloud (VPC) networks connecting Bundle Protocol
+      Agents
 
    *  Ground-Station-as-a-Service (GSaaS) infrastructure
 
@@ -134,9 +136,39 @@ Table of Contents
 
    Implementations MUST implement all mandatory [BTP-U] features and
    SHOULD implement all recommended features, including [BTP-U]
-   Segmentation for handling bundles that exceed the Ethernet MTU.
+   Segmentation for handling Bundles that exceed the Ethernet MTU.
 
-2.2.  Congestion Control
+2.2.  BTP-U Virtual Channels
+
+   [BTP-U] Transfer Numbers are unique within a "virtual channel."  For
+   Ethernet, the virtual channel is identified by:
+
+   *  Source MAC address (6 octets)
+
+   *  Destination MAC address (6 octets)
+
+   *  C-VLAN ID (12 bits, if 802.1Q tag present)
+
+   Each unique combination defines a separate virtual channel with
+   independent Transfer Number sequencing.
+
+   Other technologies that support Ethernet-like framing and use of this
+   EtherType (4.1.1) but which lack the above virtual channel identifers
+   MUST define the equivalent virtual channel identifiers, e.g.
+   technology-specific source and/or destination as well as any
+   protocol-specific channel discriminators.
+
+   When using the multicast MAC address (4.2.1) for transmitting to
+   receivers whose MAC addresses have not yet been learned, all
+   receivers in the broadcast domain share the same destination address
+   (and therefore the same virtual channel).  Receiving Bundle Protocol
+   Agents validate the Bundle destination EID, to determine whether
+   received bundles are intended for local processing.  Once a sender
+   learns a peer's MAC address, implementations SHOULD switch to unicast
+   transmission so as to minimize processing overhead by other
+   listeners.
+
+2.3.  Congestion Control
 
    BTP-U lacks a congestion control mechanism and presumes sending rate
    is externally managed.  Ethernet flow control mechanisms exist but,
@@ -147,7 +179,7 @@ Table of Contents
    mechanism outside of BTP-U, network operators MUST consider alternate
    Convergence Layers.
 
-2.3.  Relationship to IP-based Convergence Layers
+2.4.  Relationship to IP-based Convergence Layers
 
    IP-based convergence layers (TCPCL [TCPCL], UDPCLv2 [UDPCLv2]) remain
    recommended where IP infrastructure exists.  This Ethernet
@@ -210,7 +242,7 @@ Table of Contents
 4.2.1.  Multicast MAC Address
 
    One multicast MAC address is requested to enable neighbor discovery
-   and bundle availability announcements within a broadcast domain.
+   and Bundle availability announcements within a broadcast domain.
    This allows BTP-U senders to reach all capable receivers without
    prior knowledge of individual MAC addresses.
 
@@ -242,36 +274,7 @@ Table of Contents
    requirement to ensure Bundles are not corrupted in transmission.  Use
    of stronger integrity checks are left to BTP-U and its extensions.
 
-5.2.  BTP-U Virtual Channels
-
-   [BTP-U] Transfer Numbers are unique within a "virtual channel."  For
-   Ethernet, the virtual channel is identified by:
-
-   *  Source MAC address (6 octets)
-
-   *  Destination MAC address (6 octets)
-
-   *  C-VLAN ID (12 bits, if 802.1Q tag present)
-
-   Each unique combination defines a separate virtual channel with
-   independent Transfer Number sequencing.
-
-   Other technologies that support Ethernet-like framing and use of this
-   EtherType (4.1.1) but which lack the above virtual channel identifers
-   MUST define the equivalent virtual channel identifiers, e.g.
-   technology-specific source and/or destination as well as any
-   protocol-specific channel discriminators.
-
-   When using the multicast MAC address for transmitting to receivers
-   whose MAC addresses have not yet been learned, all receivers in the
-   broadcast domain share the same destination address (and therefore
-   the same virtual channel).  Implementations relying on multicast
-   SHOULD use additional mechanisms, i.e. the Bundle destination EID, to
-   determine whether received bundles are intended for local processing.
-   Once a sender learns a peer's MAC address, implementations SHOULD
-   switch to unicast transmission.
-
-5.3.  MTU and Jumbo Frames
+5.2.  MTU and Jumbo Frames
 
    Implementations MUST support transmission and reception of frames
    with payload sizes up to 1500 octets (standard Ethernet MTU minus
@@ -313,9 +316,24 @@ Table of Contents
    security mechanisms a network might deploy include: IEEE 802.1X
    ([IEEE802dot1X]), which may be used restrict access to the link to
    authorized participants, and IEEE 802.1AE ([IEEE802dot1AE]), which
-   offers confidentiality of the entire BTP-U payload.
+   offers confidentiality of the entire BTP-U payload.  In some
+   deployments, and link may be considered secure against on-link
+   attackers by virtue of its architecture, e.g. in cloud networking
+   configurations where access to the virtual link is the responsibility
+   of cloud security functions.
 
-6.3.  Filtering
+6.3.  Packet Reordering, Duplication, and Replay
+
+   Packet reordering and duplicaton are handled by the BTP-U protocol.
+   However, an on-link attacker may replay traffic to effectively repeat
+   a Bundle transfer.  Even if a link can be made secure (6.2) repeat
+   delivery of specific Bundles may happen for other reasons.  Duplicate
+   Bundle detection is handled by the Bundle Protocol Agent as specified
+   in [BPv7] using the Bundle's unique identifier (source node ID and
+   creation timestamp).  This mechanism operates independently of the
+   convergence layer.
+
+6.4.  Filtering
 
    A common security paradigm is to "default deny" all traffic patterns
    that, broadly, do not conform to operator expectations.  In such
