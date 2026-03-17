@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-03-12T00:54:29.999153+00:00",
+  "timestamp": "2026-03-17T01:01:44.468209+00:00",
   "repo": "ekline/draft-dtn-ethernet",
   "labels": [
     {
@@ -191,15 +191,15 @@
       "id": "I_kwDOJwhRGM7yCzey",
       "title": "move S5.2 into S2",
       "url": "https://github.com/ekline/draft-dtn-ethernet/issues/14",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ekline",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "Brian Sipos recommends moving S5.2 (virtual channels) into S2 (Applicability and Limitations).\n\nSeems sensible.",
       "createdAt": "2026-03-11T21:37:58Z",
-      "updatedAt": "2026-03-11T21:37:58Z",
-      "closedAt": null,
+      "updatedAt": "2026-03-15T07:04:10Z",
+      "closedAt": "2026-03-15T07:04:10Z",
       "comments": []
     },
     {
@@ -207,15 +207,15 @@
       "id": "I_kwDOJwhRGM7yC0zK",
       "title": "mention packet reordering",
       "url": "https://github.com/ekline/draft-dtn-ethernet/issues/15",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "ekline",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "In either Security or Operations Considerations, mention that packet reordering can happen and that BTP-U solves this.\n\nDitto for packet duplication, presumably.",
       "createdAt": "2026-03-11T21:39:08Z",
-      "updatedAt": "2026-03-11T21:39:08Z",
-      "closedAt": null,
+      "updatedAt": "2026-03-15T07:04:10Z",
+      "closedAt": "2026-03-15T07:04:10Z",
       "comments": []
     }
   ],
