@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-03-17T01:01:44.468209+00:00",
+  "timestamp": "2026-03-19T01:05:03.353646+00:00",
   "repo": "ekline/draft-dtn-ethernet",
   "labels": [
     {
@@ -216,6 +216,22 @@
       "createdAt": "2026-03-11T21:39:08Z",
       "updatedAt": "2026-03-15T07:04:10Z",
       "closedAt": "2026-03-15T07:04:10Z",
+      "comments": []
+    },
+    {
+      "number": 16,
+      "id": "I_kwDOJwhRGM7z-7Ch",
+      "title": "document track",
+      "url": "https://github.com/ekline/draft-dtn-ethernet/issues/16",
+      "state": "OPEN",
+      "author": "ekline",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Ping IEEE liaison to see what the proper status for this document should be.  It will be good to have this documented for IESG telechat (should things progress to that stage).",
+      "createdAt": "2026-03-18T07:43:00Z",
+      "updatedAt": "2026-03-18T07:43:00Z",
+      "closedAt": null,
       "comments": []
     }
   ],
