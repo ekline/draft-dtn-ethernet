@@ -4,38 +4,38 @@
 <meta charset="utf-8">
 <meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
-<title>Assignment of Ethernet Parameters for Bundle Transfer Protocol - Unidirectional (BTP-U) over Ethernet</title>
+<title>Bundle Transfer Protocol - Unidirectional (BTPU) over Ethernet</title>
 <meta content="Erik Kline" name="author">
 <meta content="
-       This memo requests allocation of an EtherType and multicast MAC address
-for Bundle Transfer Protocol - Unidirectional (BTP-U) to enable its use
-as a Convergence Layer on Ethernet networks. This provides an alternative
-to IP-based convergence layers for environments where Ethernet forwarding
-is operationally feasible but IP routing is unavailable or operationally
-undesirable. 
+       This document specifies the use of the Bundle Transfer Protocol -
+Unidirectional (BTPU) as a Convergence Layer directly over Ethernet, and
+requests allocation of an EtherType and a multicast MAC address for that
+purpose. This provides an alternative to IP-based convergence layers for
+environments where Ethernet forwarding is operationally feasible but IP
+routing is unavailable or operationally undesirable. 
     " name="description">
-<meta content="xml2rfc 3.31.0" name="generator">
-<meta content="Delay and Distruption Tolerant Networking" name="keyword">
+<meta content="xml2rfc 3.34.0" name="generator">
+<meta content="Delay and Disruption Tolerant Networking" name="keyword">
 <meta content="DTN" name="keyword">
 <meta content="Bundle Protocol" name="keyword">
 <meta content="BP" name="keyword">
-<meta content="BTP-U" name="keyword">
+<meta content="BTPU" name="keyword">
 <meta content="Ethernet" name="keyword">
-<meta content="BTPoE" name="keyword">
 <meta content="draft-ek-dtn-ethernet-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.31.0
-    Python 3.12.12
-    ConfigArgParse 1.7
+  xml2rfc 3.34.0
+    Python 3.14.7
+    ConfigArgParse 1.7.5
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
-    lxml 6.0.2
-    platformdirs 4.5.1
+    lxml 6.1.1
+    natsort 8.4.0
+    platformdirs 4.11.7
     pycountry 24.6.1
     PyYAML 6.0.3
-    requests 2.32.5
-    wcwidth 0.3.0
+    requests 2.33.1
+    wcwidth 0.8.3
 -->
 <link href="draft-ek-dtn-ethernet.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -71,7 +71,6 @@ undesirable.
   src: local('Lora Italic'), local('Lora-Italic'), url('https://martinthomson.github.io/rfc-css/fonts/lora-italic-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
-
 @font-face {
   font-family: 'Lora';
   font-style: italic;
@@ -120,7 +119,6 @@ undesirable.
   src: local('Lora Regular'), local('Lora-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/lora-regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
-
 @font-face {
   font-family: 'Lora';
   font-style: normal;
@@ -185,7 +183,6 @@ undesirable.
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
 }
 
 @font-face {
@@ -302,16 +299,19 @@ h1, h2, h3, h4, h5, h6 {
   font-size-adjust: 0.5;
   color: var(--title-color);
 }
-h1#title {
-  font-size: 32px;
-  line-height: 40px;
-  clear: both;
-}
-h1#title, h1#rfcnum {
-  margin: 1.5em 0 0.2em;
-}
-h1#rfcnum + h1#title {
-  margin: 0.2em 0;
+h1 {
+  &#title {
+    font-size: 32px;
+    line-height: 40px;
+    clear: both;
+    margin: 1.5em 0 0.2em;
+  }
+  &#rfcnum {
+    margin: 1.5em 0 0.2em;
+    & + h1#title {
+      margin: 0.2em 0;
+    }
+  }
 }
 
 h1, h2, h3 {
@@ -331,10 +331,10 @@ h4, h5, h6 {
 #abstract+p {
   font-size: 18px;
   line-height: 24px;
-}
-#abstract+p code, #abstract+p samp, #abstract+p tt {
-  font-size: 16px;
-  line-height: 0;
+  & code, & samp, & tt {
+    font-size: 16px;
+    line-height: 0;
+  }
 }
 
 p {
@@ -345,59 +345,59 @@ p {
 div {
   margin: 0;
 }
-.alignRight.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignRight.art-text pre {
-  padding: 0;
-  width: auto;
-}
 .alignRight {
   margin: 1em 0;
-}
-.alignRight > *:first-child {
-  border: none;
-  margin: 0;
-  float: right;
-  clear: both;
-}
-.alignRight > *:nth-child(2) {
-  clear: both;
-  display: block;
-  border: none;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    margin: 0;
+    float: right;
+    clear: both;
+  }
+  & > *:nth-child(2) {
+    clear: both;
+    display: block;
+    border: none;
+  }
 }
 svg {
   display: block;
-}
-/* font-family isn't space-separated, but =~ will have to do */
-svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
-  font-family: var(--font-mono);
-}
-.alignCenter.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignCenter.art-text pre {
-  padding: 0;
-  width: auto;
+  /* font-family isn't space-separated, but =~ will have to do */
+  &[font-family~="monospace" i], & [font-family~="monospace" i] {
+    font-family: var(--font-mono);
+  }
 }
 .alignCenter {
   margin: 1em 0;
-}
-.alignCenter > *:first-child {
-  border: none;
-  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
-     support flexbox yet.
-  */
-  display: table;
-  margin: 0 auto;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+       support flexbox yet.
+    */
+    display: table;
+    margin: 0 auto;
+  }
 }
 
 /* lists */
@@ -435,26 +435,25 @@ dl {
     --indent: 5ch;
     & > dt {
       min-width: calc(var(--indent) - 2ch);
+      float: none;
     }
-  }
-  &.olPercent > dt {
-    float: none;
   }
 
   dl > dd > & {
     margin-top: 0.5em;
     margin-bottom: 0;
   }
-}
-dl:not(.dlNewline) > dt {
-  float: left;
-  margin-right: 2ch;
-  min-width: 8ch;
-}
-dl > dd {
-  margin-bottom: .8em;
-  margin-left: var(--indent) !important; /* stupid element overrides */
-  min-height: 2ex;
+
+  &:not(.dlNewline) > dt {
+    float: left;
+    margin-right: 2ch;
+    min-width: 8ch;
+  }
+  & > dd {
+    margin-bottom: .8em;
+    margin-left: var(--indent) !important; /* stupid element overrides */
+    min-height: 2ex;
+  }
 }
 :is(dl.compact, .dlCompact) > dd {
   margin-bottom: 0;
@@ -470,20 +469,22 @@ dl > dd {
 }
 
 /* links */
-a, a[href].selfRef:hover {
+a {
   text-decoration: none;
+  &[href] {
+    color: var(--link-color);
+    &:hover { text-decoration: underline; }
+    &.selfRef {
+      color: var(--text-color);
+      &:hover {
+        text-decoration: none;
+        background-color: var(--highlight-color);
+      }
+    }
+  }
 }
-a[href] {
-  color: var(--link-color);
-}
-a[href].selfRef, .iref + a[href].internal {
+.iref + a[href].internal {
   color: var(--text-color);
-}
-a[href]:hover {
-  text-decoration: underline;
-}
-a[href].selfRef:hover {
-  background-color: var(--highlight-color);
 }
 a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
   white-space: nowrap;
@@ -519,9 +520,9 @@ img {
 figure {
   margin: 0.5em 0;
   padding: 0;
-}
-figure blockquote {
-  margin: 0.8em 0.4em 0.4em;
+  & blockquote {
+    margin: 0.8em 0.4em 0.4em;
+  }
 }
 figcaption, caption {
   font-style: italic;
@@ -531,17 +532,19 @@ figcaption, caption {
 }
 @media screen {
   /* Auto-collapse boilerplate. */
-  :is(#status-of-memo, #copyright) p {
-    margin: -2px 0;
-    max-height: 0;
-    transition: max-height 2s ease, margin 0.5s ease 0.5s;
-    overflow: hidden;
-  }
-  :is(#status-of-memo, #copyright):hover p,
-  :is(#status-of-memo, #copyright) h2:target ~ p {
-    margin: 0.5em 0;
-    max-height: 500px;
-    overflow: auto;
+  :is(#status-of-memo, #copyright) {
+    & p {
+      margin: -2px 0;
+      max-height: 0;
+      transition: max-height 2s ease, margin 0.5s ease 0.5s;
+      overflow: hidden;
+    }
+    &:hover p,
+    & h2:target ~ p {
+      margin: 0.5em 0;
+      max-height: 500px;
+      overflow: auto;
+    }
   }
   pre, svg {
     display: inline-block;
@@ -591,25 +594,17 @@ table {
   max-width: 100%;
   margin: 0 0 1em;
   border-collapse: collapse;
-}
-table.right {
-  margin-left: auto;
-}
-table.center {
-  margin-left: auto;
-  margin-right: auto;
-}
-table.left {
-  margin-right: auto;
-}
-table .text-left {
-  text-align: left;
-}
-table .text-center {
-  text-align: center;
-}
-table .text-right {
-  text-align: right;
+  &.right { margin-left: auto; }
+  &.center { margin-left: auto; margin-right: auto; }
+  &.left { margin-right: auto; }
+  & .text-left { text-align: left; }
+  & .text-center { text-align: center; }
+  & .text-right { text-align: right; }
+  & caption {
+    margin: 0;
+    padding: 3px 0 3px 1em;
+  }
+  & p { margin: 0; }
 }
 
 thead, tbody {
@@ -629,13 +624,6 @@ th {
 :is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
   background-color: var(--highlight-color);
 }
-table caption {
-  margin: 0;
-  padding: 3px 0 3px 1em;
-}
-table p {
-  margin: 0;
-}
 
 /* pilcrow */
 a.pilcrow {
@@ -646,18 +634,16 @@ a.pilcrow {
     color: var(--pilcrow-weak);
     &:hover { text-decoration: none; }
   }
-}
-@media not print {
-  :hover > a.pilcrow, a.pilcrow:focus {
-    opacity: 1;
+  @media not print {
+    :hover > &, &:focus {
+      opacity: 1;
+    }
+    &[href]:hover {
+      color: var(--pilcrow-strong);
+      background-color: transparent;
+    }
   }
-  a.pilcrow[href]:hover {
-    color: var(--pilcrow-strong);
-    background-color: transparent;
-  }
-}
-@media print {
-  a.pilcrow {
+  @media print {
     display: none;
   }
 }
@@ -716,9 +702,9 @@ sub, sup {
   font-size: 0.9em;
   font-style: italic;
   margin-top: 2em;
-}
-.docInfo .prepared {
-  float: right;
+  & .prepared {
+    float: right;
+  }
 }
 
 /* table of contents */
@@ -808,23 +794,27 @@ hr.addr {
   max-width: calc(100% - 16px);
 }
 @media (min-width: 500px) {
-  #authors-addresses > section {
-    column-count: 2;
-    column-gap: 20px;
-  }
-  #authors-addresses > section > h2 {
-    column-span: all;
-  }
-  /* hack for break-inside: avoid-column */
-  #authors-addresses address {
-    display: inline-block;
-    break-inside: avoid-column;
+  #authors-addresses {
+    & > section {
+      column-count: 2;
+      column-gap: 20px;
+    }
+    & > section > h2 {
+      column-span: all;
+    }
+    /* hack for break-inside: avoid-column */
+    & address {
+      display: inline-block;
+      break-inside: avoid-column;
+    }
   }
 }
 
 /* Comments */
-.rfcEditorRemove p:first-of-type {
-  font-style: italic;
+.rfcEditorRemove {
+  & p:first-of-type {
+    font-style: italic;
+  }
 }
 .cref {
   background-color: rgba(249, 232, 105, 0.3);
@@ -835,19 +825,21 @@ hr.addr {
 }
 
 @media screen {
-  #toc nav {
-    font-family: var(--font-title);
-    font-weight: 360;
-    & > ul { margin-bottom: 2em; }
-    & ul {
-      margin: 0 0 0 4px;
-      & :is(p, li) {
-        margin: 2px 0;
+  #toc {
+    & nav {
+      font-family: var(--font-title);
+      font-weight: 360;
+      & > ul { margin-bottom: 2em; }
+      & ul {
+        margin: 0 0 0 4px;
+        & :is(p, li) {
+          margin: 2px 0;
+        }
       }
     }
-  }
-  #toc a.toplink {
-    float: right;
+    & a.toplink {
+      float: right;
+    }
   }
 }
 @media not screen {
@@ -868,54 +860,54 @@ hr.addr {
     margin: 0;
     border-bottom: 1px solid #ccc;
     opacity: 0.6;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 2px 0 2px 6px;
-    padding-right: 1em;
-    font-size: 18px;
-    line-height: 24px;
-    min-width: 190px;
-    text-align: right;
-    background-color: #444;
-    color: white;
-    cursor: pointer;
-    &::before { /* css hamburger */
-      float: right;
-      position: relative;
-      width: 1em;
-      height: 1px;
-      left: -164px;
-      margin: 8px 0 0 0;
-      background: white none repeat scroll 0 0;
-      box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
-      content: "";
+    & h2 {
+      margin: 0;
+      padding: 2px 0 2px 6px;
+      padding-right: 1em;
+      font-size: 18px;
+      line-height: 24px;
+      min-width: 190px;
+      text-align: right;
+      background-color: #444;
+      color: white;
+      cursor: pointer;
+      &::before { /* css hamburger */
+        float: right;
+        position: relative;
+        width: 1em;
+        height: 1px;
+        left: -164px;
+        margin: 8px 0 0 0;
+        background: white none repeat scroll 0 0;
+        box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+        content: "";
+      }
     }
-  }
-  #toc nav {
-    display: none;
-    background-color: var(--background-color);
-    padding: 0.5em 1em 1em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    height: calc(100vh - 48px);
-    border-left: 1px solid #ddd;
-  }
-  #toc.active {
-    opacity: 1;
-    & nav { display: block; }
-  }
-  /* Make the collapsed ToC header render white on gray also when it's a link */
-  #toc h2 a,
-  #toc h2 a:is(:link, :focus, :hover),
-  #toc a.toplink,
-  #toc a.toplink:hover {
-    color: white;
-    background-color: #444;
-    text-decoration: none;
-  }
-  #toc a.toplink {
-    margin: 2px 0.5em 0;
+    & nav {
+      display: none;
+      background-color: var(--background-color);
+      padding: 0.5em 1em 1em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      height: calc(100vh - 48px);
+      border-left: 1px solid #ddd;
+    }
+    &.active {
+      opacity: 1;
+      & nav { display: block; }
+    }
+    /* Make the collapsed ToC header render white on gray also when it's a link */
+    & h2 a,
+    & h2 a:is(:link, :focus, :hover),
+    & a.toplink,
+    & a.toplink:hover {
+      color: white;
+      background-color: #444;
+      text-decoration: none;
+    }
+    & a.toplink {
+      margin: 2px 0.5em 0;
+    }
   }
 }
 
@@ -934,26 +926,26 @@ hr.addr {
     margin: 0;
     padding: 0;
     z-index: 1;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 0.25em 1em 1em 0;
-  }
-  #toc nav {
-    display: block;
-    height: calc(90vh - 84px);
-    bottom: 0;
-    padding: 0.5em 0 2em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
+    & h2 {
+      margin: 0;
+      padding: 0.25em 1em 1em 0;
+    }
+    & nav {
+      display: block;
+      height: calc(90vh - 84px);
+      bottom: 0;
+      padding: 0.5em 0 2em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+    & a.toplink {
+      margin: 8px 0.5em 0;
+    }
   }
   img { /* future proofing */
     max-width: 100%;
     height: auto;
-  }
-  #toc a.toplink {
-    margin: 8px 0.5em 0;
   }
 }
 
@@ -969,12 +961,13 @@ hr.addr {
   #n-copyright-notice {
     border-bottom: none;
   }
-  #toc, #n-introduction {
-    page-break-before: always;
-  }
   #toc {
+    page-break-before: always;
     border-top: none;
     padding-top: 0;
+  }
+  #n-introduction {
+    page-break-before: always;
   }
   figure, pre, .vcard {
     page-break-inside: avoid;
@@ -1036,17 +1029,19 @@ hr.addr {
 }
 
 /* SVG Trick: a prefix match works because only black and white are allowed */
-svg :is([stroke="black"], [stroke^="#000"]) {
-  stroke: var(--text-color);
-}
-svg :is([stroke="white"], [stroke^="#fff"]) {
-  stroke: var(--background-color);
-}
-svg :is([fill="black"], [fill^="#000"], :not([fill])) {
-  fill: var(--text-color);
-}
-svg :is([fill="white"], [fill^="#fff"]) {
-  fill: var(--background-color);
+svg {
+  & :is([stroke="black"], [stroke^="#000"]) {
+    stroke: var(--text-color);
+  }
+  & :is([stroke="white"], [stroke^="#fff"]) {
+    stroke: var(--background-color);
+  }
+  & :is([fill="black"], [fill^="#000"], :not([fill])) {
+    fill: var(--text-color);
+  }
+  & :is([fill="white"], [fill^="#fff"]) {
+    fill: var(--background-color);
+  }
 }
 </style>
 
@@ -1055,12 +1050,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <table class="ears">
 <thead><tr>
 <td class="left">Internet-Draft</td>
-<td class="center">BTPU-over-Ethernet</td>
-<td class="right">March 2026</td>
+<td class="center">BTPU over Ethernet</td>
+<td class="right">September 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Kline</td>
-<td class="center">Expires 16 September 2026</td>
+<td class="center">Expires 10 March 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1073,12 +1068,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ek-dtn-ethernet-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-03-15" class="published">15 March 2026</time>
+<time datetime="2026-09-06" class="published">6 September 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
-<dd class="intended-status">Informational</dd>
+<dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-09-16">16 September 2026</time></dd>
+<dd class="expires"><time datetime="2027-03-10">10 March 2027</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1088,15 +1083,15 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </dd>
 </dl>
 </div>
-<h1 id="title">Assignment of Ethernet Parameters for Bundle Transfer Protocol - Unidirectional (BTP-U) over Ethernet</h1>
+<h1 id="title">Bundle Transfer Protocol - Unidirectional (BTPU) over Ethernet</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This memo requests allocation of an EtherType and multicast MAC address
-for Bundle Transfer Protocol - Unidirectional (BTP-U) to enable its use
-as a Convergence Layer on Ethernet networks. This provides an alternative
-to IP-based convergence layers for environments where Ethernet forwarding
-is operationally feasible but IP routing is unavailable or operationally
-undesirable.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document specifies the use of the Bundle Transfer Protocol -
+Unidirectional (BTPU) as a Convergence Layer directly over Ethernet, and
+requests allocation of an EtherType and a multicast MAC address for that
+purpose. This provides an alternative to IP-based convergence layers for
+environments where Ethernet forwarding is operationally feasible but IP
+routing is unavailable or operationally undesirable.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1133,7 +1128,7 @@ undesirable.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 16 September 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 10 March 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1166,90 +1161,107 @@ undesirable.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
             <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-applicability-and-limitatio" class="internal xref">Applicability and Limitations</a></p>
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-encapsulation" class="internal xref">Encapsulation</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
-                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-btp-u-protocol-compliance" class="internal xref">BTP-U Protocol Compliance</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
-                <p id="section-toc.1-1.2.2.2.1" class="keepWithNext"><a href="#section-2.2" class="auto internal xref">2.2</a>.  <a href="#name-btp-u-virtual-channels" class="internal xref">BTP-U Virtual Channels</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3">
-                <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="auto internal xref">2.3</a>.  <a href="#name-congestion-control" class="internal xref">Congestion Control</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4">
-                <p id="section-toc.1-1.2.2.4.1"><a href="#section-2.4" class="auto internal xref">2.4</a>.  <a href="#name-relationship-to-ip-based-co" class="internal xref">Relationship to IP-based Convergence Layers</a></p>
+                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-minimum-frame-size" class="internal xref">Minimum Frame Size</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-assignment-considerations" class="internal xref">Assignment Considerations</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-applicability-and-limitatio" class="internal xref">Applicability and Limitations</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-ieee-assignment-considerati" class="internal xref">IEEE Assignment Considerations</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.1">
-                    <p id="section-toc.1-1.4.2.1.2.1.1"><a href="#section-4.1.1" class="auto internal xref">4.1.1</a>.  <a href="#name-ethertype" class="internal xref">EtherType</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-btpu-protocol-compliance" class="internal xref">BTPU Protocol Compliance</a></p>
 </li>
-                </ul>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-btpu-logical-channels" class="internal xref">BTPU Logical Channels</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.1">
-                    <p id="section-toc.1-1.4.2.2.2.1.1"><a href="#section-4.2.1" class="auto internal xref">4.2.1</a>.  <a href="#name-multicast-mac-address" class="internal xref">Multicast MAC Address</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-use-of-the-group-mac-addres" class="internal xref">Use of the Group MAC Address</a></p>
 </li>
-                </ul>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
+                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-congestion-control" class="internal xref">Congestion Control</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5">
+                <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="auto internal xref">3.5</a>.  <a href="#name-relationship-to-ip-based-co" class="internal xref">Relationship to IP-based Convergence Layers</a></p>
 </li>
             </ul>
 </li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
+</li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-operational-considerations" class="internal xref">Operational Considerations</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-assignment-considerations" class="internal xref">Assignment Considerations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-checksums" class="internal xref">Checksums</a></p>
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-ieee-assignment-considerati" class="internal xref">IEEE Assignment Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.1">
+                    <p id="section-toc.1-1.5.2.1.2.1.1"><a href="#section-5.1.1" class="auto internal xref">5.1.1</a>.  <a href="#name-ethertype" class="internal xref">EtherType</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
-                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-mtu-and-jumbo-frames" class="internal xref">MTU and Jumbo Frames</a></p>
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.1">
+                    <p id="section-toc.1-1.5.2.2.2.1.1"><a href="#section-5.2.1" class="auto internal xref">5.2.1</a>.  <a href="#name-multicast-mac-address" class="internal xref">Multicast MAC Address</a></p>
+</li>
+                </ul>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-operational-considerations" class="internal xref">Operational Considerations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
-                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-denial-of-service" class="internal xref">Denial of Service</a></p>
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-checksums" class="internal xref">Checksums</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
-                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-link-layer-security" class="internal xref">Link-layer Security</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.3">
-                <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="auto internal xref">6.3</a>.  <a href="#name-packet-reordering-duplicati" class="internal xref">Packet Reordering, Duplication, and Replay</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.4">
-                <p id="section-toc.1-1.6.2.4.1"><a href="#section-6.4" class="auto internal xref">6.4</a>.  <a href="#name-filtering" class="internal xref">Filtering</a></p>
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-mtu-and-jumbo-frames" class="internal xref">MTU and Jumbo Frames</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-references" class="internal xref">References</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
-                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-denial-of-service" class="internal xref">Denial of Service</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
-                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-multicast-amplification" class="internal xref">Multicast Amplification</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
+                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-frame-injection-and-spoofin" class="internal xref">Frame Injection and Spoofing</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4">
+                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="auto internal xref">7.4</a>.  <a href="#name-link-layer-security" class="internal xref">Link-layer Security</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.5">
+                <p id="section-toc.1-1.7.2.5.1"><a href="#section-7.5" class="auto internal xref">7.5</a>.  <a href="#name-packet-reordering-duplicati" class="internal xref">Packet Reordering, Duplication, and Replay</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.6">
+                <p id="section-toc.1-1.7.2.6.1"><a href="#section-7.6" class="auto internal xref">7.6</a>.  <a href="#name-filtering" class="internal xref">Filtering</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
+                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
 </li>
         </ul>
 </nav>
@@ -1260,205 +1272,402 @@ undesirable.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">This memo requests Ethernet parameters to enable BTP-U <span>[<a href="#BTP-U" class="cite xref">BTP-U</a>]</span> as a
-Convergence Layer for environments where Bundle Protocol nodes are
-connected by Ethernet or Ethernet-like technologies. Specifically:<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">This document specifies how BTPU <span>[<a href="#BTPU" class="cite xref">BTPU</a>]</span> is carried directly in Ethernet
+frames, enabling its use as a Convergence Layer for environments where
+Bundle Protocol nodes are connected by Ethernet or Ethernet-like
+technologies. It defines the encapsulation (<a href="#encapsulation" class="auto internal xref">2</a>), the
+mapping of BTPU's logical channel onto Ethernet addressing, and
+Ethernet-specific operational and security considerations.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">To support this, the following Ethernet parameters are requested:<a href="#section-1-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-1-2.1">
-          <p id="section-1-2.1.1">an EtherType to identify frames carrying BTP-U payloads
-(<a href="#ethertype" class="auto internal xref">4.1.1</a>)<a href="#section-1-2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-1-3.1">
+          <p id="section-1-3.1.1">an EtherType to identify frames carrying BTPU payloads
+(<a href="#ethertype" class="auto internal xref">5.1.1</a>)<a href="#section-1-3.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-1-2.2">
-          <p id="section-1-2.2.1">a multicast MAC address for neighbor discovery and announcements
-(<a href="#multicast_mac" class="auto internal xref">4.2.1</a>)<a href="#section-1-2.2.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-1-3.2">
+          <p id="section-1-3.2.1">a multicast MAC address for transmission to receivers whose unicast
+MAC addresses are not yet known (<a href="#multicast_mac" class="auto internal xref">5.2.1</a>)<a href="#section-1-3.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-1-3">This convergence layer is applicable to:<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">This convergence layer is applicable to:<a href="#section-1-4" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-1-4.1">
-          <p id="section-1-4.1.1">Physical Ethernet LANs<a href="#section-1-4.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-1-5.1">
+          <p id="section-1-5.1.1">physical Ethernet LANs;<a href="#section-1-5.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-1-4.2">
-          <p id="section-1-4.2.1">Virtual Private Cloud (VPC) networks connecting Bundle Protocol Agents<a href="#section-1-4.2.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-1-5.2">
+          <p id="section-1-5.2.1">Layer 2 services that present an Ethernet segment to Bundle Protocol
+Agents, such as overlay networks, cloud-hosted virtual networks, or
+Ground-Station-as-a-Service (GSaaS) infrastructure, provided the
+service carries arbitrary EtherTypes (and, where the group MAC address
+is to be used, non-IP multicast frames); and<a href="#section-1-5.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-1-4.3">
-          <p id="section-1-4.3.1">Ground-Station-as-a-Service (GSaaS) infrastructure<a href="#section-1-4.3.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-1-4.4">
-          <p id="section-1-4.4.1">Technologies supporting Ethernet framing, e.g., DVB-GSE (<span>[<a href="#DVB-GSE" class="cite xref">DVB-GSE</a>]</span>),
-3GPP 5G Ethernet PDU Session types (<span>[<a href="#_3GPP-TS-23.501" class="cite xref">_3GPP-TS-23.501</a>]</span> §5.6.10.2), and
-the US Space Development Agency's Optical Communications Terminal
-standard (<span>[<a href="#SDA-OCT" class="cite xref">SDA-OCT</a>]</span> §3.4.8).<a href="#section-1-4.4.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-1-5.3">
+          <p id="section-1-5.3.1">technologies supporting Ethernet framing, e.g., DVB-GSE (<span>[<a href="#DVB-GSE" class="cite xref">DVB-GSE</a>]</span>),
+the 3GPP 5G Ethernet PDU Session type (Section 5.6.10.2 of
+<span>[<a href="#_3GPP-TS-23.501" class="cite xref">_3GPP-TS-23.501</a>]</span>), and the US Space Development Agency's Optical
+Communications Terminal standard (Section 3.4.8 of <span>[<a href="#SDA-OCT" class="cite xref">SDA-OCT</a>]</span>).<a href="#section-1-5.3.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-1-5">Primary use cases include mission modeling, testbed environments, and
-deployments where IP routing is unavailable or adds unnecessary complexity.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<p id="section-1-6">Primary use cases include mission modeling, testbed environments, and
+deployments where IP routing is unavailable or adds unnecessary complexity.<a href="#section-1-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="encapsulation">
+<section id="section-2">
+      <h2 id="name-encapsulation">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-encapsulation" class="section-name selfRef">Encapsulation</a>
+      </h2>
+<p id="section-2-1">A BTPU Link-layer PDU (Section 2.1 of <span>[<a href="#BTPU" class="cite xref">BTPU</a>]</span>) is carried as the payload
+of an Ethernet frame <span>[<a href="#IEEE802dot3" class="cite xref">IEEE802dot3</a>]</span> whose EtherType field is set to the
+value assigned in <a href="#ethertype" class="auto internal xref">5.1.1</a>. The Link-layer PDU consists of the
+octets following the EtherType field (or following the last tag, if one
+or more 802.1Q tags are present) up to, but not including, the Frame
+Check Sequence (FCS). Its contents are a sequence of BTPU Messages as
+defined in <span>[<a href="#BTPU" class="cite xref">BTPU</a>]</span>.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<span id="name-btpu-over-ethernet-frame-fo"></span><div id="frame-format">
+<figure id="figure-1">
+        <div class="alignLeft art-text artwork" id="section-2-2.1">
+<pre>
++-----------------+-----------------+-----------+-----------+-----+
+| Destination MAC | Source MAC      | [802.1Q]  | EtherType | ... |
+| (6 octets)      | (6 octets)      | (4 octets)| = TBD-ET  |     |
++-----------------+-----------------+-----------+-----------+-----+
+| BTPU Link-layer PDU (one or more BTPU Messages)          | FCS |
++----------------------------------------------------------+-----+
+</pre>
+</div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
+<a href="#name-btpu-over-ethernet-frame-fo" class="selfRef">BTPU over Ethernet frame format</a>
+        </figcaption></figure>
+</div>
+<div id="minimum-frame-size">
+<section id="section-2.1">
+        <h3 id="name-minimum-frame-size">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-minimum-frame-size" class="section-name selfRef">Minimum Frame Size</a>
+        </h3>
+<p id="section-2.1-1">IEEE 802.3 requires a minimum frame size of 64 octets. A frame whose
+payload is shorter than 46 octets (42 octets when an 802.1Q tag is
+present) is extended by the transmitting MAC with a PAD field whose
+contents are unspecified by <span>[<a href="#IEEE802dot3" class="cite xref">IEEE802dot3</a>]</span>, although in practice they
+are conventionally zero-filled. Because EtherType-framed Ethernet carries
+no payload length indication, a receiver cannot distinguish such MAC
+padding from BTPU payload.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1-2">To avoid relying on MAC padding behavior, senders <span class="bcp14">SHOULD</span> ensure that
+every Link-layer PDU is at least 46 octets long by appending a Definite
+Padding Message (Section 8.5 of <span>[<a href="#BTPU" class="cite xref">BTPU</a>]</span>) as needed. Receivers <span class="bcp14">MUST</span>
+tolerate trailing octets that do not parse as a BTPU Message in frames
+of minimum size, and <span class="bcp14">SHOULD</span> treat trailing zero octets as an Indefinite
+Padding Message (Section 8.6 of <span>[<a href="#BTPU" class="cite xref">BTPU</a>]</span>).<a href="#section-2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.1-3">Beyond the minimum frame size, Ethernet frames are variable length and
+no further padding is required.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="applicability-and-limitations">
-<section id="section-2">
+<section id="section-3">
       <h2 id="name-applicability-and-limitatio">
-<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-applicability-and-limitatio" class="section-name selfRef">Applicability and Limitations</a>
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-applicability-and-limitatio" class="section-name selfRef">Applicability and Limitations</a>
       </h2>
-<div id="btp-u-protocol-compliance">
-<section id="section-2.1">
-        <h3 id="name-btp-u-protocol-compliance">
-<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-btp-u-protocol-compliance" class="section-name selfRef">BTP-U Protocol Compliance</a>
+<div id="btpu-protocol-compliance">
+<section id="section-3.1">
+        <h3 id="name-btpu-protocol-compliance">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-btpu-protocol-compliance" class="section-name selfRef">BTPU Protocol Compliance</a>
         </h3>
-<p id="section-2.1-1">This document specifies Ethernet encapsulation for <span>[<a href="#BTP-U" class="cite xref">BTP-U</a>]</span>. All protocol
-requirements, features, and recommendations defined in <span>[<a href="#BTP-U" class="cite xref">BTP-U</a>]</span> apply to
-this Ethernet profile.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
-<p id="section-2.1-2">Implementations <span class="bcp14">MUST</span> implement all mandatory <span>[<a href="#BTP-U" class="cite xref">BTP-U</a>]</span> features and <span class="bcp14">SHOULD</span>
-implement all recommended features, including <span>[<a href="#BTP-U" class="cite xref">BTP-U</a>]</span> Segmentation for
-handling Bundles that exceed the Ethernet MTU.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">This document specifies Ethernet encapsulation for <span>[<a href="#BTPU" class="cite xref">BTPU</a>]</span>. All protocol
+requirements, features, and recommendations defined in <span>[<a href="#BTPU" class="cite xref">BTPU</a>]</span> apply to
+this Ethernet profile.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">Because Bundles commonly exceed the Ethernet MTU (<a href="#mtu" class="auto internal xref">6.2</a>),
+implementations <span class="bcp14">MUST</span> support BTPU segmentation (Section 4 of <span>[<a href="#BTPU" class="cite xref">BTPU</a>]</span>)
+for both transmission and reception. BTPU's 20-bit Message Length field
+does not constrain Ethernet use, as it comfortably exceeds any Ethernet
+frame size.<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="btp-u-virtual-channels">
-<section id="section-2.2">
-        <h3 id="name-btp-u-virtual-channels">
-<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-btp-u-virtual-channels" class="section-name selfRef">BTP-U Virtual Channels</a>
+<div id="logical_channel">
+<section id="section-3.2">
+        <h3 id="name-btpu-logical-channels">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-btpu-logical-channels" class="section-name selfRef">BTPU Logical Channels</a>
         </h3>
-<p id="section-2.2-1"><span>[<a href="#BTP-U" class="cite xref">BTP-U</a>]</span> Transfer Numbers are unique within a "virtual channel." For
-Ethernet, the virtual channel is identified by:<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-1"><span>[<a href="#BTPU" class="cite xref">BTPU</a>]</span> operates over a logical channel between a sender and one or more
+receivers; each logical channel is an independent instance of the
+protocol with its own Transfer Number sequence and Transfer Window
+(Sections 4 and 5 of <span>[<a href="#BTPU" class="cite xref">BTPU</a>]</span>). For Ethernet, the logical channel is
+identified by the tuple of:<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.2-2.1">
-            <p id="section-2.2-2.1.1">Source MAC address (6 octets)<a href="#section-2.2-2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.2-2.1">
+            <p id="section-3.2-2.1.1">the interface on which the frame is transmitted or received, where each
+VLAN, as identified by the VLAN Identifier(s) of any 802.1Q tag(s)
+present, constitutes a distinct interface;<a href="#section-3.2-2.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-2.2-2.2">
-            <p id="section-2.2-2.2.1">Destination MAC address (6 octets)<a href="#section-2.2-2.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.2-2.2">
+            <p id="section-3.2-2.2.1">the source MAC address; and<a href="#section-3.2-2.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-2.2-2.3">
-            <p id="section-2.2-2.3.1">C-VLAN ID (12 bits, if 802.1Q tag present)<a href="#section-2.2-2.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.2-2.3">
+            <p id="section-3.2-2.3.1">the destination MAC address.<a href="#section-3.2-2.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-2.2-3">Each unique combination defines a separate virtual channel with
-independent Transfer Number sequencing.<a href="#section-2.2-3" class="pilcrow">¶</a></p>
-<p id="section-2.2-4">Other technologies that support Ethernet-like framing and use of this
-EtherType (<a href="#ethertype" class="auto internal xref">4.1.1</a>) but which lack the above virtual channel
-identifers <span class="bcp14">MUST</span> define the equivalent virtual channel identifiers,
-e.g. technology-specific source and/or destination as well as any
-protocol-specific channel discriminators.<a href="#section-2.2-4" class="pilcrow">¶</a></p>
-<p id="section-2.2-5">When using the multicast MAC address (<a href="#multicast_mac" class="auto internal xref">4.2.1</a>) for
-transmitting to receivers whose MAC addresses have not yet been learned,
-all receivers in the broadcast domain share the same destination address
-(and therefore the same virtual channel).
-Receiving Bundle Protocol Agents validate the Bundle destination EID,
-to determine whether received bundles are intended for local processing.
-Once a sender learns a peer's MAC address, implementations <span class="bcp14">SHOULD</span> switch to
-unicast transmission so as to minimize processing overhead by other
-listeners.<a href="#section-2.2-5" class="pilcrow">¶</a></p>
+<p id="section-3.2-3">Each unique combination defines a separate logical channel. In
+particular, frames from the same sender addressed to a peer's unicast
+MAC address and frames addressed to the group MAC address
+(<a href="#multicast_mac" class="auto internal xref">5.2.1</a>) belong to different logical channels, and a
+receiver maintains independent BTPU state for each.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.2-4">The Priority Code Point (PCP) and Drop Eligible Indicator (DEI) fields of
+an 802.1Q tag do not identify the logical channel. Because a single
+Link-layer PDU can carry Messages belonging to several Transfers of
+differing priority, this document makes no recommendation about how
+those fields are set.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
+<p id="section-3.2-5">The logical channel governs the sequencing and windowing of segmented
+Transfers. Bundle Messages (Section 8.1 of <span>[<a href="#BTPU" class="cite xref">BTPU</a>]</span>) carry no Transfer
+Number and require no per-channel state at the receiver beyond that
+needed to identify the transmitting node.<a href="#section-3.2-5" class="pilcrow">¶</a></p>
+<p id="section-3.2-6">The Transfer Window size is configured out of band (Section 5 of
+<span>[<a href="#BTPU" class="cite xref">BTPU</a>]</span>). Absent such configuration, implementations <span class="bcp14">SHOULD</span> use the
+default recommended by <span>[<a href="#BTPU" class="cite xref">BTPU</a>]</span>. Note that a receiver whose Transfer
+Window is smaller than the sender's will prematurely discard in-progress
+Transfers; this is of particular concern for channels using the group
+MAC address, where a single sender's frames are processed by many
+independently configured receivers.<a href="#section-3.2-6" class="pilcrow">¶</a></p>
+<p id="section-3.2-7">Technologies that carry Ethernet-framed payloads and use this EtherType
+(<a href="#ethertype" class="auto internal xref">5.1.1</a>) but lack the above channel identifiers need to define
+an equivalent logical channel identifier, e.g. from technology-specific
+source and destination identifiers and any protocol-specific channel
+discriminators. Such definitions are outside the scope of this document.<a href="#section-3.2-7" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="group_mac_use">
+<section id="section-3.3">
+        <h3 id="name-use-of-the-group-mac-addres">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-use-of-the-group-mac-addres" class="section-name selfRef">Use of the Group MAC Address</a>
+        </h3>
+<p id="section-3.3-1">A sender that does not know the unicast MAC address of the intended
+next-hop node <span class="bcp14">MAY</span> transmit BTPU frames to the group MAC address assigned
+in <a href="#multicast_mac" class="auto internal xref">5.2.1</a>. All BTPU receivers in the broadcast domain will
+receive such frames; from the perspective of each receiver they share a
+single logical channel identified by the sender's source MAC address and
+the group destination address (<a href="#logical_channel" class="auto internal xref">3.2</a>).<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3-2">A node that receives a bundle in a frame addressed to the group MAC
+address processes it as follows:<a href="#section-3.3-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.3-3.1">
+            <p id="section-3.3-3.1.1">If the bundle's destination EID identifies an endpoint of which the
+receiving node is a member, the bundle is delivered as specified in
+<span>[<a href="#BPv7" class="cite xref">BPv7</a>]</span>.<a href="#section-3.3-3.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.3-3.2">
+            <p id="section-3.3-3.2.1">Otherwise, if the receiving node has been explicitly configured to act
+as a next hop for the transmitting node (as identified by the frame's
+source MAC address and logical channel), the bundle is forwarded as
+specified in <span>[<a href="#BPv7" class="cite xref">BPv7</a>]</span>. Implementations <span class="bcp14">MUST NOT</span> enable such forwarding
+by default.<a href="#section-3.3-3.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-3.3-3.3">
+            <p id="section-3.3-3.3.1">Otherwise, the receiving node <span class="bcp14">MUST</span> discard the bundle without further
+processing. In particular, it <span class="bcp14">MUST NOT</span> forward the bundle and <span class="bcp14">MUST NOT</span>
+generate any status report concerning it; the bundle is treated as
+though it had never been received.<a href="#section-3.3-3.3.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-3.3-4">Without this rule, a single frame carrying a bundle addressed to a
+singleton endpoint would be forwarded by every node in the broadcast
+domain that is not the destination, producing as many copies as there
+are receivers (see <a href="#mcast_amplification" class="auto internal xref">7.2</a>). This mirrors the
+prohibition on forwarding link-layer broadcasts that carry unicast
+destinations in Section 5.3.4 of <span>[<a href="#RFC1812" class="cite xref">RFC1812</a>]</span>.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
+<p id="section-3.3-5">A sender learns the unicast MAC address of a peer either through
+configuration or by observing the source MAC address of BTPU frames
+received from that peer; the latter requires the peer to transmit, which
+BTPU does not itself guarantee. Once a peer's unicast MAC address is
+known, senders <span class="bcp14">SHOULD</span> transmit to it by unicast so as to avoid
+unnecessary processing by other nodes and unnecessary flooding by
+switches, which cannot prune non-IP multicast traffic.<a href="#section-3.3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="cc">
-<section id="section-2.3">
+<section id="section-3.4">
         <h3 id="name-congestion-control">
-<a href="#section-2.3" class="section-number selfRef">2.3. </a><a href="#name-congestion-control" class="section-name selfRef">Congestion Control</a>
+<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-congestion-control" class="section-name selfRef">Congestion Control</a>
         </h3>
-<p id="section-2.3-1">BTP-U lacks a congestion control mechanism and presumes sending rate is
-externally managed. Ethernet flow control mechanisms exist but, may not be
-operationally applicable in all situations (e.g. high delay links).<a href="#section-2.3-1" class="pilcrow">¶</a></p>
-<p id="section-2.3-2">For deployments where congestion control cannot be managed by a mechanism
-outside of BTP-U, network operators <span class="bcp14">MUST</span> consider alternate
-Convergence Layers.<a href="#section-2.3-2" class="pilcrow">¶</a></p>
+<p id="section-3.4-1">BTPU provides no congestion control and assumes that the sending rate is
+managed by a mechanism outside the protocol (Section 11 of <span>[<a href="#BTPU" class="cite xref">BTPU</a>]</span>).
+Ethernet offers only hop-by-hop flow control, namely PAUSE frames
+(Clause 31 of <span>[<a href="#IEEE802dot3" class="cite xref">IEEE802dot3</a>]</span>) and Priority-based Flow Control
+(<span>[<a href="#IEEE802dot1Q" class="cite xref">IEEE802dot1Q</a>]</span>). These mechanisms act on a single link rather than end
+to end across a bridged network, may be disabled by operators to avoid
+head-of-line blocking of unrelated traffic, and are ineffective over
+links whose delay is large relative to available buffering. They are
+therefore not a substitute for congestion control.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.4-2">Consistent with Section 11 of <span>[<a href="#BTPU" class="cite xref">BTPU</a>]</span>, BTPU over Ethernet <span class="bcp14">MUST NOT</span> be
+deployed on a segment where congestion can occur unless the sending rate
+is bounded by an external mechanism, such as static rate limiting or a
+schedule agreed among the nodes sharing the segment. Where no such
+mechanism is available, a convergence layer providing congestion control
+(e.g., <span>[<a href="#TCPCL" class="cite xref">TCPCL</a>]</span>) is recommended instead.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="relationship-to-ip-based-convergence-layers">
-<section id="section-2.4">
+<section id="section-3.5">
         <h3 id="name-relationship-to-ip-based-co">
-<a href="#section-2.4" class="section-number selfRef">2.4. </a><a href="#name-relationship-to-ip-based-co" class="section-name selfRef">Relationship to IP-based Convergence Layers</a>
+<a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-relationship-to-ip-based-co" class="section-name selfRef">Relationship to IP-based Convergence Layers</a>
         </h3>
-<p id="section-2.4-1">IP-based convergence layers (TCPCL <span>[<a href="#TCPCL" class="cite xref">TCPCL</a>]</span>, UDPCLv2 <span>[<a href="#UDPCLv2" class="cite xref">UDPCLv2</a>]</span>) remain
+<p id="section-3.5-1">IP-based convergence layers (TCPCL <span>[<a href="#TCPCL" class="cite xref">TCPCL</a>]</span>, UDPCLv2 <span>[<a href="#UDPCLv2" class="cite xref">UDPCLv2</a>]</span>) remain
 recommended where IP infrastructure exists. This Ethernet convergence
-layer addresses scenarios where:<a href="#section-2.4-1" class="pilcrow">¶</a></p>
+layer addresses scenarios where:<a href="#section-3.5-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-2.4-2.1">
-            <p id="section-2.4-2.1.1">no operational IP addressing or routing is available<a href="#section-2.4-2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-3.5-2.1">
+            <p id="section-3.5-2.1.1">no operational IP addressing or routing is available<a href="#section-3.5-2.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-2.4-2.2">
-            <p id="section-2.4-2.2.1">only IPv4 or IPv6 link-local addresses exist and peer discovery is
-unspecified<a href="#section-2.4-2.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.5-2.2">
+            <p id="section-3.5-2.2.1">only link-local IP addresses are available and no peer discovery
+mechanism is deployed<a href="#section-3.5-2.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-2.4-2.3">
-            <p id="section-2.4-2.3.1">direct Ethernet operation simplifies deployment and management<a href="#section-2.4-2.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-3.5-2.3">
+            <p id="section-3.5-2.3.1">direct Ethernet operation simplifies deployment and management<a href="#section-3.5-2.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-2.4-3">Header overhead savings (28-48+ bytes) are secondary to operational
-utility in non-IP environments.<a href="#section-2.4-3" class="pilcrow">¶</a></p>
+<p id="section-3.5-3">Header overhead savings (28 octets for IPv4/UDP, 48 octets for IPv6/UDP,
+plus any convergence-layer framing) are secondary to operational utility
+in non-IP environments.<a href="#section-3.5-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="conventions-and-definitions">
-<section id="section-3">
+<section id="section-4">
       <h2 id="name-conventions-and-definitions">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-conventions-and-definitions" class="section-name selfRef">Conventions and Definitions</a>
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-conventions-and-definitions" class="section-name selfRef">Conventions and Definitions</a>
       </h2>
-<p id="section-3-1">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
+<p id="section-4-1">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
 "<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
 described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
-appear in all capitals, as shown here.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">As this memo is Informational it uses BCP14 langauge only for clarity.<a href="#section-3-2" class="pilcrow">¶</a></p>
+appear in all capitals, as shown here.<a href="#section-4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="assignment-considerations">
-<section id="section-4">
+<section id="section-5">
       <h2 id="name-assignment-considerations">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-assignment-considerations" class="section-name selfRef">Assignment Considerations</a>
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-assignment-considerations" class="section-name selfRef">Assignment Considerations</a>
       </h2>
-<p id="section-4-1">Allocation of the following Ethernet parameters is requested.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-5-1">This document requests one EtherType from the IEEE Registration Authority
+and one multicast MAC address from IANA, as described below.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <div id="ieee-assignment-considerations">
-<section id="section-4.1">
+<section id="section-5.1">
         <h3 id="name-ieee-assignment-considerati">
-<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-ieee-assignment-considerati" class="section-name selfRef">IEEE Assignment Considerations</a>
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-ieee-assignment-considerati" class="section-name selfRef">IEEE Assignment Considerations</a>
         </h3>
 <div id="ethertype">
-<section id="section-4.1.1">
+<section id="section-5.1.1">
           <h4 id="name-ethertype">
-<a href="#section-4.1.1" class="section-number selfRef">4.1.1. </a><a href="#name-ethertype" class="section-name selfRef">EtherType</a>
+<a href="#section-5.1.1" class="section-number selfRef">5.1.1. </a><a href="#name-ethertype" class="section-name selfRef">EtherType</a>
           </h4>
-<p id="section-4.1.1-1">(per <span>[<a href="#RFC9542" class="cite xref">RFC9542</a>]</span>)
-The IESG is requested to approve applying to the IEEE
-Registration Authority for an EtherType for BTP-U.  (The IESG
-should communicate its approval to IANA and to those concerned
-with this document.  IANA will forward the IESG Approval to the
-registry expert of the "EtherType" registry from the "IEEE 802
-Numbers" registry group who will make the application to the
-IEEE Registration Authority, keeping IANA informed.)<a href="#section-4.1.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.1.1-2">(if approved)
-The following entry has been added to the "ETHER TYPES" subregistry
-of the "IEEE 802 Numbers" registry <span>[<a href="#IANA-IEEE802" class="cite xref">IANA-IEEE802</a>]</span>:<a href="#section-4.1.1-2" class="pilcrow">¶</a></p>
-<p id="section-4.1.1-3">Ethertype (decimal): YYYY<a href="#section-4.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-4.1.1-4">Ethertype (hex): YYYY<a href="#section-4.1.1-4" class="pilcrow">¶</a></p>
-<p id="section-4.1.1-5">Exp. Ethernet (decimal): -<a href="#section-4.1.1-5" class="pilcrow">¶</a></p>
-<p id="section-4.1.1-6">Exp. Ethernet (octal): -<a href="#section-4.1.1-6" class="pilcrow">¶</a></p>
-<p id="section-4.1.1-7">Description: BTP-U payloads<a href="#section-4.1.1-7" class="pilcrow">¶</a></p>
-<p id="section-4.1.1-8">References: RFC ZZZZ (this document)<a href="#section-4.1.1-8" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-1">Following the procedure in Section 5.5 of <span>[<a href="#RFC9542" class="cite xref">RFC9542</a>]</span>: the IESG is
+requested to approve applying to the IEEE Registration Authority for an
+EtherType for BTPU. (The IESG should communicate its approval to IANA and
+to those concerned with this document. IANA will forward the IESG
+Approval to the registry expert of the "EtherType" registry from the
+"IEEE 802 Numbers" registry group who will make the application to the
+IEEE Registration Authority, keeping IANA informed.)<a href="#section-5.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1.1-2">Upon assignment, IANA is requested to record the following entry in the
+"EtherType" registry of the "IEEE 802 Numbers" registry group
+<span>[<a href="#IANA-IEEE802" class="cite xref">IANA-IEEE802</a>]</span>:<a href="#section-5.1.1-2" class="pilcrow">¶</a></p>
+<span id="name-ethertype-registry-entry"></span><div id="ethertype-entry">
+<table class="center" id="table-1">
+            <caption>
+<a href="#table-1" class="selfRef">Table 1</a>:
+<a href="#name-ethertype-registry-entry" class="selfRef">EtherType registry entry</a>
+            </caption>
+<thead>
+              <tr>
+                <th class="text-left" rowspan="1" colspan="1">Ethertype (decimal)</th>
+                <th class="text-left" rowspan="1" colspan="1">Ethertype (hex)</th>
+                <th class="text-left" rowspan="1" colspan="1">Description</th>
+                <th class="text-left" rowspan="1" colspan="1">Reference</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-left" rowspan="1" colspan="1">TBD-ET-DEC</td>
+                <td class="text-left" rowspan="1" colspan="1">TBD-ET</td>
+                <td class="text-left" rowspan="1" colspan="1">Bundle Transfer Protocol - Unidirectional (BTPU)</td>
+                <td class="text-left" rowspan="1" colspan="1">RFC XXXX</td>
+              </tr>
+            </tbody>
+          </table>
+</div>
+<p id="section-5.1.1-4">[RFC Editor: please replace TBD-ET-DEC and TBD-ET throughout this
+document with the assigned EtherType, and RFC XXXX with this document's
+RFC number; then remove this note.]<a href="#section-5.1.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="iana-considerations">
-<section id="section-4.2">
+<section id="section-5.2">
         <h3 id="name-iana-considerations">
-<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
         </h3>
 <div id="multicast_mac">
-<section id="section-4.2.1">
+<section id="section-5.2.1">
           <h4 id="name-multicast-mac-address">
-<a href="#section-4.2.1" class="section-number selfRef">4.2.1. </a><a href="#name-multicast-mac-address" class="section-name selfRef">Multicast MAC Address</a>
+<a href="#section-5.2.1" class="section-number selfRef">5.2.1. </a><a href="#name-multicast-mac-address" class="section-name selfRef">Multicast MAC Address</a>
           </h4>
-<p id="section-4.2.1-1">One multicast MAC address is requested to enable neighbor discovery and
-Bundle availability announcements within a broadcast domain. This allows
-BTP-U senders to reach all capable receivers without prior knowledge of
-individual MAC addresses.<a href="#section-4.2.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-2">Following the recommended format given as the EUI-48 Identifier template
-in <span>[<a href="#RFC9542" class="cite xref">RFC9542</a>]</span>:<a href="#section-4.2.1-2" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-3">Applicant Name: IETF DTN Working Group<a href="#section-4.2.1-3" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-4">Applicant Email: dtn@ietf.org<a href="#section-4.2.1-4" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-5">Applicant Telephone: (none)<a href="#section-4.2.1-5" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-6">Use Name: Bundle Transfer Protocol - Unidirectional<a href="#section-4.2.1-6" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-7">Document: <span>[<a href="#BTP-U" class="cite xref">BTP-U</a>]</span><a href="#section-4.2.1-7" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-8">This memo is an application for one multicast EUI-48 identifier.<a href="#section-4.2.1-8" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-1">IANA is requested to assign one multicast EUI-48 identifier under the
+IANA OUI, from the block used for very small assignments
+(01-00-5E-90-00-00 through 01-00-5E-90-00-FF; Section 2.1.3 of
+<span>[<a href="#RFC9542" class="cite xref">RFC9542</a>]</span>), and to record it in the "IANA Multicast 48-bit MAC
+Addresses" registry with this document as the reference. Per Section
+2.1.5 of <span>[<a href="#RFC9542" class="cite xref">RFC9542</a>]</span>, this assignment is subject to Expert Review.<a href="#section-5.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-2">The address allows BTPU senders to reach all BTPU receivers within a
+broadcast domain without prior knowledge of their individual unicast MAC
+addresses, as described in <a href="#group_mac_use" class="auto internal xref">3.3</a>. A dedicated group address
+is requested, rather than use of the broadcast address, so that stations
+not participating in BTPU can filter these frames in hardware.<a href="#section-5.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-3">[RFC Editor: please replace TBD-MAC below with the assigned address and
+remove this note.]<a href="#section-5.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-4">Assigned address: TBD-MAC<a href="#section-5.2.1-4" class="pilcrow">¶</a></p>
+<p id="section-5.2.1-5">The completed template of Appendix A.1 of <span>[<a href="#RFC9542" class="cite xref">RFC9542</a>]</span> follows:<a href="#section-5.2.1-5" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-5.2.1-6">
+            <dt id="section-5.2.1-6.1">Applicant Name:</dt>
+            <dd style="margin-left: 1.5em" id="section-5.2.1-6.2">
+              <p id="section-5.2.1-6.2.1">IETF DTN Working Group<a href="#section-5.2.1-6.2.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-5.2.1-6.3">Applicant Email:</dt>
+            <dd style="margin-left: 1.5em" id="section-5.2.1-6.4">
+              <p id="section-5.2.1-6.4.1">dtn@ietf.org<a href="#section-5.2.1-6.4.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-5.2.1-6.5">Applicant Telephone:</dt>
+            <dd style="margin-left: 1.5em" id="section-5.2.1-6.6">
+              <p id="section-5.2.1-6.6.1">(to be supplied at submission)<a href="#section-5.2.1-6.6.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-5.2.1-6.7">Use Name:</dt>
+            <dd style="margin-left: 1.5em" id="section-5.2.1-6.8">
+              <p id="section-5.2.1-6.8.1">Bundle Transfer Protocol - Unidirectional (BTPU) over Ethernet<a href="#section-5.2.1-6.8.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-5.2.1-6.9">Document:</dt>
+            <dd style="margin-left: 1.5em" id="section-5.2.1-6.10">
+              <p id="section-5.2.1-6.10.1">RFC XXXX (this document)<a href="#section-5.2.1-6.10.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-5.2.1-6.11">EUI-48 or EUI-64:</dt>
+            <dd style="margin-left: 1.5em" id="section-5.2.1-6.12">
+              <p id="section-5.2.1-6.12.1">EUI-48<a href="#section-5.2.1-6.12.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-5.2.1-6.13">Size of Block requested:</dt>
+            <dd style="margin-left: 1.5em" id="section-5.2.1-6.14">
+              <p id="section-5.2.1-6.14.1">1 (2**0)<a href="#section-5.2.1-6.14.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-5.2.1-6.15">Multicast, unicast, or both:</dt>
+            <dd style="margin-left: 1.5em" id="section-5.2.1-6.16">
+              <p id="section-5.2.1-6.16.1">Multicast<a href="#section-5.2.1-6.16.1" class="pilcrow">¶</a></p>
+</dd>
+          <dd class="break"></dd>
+</dl>
 </section>
 </div>
 </section>
@@ -1466,155 +1675,224 @@ in <span>[<a href="#RFC9542" class="cite xref">RFC9542</a>]</span>:<a href="#sec
 </section>
 </div>
 <div id="operational-considerations">
-<section id="section-5">
+<section id="section-6">
       <h2 id="name-operational-considerations">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-operational-considerations" class="section-name selfRef">Operational Considerations</a>
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-operational-considerations" class="section-name selfRef">Operational Considerations</a>
       </h2>
 <div id="checksums">
-<section id="section-5.1">
+<section id="section-6.1">
         <h3 id="name-checksums">
-<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-checksums" class="section-name selfRef">Checksums</a>
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-checksums" class="section-name selfRef">Checksums</a>
         </h3>
-<p id="section-5.1-1">To reiterate the observation in §3.5 of <span>[<a href="#DGRAMCL" class="cite xref">DGRAMCL</a>]</span>, the Bundle Protocol
-specifications assume that Bundles "are transmitted over an erasure
-channel, i.e., a channel that either delivers packets correctly or not at
-all".<a href="#section-5.1-1" class="pilcrow">¶</a></p>
-<p id="section-5.1-2">Ethernet's Frame Check Sequence (FCS) minimally meets this requirement to
-ensure Bundles are not corrupted in transmission.  Use of stronger integrity
-checks are left to BTP-U and its extensions.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<p id="section-6.1-1">As noted in Section 3.5 of <span>[<a href="#DGRAMCL" class="cite xref">DGRAMCL</a>]</span>, the Bundle Protocol assumes that
+Bundles are transmitted over an erasure channel, i.e., one that either
+delivers a PDU correctly or not at all.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-2">The Ethernet Frame Check Sequence (FCS) provides this property for a
+single link. However, the FCS is verified and regenerated at each bridge,
+so it does not detect corruption that occurs within a bridge, and the
+error-detection strength of its 32-bit CRC diminishes as frame length
+increases. Deployments requiring end-to-end integrity assurance <span class="bcp14">SHOULD</span>
+rely on Bundle-layer mechanisms such as block CRCs (<span>[<a href="#BPv7" class="cite xref">BPv7</a>]</span>) or BPSec
+Block Integrity Blocks (<span>[<a href="#RFC9172" class="cite xref">RFC9172</a>]</span>) rather than on the FCS alone.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="mtu-and-jumbo-frames">
-<section id="section-5.2">
+<div id="mtu">
+<section id="section-6.2">
         <h3 id="name-mtu-and-jumbo-frames">
-<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-mtu-and-jumbo-frames" class="section-name selfRef">MTU and Jumbo Frames</a>
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-mtu-and-jumbo-frames" class="section-name selfRef">MTU and Jumbo Frames</a>
         </h3>
-<p id="section-5.2-1">Implementations <span class="bcp14">MUST</span> support transmission and reception of frames with
-payload sizes up to 1500 octets (standard Ethernet MTU minus Ethernet
-header), as required by <span>[<a href="#IEEE802dot3" class="cite xref">IEEE802dot3</a>]</span>.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
-<p id="section-5.2-2">Implementations <span class="bcp14">MAY</span> support jumbo frames with payload sizes up to 9000
-octets or larger, but <span class="bcp14">SHOULD</span> only enable this capability when explicitly
-configured where operators have verified that the network path supports
-the larger frame size.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
-<p id="section-5.2-3">Since <span>[<a href="#BTP-U" class="cite xref">BTP-U</a>]</span> has no path MTU discovery mechanism and Ethernet networks
-silently drop oversized frames, implementations <span class="bcp14">SHOULD</span> default to 1500
-octets. Link Layer Discovery Protocol (LLDP) <span class="bcp14">MAY</span> be used to discover
-directly-connected link and neighbor parameters.<a href="#section-5.2-3" class="pilcrow">¶</a></p>
+<p id="section-6.2-1">Implementations <span class="bcp14">MUST</span> support transmission and reception of Link-layer
+PDUs of up to 1500 octets, the maximum payload size of a basic Ethernet
+frame <span>[<a href="#IEEE802dot3" class="cite xref">IEEE802dot3</a>]</span>. This limit applies to the BTPU Link-layer PDU
+itself; 802.1Q tags, if present, do not reduce it.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
+<p id="section-6.2-2">Implementations <span class="bcp14">MAY</span> support non-standard "jumbo" frames (commonly with
+payloads of up to 9000 octets), but <span class="bcp14">SHOULD</span> do so only when explicitly
+configured by an operator who has verified that every link and bridge on
+the path supports the larger size.<a href="#section-6.2-2" class="pilcrow">¶</a></p>
+<p id="section-6.2-3">BTPU has no path MTU discovery mechanism, and Ethernet bridges silently
+discard frames that exceed their supported size. Implementations
+therefore <span class="bcp14">SHOULD</span> default to a 1500-octet Link-layer PDU.<a href="#section-6.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="security-considerations">
-<section id="section-6">
+<section id="section-7">
       <h2 id="name-security-considerations">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-6-1">This document requests assignment of an EtherType and Multicast MAC address
-for BTP-U datagrams.  It has no incremental implications for security
-beyond those already documented in <span>[<a href="#BPv7" class="cite xref">BPv7</a>]</span> and <span>[<a href="#BTP-U" class="cite xref">BTP-U</a>]</span>.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-7-1">The security considerations of <span>[<a href="#BPv7" class="cite xref">BPv7</a>]</span> and <span>[<a href="#BTPU" class="cite xref">BTPU</a>]</span> apply. BTPU itself
+provides no security mechanisms and relies on lower and/or upper layers
+(Section 10 of <span>[<a href="#BTPU" class="cite xref">BTPU</a>]</span>). The following considerations are specific to
+carrying BTPU over Ethernet.<a href="#section-7-1" class="pilcrow">¶</a></p>
 <div id="denial-of-service">
-<section id="section-6.1">
+<section id="section-7.1">
         <h3 id="name-denial-of-service">
-<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-denial-of-service" class="section-name selfRef">Denial of Service</a>
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-denial-of-service" class="section-name selfRef">Denial of Service</a>
         </h3>
-<p id="section-6.1-1">BTP-U assumes the sending rate is controlled by a mechanism out of scope for
+<p id="section-7.1-1">BTPU assumes the sending rate is controlled by a mechanism out of scope for
 the protocol and has no built-in mechanism for identifying or mitigating any
-congestion a sender might cause. Use of this protocol on some networks,
-a shared LAN segment for example, may cause a Denial-of-Service by
-flooding Ethernet switches and stations.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+congestion a sender might cause (<a href="#cc" class="auto internal xref">3.4</a>). Use of this protocol on some
+networks, a shared LAN segment for example, may cause a Denial-of-Service
+by flooding Ethernet switches and stations.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="mcast_amplification">
+<section id="section-7.2">
+        <h3 id="name-multicast-amplification">
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-multicast-amplification" class="section-name selfRef">Multicast Amplification</a>
+        </h3>
+<p id="section-7.2-1">A single frame sent to the group MAC address (<a href="#multicast_mac" class="auto internal xref">5.2.1</a>) is
+delivered to every BTPU receiver in the broadcast domain. If receivers
+were to process such bundles exactly as they process unicast-received
+bundles, an attacker (or a misconfigured node) could obtain significant
+amplification from a single frame:<a href="#section-7.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7.2-2.1">
+            <p id="section-7.2-2.1.1">each receiver that is not the bundle's destination would attempt to
+forward the bundle toward that destination, producing as many copies
+as there are receivers; and<a href="#section-7.2-2.1.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-7.2-2.2">
+            <p id="section-7.2-2.2.1">each receiver that subsequently deletes the bundle could emit a status
+report to the bundle's report-to endpoint, if one was requested,
+producing as many status reports as there are receivers.<a href="#section-7.2-2.2.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-7.2-3">The processing rules in <a href="#group_mac_use" class="auto internal xref">3.3</a> are intended to prevent both
+forms of amplification: bundles received via the group MAC address are
+forwarded only by nodes explicitly configured as a next hop for the
+transmitting node, and are otherwise discarded without generating any
+status report. Implementations <span class="bcp14">MUST NOT</span> enable such forwarding by
+default. Operators <span class="bcp14">SHOULD</span> limit the number of nodes configured to
+forward on behalf of any given transmitting node.<a href="#section-7.2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="spoofing">
+<section id="section-7.3">
+        <h3 id="name-frame-injection-and-spoofin">
+<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-frame-injection-and-spoofin" class="section-name selfRef">Frame Injection and Spoofing</a>
+        </h3>
+<p id="section-7.3-1">Ethernet provides no authentication of the source MAC address. An
+attacker with access to the link can observe the source and destination
+MAC addresses and Transfer Numbers in use on a logical channel and inject
+frames with a forged source address. Such an attacker can corrupt an
+in-progress Transfer by injecting a Transfer Segment Message, abort it by
+injecting a Transfer Cancel Message, or cause the receiver to discard all
+in-progress Transfers from that sender by injecting a Message with a
+Transfer Number far ahead of the current window (Section 5 of <span>[<a href="#BTPU" class="cite xref">BTPU</a>]</span>).
+Corrupted bundles can be detected by Bundle-layer integrity mechanisms
+(<a href="#checksums" class="auto internal xref">6.1</a>), but the transfers themselves are lost.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.3-2">Any attacker with access to the link, or with sufficient knowledge of
+local Bundle forwarding configuration so as to inject BTPU frames and
+cause them to be sent to an Ethernet peer, may also overwhelm the
+receiver to the point of Denial of Service to other on-link senders.<a href="#section-7.3-2" class="pilcrow">¶</a></p>
+<p id="section-7.3-3">These attacks are mitigated by restricting link access and authenticating
+frame origin using the mechanisms described in <a href="#link-security" class="auto internal xref">7.4</a>, or by
+architectural properties of the link that exclude untrusted stations.<a href="#section-7.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="link-security">
-<section id="section-6.2">
+<section id="section-7.4">
         <h3 id="name-link-layer-security">
-<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-link-layer-security" class="section-name selfRef">Link-layer Security</a>
+<a href="#section-7.4" class="section-number selfRef">7.4. </a><a href="#name-link-layer-security" class="section-name selfRef">Link-layer Security</a>
         </h3>
-<p id="section-6.2-1">Any attacker with access to the link, or with sufficient knowledge of local
-Bundle forwarding configuration so as to inject BTP-U frames and cause them
-to be sent to an Ethernet peer, may overwhelm the receiver to the point of
-Denial of Service to other onlink senders.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
-<p id="section-6.2-2">IEEE standards include several security mechanisms that may be used in
-Ethernet networks.  Examples of recommended Ethernet-level security
-mechanisms a network might deploy include: IEEE 802.1X (<span>[<a href="#IEEE802dot1X" class="cite xref">IEEE802dot1X</a>]</span>),
-which may be used restrict access to the link to authorized participants,
-and IEEE 802.1AE (<span>[<a href="#IEEE802dot1AE" class="cite xref">IEEE802dot1AE</a>]</span>), which offers confidentiality of
-the entire BTP-U payload. In some deployments, and link may be considered
-secure against on-link attackers by virtue of its architecture, e.g. in
-cloud networking configurations where access to the virtual link is the
-responsibility of cloud security functions.<a href="#section-6.2-2" class="pilcrow">¶</a></p>
+<p id="section-7.4-1">IEEE standards include several security mechanisms that may be used in
+Ethernet networks. Examples of Ethernet-level security mechanisms a
+network might deploy include IEEE 802.1X (<span>[<a href="#IEEE802dot1X" class="cite xref">IEEE802dot1X</a>]</span>), which may be
+used to restrict access to the link to authorized participants, and IEEE
+802.1AE (<span>[<a href="#IEEE802dot1AE" class="cite xref">IEEE802dot1AE</a>]</span>), which provides origin authentication,
+integrity, and replay protection for each frame and, optionally,
+confidentiality of the entire BTPU payload. In some deployments, a link
+may be considered secure against on-link attackers by virtue of its
+architecture, e.g. in cloud networking configurations where access to
+the virtual link is the responsibility of cloud security functions.<a href="#section-7.4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="packet-reordering-duplication-and-replay">
-<section id="section-6.3">
+<section id="section-7.5">
         <h3 id="name-packet-reordering-duplicati">
-<a href="#section-6.3" class="section-number selfRef">6.3. </a><a href="#name-packet-reordering-duplicati" class="section-name selfRef">Packet Reordering, Duplication, and Replay</a>
+<a href="#section-7.5" class="section-number selfRef">7.5. </a><a href="#name-packet-reordering-duplicati" class="section-name selfRef">Packet Reordering, Duplication, and Replay</a>
         </h3>
-<p id="section-6.3-1">Packet reordering and duplicaton are handled by the BTP-U protocol.
+<p id="section-7.5-1">Packet reordering and duplication are handled by the BTPU protocol.
 However, an on-link attacker may replay traffic to effectively repeat a
-Bundle transfer. Even if a link can be made secure (<a href="#link-security" class="auto internal xref">6.2</a>)
+Bundle transfer. Even if a link can be made secure (<a href="#link-security" class="auto internal xref">7.4</a>),
 repeat delivery of specific Bundles may happen for other reasons.
-Duplicate Bundle detection is handled by the Bundle Protocol Agent as
-specified in <span>[<a href="#BPv7" class="cite xref">BPv7</a>]</span> using the Bundle's unique identifier (source node
-ID and creation timestamp). This mechanism operates independently of
-the convergence layer.<a href="#section-6.3-1" class="pilcrow">¶</a></p>
+Duplicate bundles can be detected by the Bundle Protocol Agent using the
+bundle identifier (Section 4.2.4 of <span>[<a href="#BPv7" class="cite xref">BPv7</a>]</span>); whether and for how long
+to retain such state is a matter of BPA policy and is independent of the
+convergence layer.<a href="#section-7.5-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="filtering">
-<section id="section-6.4">
+<section id="section-7.6">
         <h3 id="name-filtering">
-<a href="#section-6.4" class="section-number selfRef">6.4. </a><a href="#name-filtering" class="section-name selfRef">Filtering</a>
+<a href="#section-7.6" class="section-number selfRef">7.6. </a><a href="#name-filtering" class="section-name selfRef">Filtering</a>
         </h3>
-<p id="section-6.4-1">A common security paradigm is to "default deny" all traffic patterns that,
-broadly, do not conform to operator expectations.  In such environments the
-BTP-U EtherType needs to be explicitly permitted to be used on a given
-Ethernet segment before BTP-U messages can be successfully transmitted.<a href="#section-6.4-1" class="pilcrow">¶</a></p>
+<p id="section-7.6-1">A common security paradigm is to "default deny" all traffic patterns that,
+broadly, do not conform to operator expectations. In such environments the
+BTPU EtherType and, where used, the group MAC address (<a href="#multicast_mac" class="auto internal xref">5.2.1</a>)
+need to be explicitly permitted on a given Ethernet segment before BTPU
+Messages can be successfully transmitted.<a href="#section-7.6-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="sec-combined-references">
-<section id="section-7">
+<section id="section-8">
       <h2 id="name-references">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-references" class="section-name selfRef">References</a>
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
 <div id="sec-normative-references">
-<section id="section-7.1">
+<section id="section-8.1">
         <h3 id="name-normative-references">
-<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
-        </h3>
-<dl class="references">
-<dt id="RFC2119">[RFC2119]</dt>
-        <dd>
-<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC8174">[RFC8174]</dt>
-      <dd>
-<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-</dl>
-</section>
-</div>
-<div id="sec-informative-references">
-<section id="section-7.2">
-        <h3 id="name-informative-references">
-<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
 <dt id="BPv7">[BPv7]</dt>
         <dd>
 <span class="refAuthor">Burleigh, S.</span>, <span class="refAuthor">Fall, K.</span>, and <span class="refAuthor">E. Birrane, III</span>, <span class="refTitle">"Bundle Protocol Version 7"</span>, <span class="seriesInfo">RFC 9171</span>, <span class="seriesInfo">DOI 10.17487/RFC9171</span>, <time datetime="2022-01" class="refDate">January 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9171">https://www.rfc-editor.org/rfc/rfc9171</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="BTP-U">[BTP-U]</dt>
+<dt id="BTPU">[BTPU]</dt>
         <dd>
-<span class="refAuthor">Taylor, R.</span>, <span class="refTitle">"Bundle Transfer Protocol - Unidirectional"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-dtn-btpu-02</span>, <time datetime="2026-02-17" class="refDate">17 February 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-dtn-btpu-02">https://datatracker.ietf.org/doc/html/draft-ietf-dtn-btpu-02</a>&gt;</span>. </dd>
+<span class="refAuthor">Taylor, R.</span>, <span class="refTitle">"Bundle Transfer Protocol - Unidirectional"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-dtn-btpu-03</span>, <time datetime="2026-07-19" class="refDate">19 July 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-dtn-btpu-03">https://datatracker.ietf.org/doc/html/draft-ietf-dtn-btpu-03</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="IEEE802dot1Q">[IEEE802dot1Q]</dt>
+        <dd>
+<span class="refAuthor">IEEE</span>, <span class="refTitle">"IEEE Standard for Local and Metropolitan Area Networks--Bridges and Bridged Networks"</span>, <span class="seriesInfo">IEEE Std 802.1Q-2022</span>, <span class="seriesInfo">DOI 10.1109/IEEESTD.2022.10004498</span>, <time datetime="2022-12" class="refDate">December 2022</time>, <span>&lt;<a href="https://doi.org/10.1109/IEEESTD.2022.10004498">https://doi.org/10.1109/IEEESTD.2022.10004498</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IEEE802dot3">[IEEE802dot3]</dt>
+        <dd>
+<span class="refAuthor">IEEE</span>, <span class="refTitle">"IEEE Standard for Ethernet"</span>, <span class="seriesInfo">IEEE Std 802.3-2022</span>, <span class="seriesInfo">DOI 10.1109/IEEESTD.2022.9844436</span>, <time datetime="2022-07" class="refDate">July 2022</time>, <span>&lt;<a href="https://doi.org/10.1109/IEEESTD.2022.9844436">https://doi.org/10.1109/IEEESTD.2022.9844436</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2119">[RFC2119]</dt>
+        <dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8174">[RFC8174]</dt>
+        <dd>
+<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9542">[RFC9542]</dt>
+      <dd>
+<span class="refAuthor">Eastlake 3rd, D.</span>, <span class="refAuthor">Abley, J.</span>, and <span class="refAuthor">Y. Li</span>, <span class="refTitle">"IANA Considerations and IETF Protocol and Documentation Usage for IEEE 802 Parameters"</span>, <span class="seriesInfo">BCP 141</span>, <span class="seriesInfo">RFC 9542</span>, <span class="seriesInfo">DOI 10.17487/RFC9542</span>, <time datetime="2024-04" class="refDate">April 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9542">https://www.rfc-editor.org/rfc/rfc9542</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="sec-informative-references">
+<section id="section-8.2">
+        <h3 id="name-informative-references">
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
 <dt id="DGRAMCL">[DGRAMCL]</dt>
         <dd>
 <span class="refAuthor">Kruse, H.</span>, <span class="refAuthor">Jero, S.</span>, and <span class="refAuthor">S. Ostermann</span>, <span class="refTitle">"Datagram Convergence Layers for the Delay- and Disruption-Tolerant Networking (DTN) Bundle Protocol and Licklider Transmission Protocol (LTP)"</span>, <span class="seriesInfo">RFC 7122</span>, <span class="seriesInfo">DOI 10.17487/RFC7122</span>, <time datetime="2014-03" class="refDate">March 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7122">https://www.rfc-editor.org/rfc/rfc7122</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="DVB-GSE">[DVB-GSE]</dt>
         <dd>
-<span class="refAuthor">ETSI</span>, <span class="refTitle">"Digital Video Broadcasting (DVB); Generic Stream Encapsulation (GSE) Protocol"</span>, <span class="seriesInfo">ETSI TS 102 606</span>, <time datetime="2007-10" class="refDate">October 2007</time>. </dd>
+<span class="refAuthor">ETSI</span>, <span class="refTitle">"Digital Video Broadcasting (DVB); Generic Stream Encapsulation (GSE); Part 1: Protocol"</span>, <span class="seriesInfo">ETSI TS 102 606-1 V1.2.1</span>, <time datetime="2014-07" class="refDate">July 2014</time>, <span>&lt;<a href="https://www.etsi.org/deliver/etsi_ts/102600_102699/10260601/01.02.01_60/ts_10260601v010201p.pdf">https://www.etsi.org/deliver/etsi_ts/102600_102699/10260601/01.02.01_60/ts_10260601v010201p.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="IANA-IEEE802">[IANA-IEEE802]</dt>
         <dd>
@@ -1628,13 +1906,13 @@ Ethernet segment before BTP-U messages can be successfully transmitted.<a href="
         <dd>
 <span class="refAuthor">IEEE</span>, <span class="refTitle">"IEEE Standard for Local and Metropolitan Area Networks--Port-Based Network Access Control"</span>, <span class="seriesInfo">IEEE Std 802.1X-2020</span>, <time datetime="2020-02" class="refDate">February 2020</time>. </dd>
 <dd class="break"></dd>
-<dt id="IEEE802dot3">[IEEE802dot3]</dt>
+<dt id="RFC1812">[RFC1812]</dt>
         <dd>
-<span class="refAuthor">IEEE</span>, <span class="refTitle">"IEEE Standard for Ethernet"</span>, <span class="seriesInfo">IEEE Std 802.3-2018</span>, <time datetime="2018-08" class="refDate">August 2018</time>, <span>&lt;<a href="https://standards.ieee.org/standard/802_3-2018.html">https://standards.ieee.org/standard/802_3-2018.html</a>&gt;</span>. </dd>
+<span class="refAuthor">Baker, F., Ed.</span>, <span class="refTitle">"Requirements for IP Version 4 Routers"</span>, <span class="seriesInfo">RFC 1812</span>, <span class="seriesInfo">DOI 10.17487/RFC1812</span>, <time datetime="1995-06" class="refDate">June 1995</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc1812">https://www.rfc-editor.org/rfc/rfc1812</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="RFC9542">[RFC9542]</dt>
+<dt id="RFC9172">[RFC9172]</dt>
         <dd>
-<span class="refAuthor">Eastlake 3rd, D.</span>, <span class="refAuthor">Abley, J.</span>, and <span class="refAuthor">Y. Li</span>, <span class="refTitle">"IANA Considerations and IETF Protocol and Documentation Usage for IEEE 802 Parameters"</span>, <span class="seriesInfo">BCP 141</span>, <span class="seriesInfo">RFC 9542</span>, <span class="seriesInfo">DOI 10.17487/RFC9542</span>, <time datetime="2024-04" class="refDate">April 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9542">https://www.rfc-editor.org/rfc/rfc9542</a>&gt;</span>. </dd>
+<span class="refAuthor">Birrane, III, E.</span> and <span class="refAuthor">K. McKeever</span>, <span class="refTitle">"Bundle Protocol Security (BPSec)"</span>, <span class="seriesInfo">RFC 9172</span>, <span class="seriesInfo">DOI 10.17487/RFC9172</span>, <time datetime="2022-01" class="refDate">January 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9172">https://www.rfc-editor.org/rfc/rfc9172</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="SDA-OCT">[SDA-OCT]</dt>
         <dd>
@@ -1646,11 +1924,11 @@ Ethernet segment before BTP-U messages can be successfully transmitted.<a href="
 <dd class="break"></dd>
 <dt id="UDPCLv2">[UDPCLv2]</dt>
         <dd>
-<span class="refAuthor">Sipos, B.</span> and <span class="refAuthor">J. Deaton</span>, <span class="refTitle">"Delay-Tolerant Networking UDP Convergence Layer Protocol Version 2"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-dtn-udpcl-03</span>, <time datetime="2025-12-17" class="refDate">17 December 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-dtn-udpcl-03">https://datatracker.ietf.org/doc/html/draft-ietf-dtn-udpcl-03</a>&gt;</span>. </dd>
+<span class="refAuthor">Sipos, B.</span> and <span class="refAuthor">J. Deaton</span>, <span class="refTitle">"Delay-Tolerant Networking UDP Convergence Layer Protocol Version 2"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-dtn-udpcl-04</span>, <time datetime="2026-06-15" class="refDate">15 June 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-dtn-udpcl-04">https://datatracker.ietf.org/doc/html/draft-ietf-dtn-udpcl-04</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="_3GPP-TS-23.501">[_3GPP-TS-23.501]</dt>
       <dd>
-<span class="refAuthor">3GPP</span>, <span class="refTitle">"System Architecture for the 5G System (5GS)"</span>, <span class="seriesInfo">3GPP TS 23.501 V15.2.0</span>, <time datetime="2018-06" class="refDate">June 2018</time>, <span>&lt;<a href="https://www.3gpp.org/ftp/Specs/archive/23_series/23.501/">https://www.3gpp.org/ftp/Specs/archive/23_series/23.501/</a>&gt;</span>. </dd>
+<span class="refAuthor">3GPP</span>, <span class="refTitle">"System architecture for the 5G System (5GS)"</span>, <span class="seriesInfo">3GPP TS 23.501</span>, <span>n.d.</span>, <span>&lt;<a href="https://www.3gpp.org/ftp/Specs/archive/23_series/23.501/">https://www.3gpp.org/ftp/Specs/archive/23_series/23.501/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -1664,7 +1942,7 @@ Ethernet segment before BTP-U messages can be successfully transmitted.<a href="
       </h2>
 <p id="appendix-A-1">Thanks to
 Wes Eddy,
-Jeorg Ott,
+Jörg Ott,
 Brian Sipos,
 and
 Rick Taylor
