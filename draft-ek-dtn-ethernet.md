@@ -57,8 +57,7 @@ normative:
     date: 2022-12
     seriesinfo:
       IEEE: Std 802.1Q-2022
-      DOI: 10.1109/IEEESTD.2022.10004498
-    target: https://doi.org/10.1109/IEEESTD.2022.10004498
+    target: https://standards.ieee.org/ieee/802.1Q/10323/
 
 informative:
   DGRAMCL: RFC7122
