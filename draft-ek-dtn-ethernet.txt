@@ -72,15 +72,15 @@ Copyright Notice
 Table of Contents
 
    1.  Introduction
-   2.  Encapsulation
-     2.1.  Minimum Frame Size
-   3.  Applicability and Limitations
-     3.1.  BTPU Protocol Compliance
-     3.2.  BTPU Logical Channels
-     3.3.  Use of the Group MAC Address
-     3.4.  Congestion Control
-     3.5.  Relationship to IP-based Convergence Layers
-   4.  Conventions and Definitions
+   2.  Conventions and Definitions
+   3.  Encapsulation
+     3.1.  Minimum Frame Size
+   4.  Applicability and Limitations
+     4.1.  BTPU Protocol Compliance
+     4.2.  BTPU Logical Channels
+     4.3.  Use of the Group MAC Address
+     4.4.  Congestion Control
+     4.5.  Relationship to IP-based Convergence Layers
    5.  Assignment Considerations
      5.1.  IEEE Assignment Considerations
        5.1.1.  EtherType
@@ -107,7 +107,7 @@ Table of Contents
    This document specifies how BTPU [BTPU] is carried directly in
    Ethernet frames, enabling its use as a Convergence Layer for
    environments where Bundle Protocol nodes are connected by Ethernet or
-   Ethernet-like technologies.  It defines the encapsulation (2), the
+   Ethernet-like technologies.  It defines the encapsulation (3), the
    mapping of BTPU's logical channel onto Ethernet addressing, and
    Ethernet-specific operational and security considerations.
 
@@ -138,7 +138,15 @@ Table of Contents
    deployments where IP routing is unavailable or adds unnecessary
    complexity.
 
-2.  Encapsulation
+2.  Conventions and Definitions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+3.  Encapsulation
 
    A BTPU Link-layer PDU (Section 2.1 of [BTPU]) is carried as the
    payload of an Ethernet frame [IEEE802dot3] whose EtherType field is
@@ -170,7 +178,7 @@ Table of Contents
 
    Figure 1: BTPU over Ethernet frame format (shown with one 802.1Q tag)
 
-2.1.  Minimum Frame Size
+3.1.  Minimum Frame Size
 
    IEEE 802.3 requires a minimum frame size of 64 octets.  A frame whose
    payload is shorter than 46 octets (42 octets when an 802.1Q tag is
@@ -190,9 +198,9 @@ Table of Contents
    Beyond the minimum frame size, Ethernet frames are variable length
    and no further padding is required.
 
-3.  Applicability and Limitations
+4.  Applicability and Limitations
 
-3.1.  BTPU Protocol Compliance
+4.1.  BTPU Protocol Compliance
 
    This document specifies Ethernet encapsulation for [BTPU].  All
    protocol requirements, features, and recommendations defined in
@@ -204,7 +212,7 @@ Table of Contents
    field does not constrain Ethernet use, as it comfortably exceeds any
    Ethernet frame size.
 
-3.2.  BTPU Logical Channels
+4.2.  BTPU Logical Channels
 
    [BTPU] operates over a logical channel between a sender and one or
    more receivers; each logical channel is an independent instance of
@@ -252,14 +260,14 @@ Table of Contents
    protocol-specific channel discriminators.  Such definitions are
    outside the scope of this document.
 
-3.3.  Use of the Group MAC Address
+4.3.  Use of the Group MAC Address
 
    A sender that does not know the unicast MAC address of the intended
    next-hop node MAY transmit BTPU frames to the group MAC address
    assigned in 5.2.1.  All BTPU receivers in the broadcast domain will
    receive such frames; from the perspective of each receiver they share
    a single logical channel identified by the sender's source MAC
-   address and the group destination address (3.2).
+   address and the group destination address (4.2).
 
    A node that receives a bundle in a frame addressed to the group MAC
    address processes it as follows:
@@ -294,7 +302,7 @@ Table of Contents
    avoid unnecessary processing by other nodes and unnecessary flooding
    by switches, which cannot prune non-IP multicast traffic.
 
-3.4.  Congestion Control
+4.4.  Congestion Control
 
    BTPU provides no congestion control and assumes that the sending rate
    is managed by a mechanism outside the protocol (Section 11 of
@@ -313,7 +321,7 @@ Table of Contents
    Where no such mechanism is available, a convergence layer providing
    congestion control (e.g., [TCPCL]) is recommended instead.
 
-3.5.  Relationship to IP-based Convergence Layers
+4.5.  Relationship to IP-based Convergence Layers
 
    IP-based convergence layers (TCPCL [TCPCL], UDPCLv2 [UDPCLv2]) remain
    recommended where IP infrastructure exists.  This Ethernet
@@ -326,17 +334,15 @@ Table of Contents
 
    *  direct Ethernet operation simplifies deployment and management
 
-   Header overhead savings (28 octets for IPv4/UDP, 48 octets for IPv6/
-   UDP, plus any convergence-layer framing) are secondary to operational
-   utility in non-IP environments.
-
-4.  Conventions and Definitions
-
-   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
-   "OPTIONAL" in this document are to be interpreted as described in
-   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
-   capitals, as shown here.
+   Direct Ethernet encapsulation also avoids the 28 octets (IPv4/UDP) or
+   48 octets (IPv6/UDP) of network- and transport-layer headers per
+   frame, plus any convergence-layer framing.  In many deployments this
+   saving is minor, but it can be significant where the usable payload
+   per frame is small, where link capacity is scarce, or where
+   eliminating IP and UDP header processing simplifies line-rate
+   hardware implementation.  The primary motivation for this
+   specification, however, remains operation in environments where IP is
+   unavailable or undesirable.
 
 5.  Assignment Considerations
 
@@ -388,7 +394,7 @@ Table of Contents
 
    The address allows BTPU senders to reach all BTPU receivers within a
    broadcast domain without prior knowledge of their individual unicast
-   MAC addresses, as described in 3.3.  A dedicated group address is
+   MAC addresses, as described in 4.3.  A dedicated group address is
    requested, rather than use of the broadcast address, so that stations
    not participating in BTPU can filter these frames in hardware.
 
@@ -461,7 +467,7 @@ Table of Contents
 
    BTPU assumes the sending rate is controlled by a mechanism out of
    scope for the protocol and has no built-in mechanism for identifying
-   or mitigating any congestion a sender might cause (3.4).  Use of this
+   or mitigating any congestion a sender might cause (4.4).  Use of this
    protocol on some networks, a shared LAN segment for example, may
    cause a Denial-of-Service by flooding Ethernet switches and stations.
 
@@ -482,7 +488,7 @@ Table of Contents
       requested, producing as many status reports as there are
       receivers.
 
-   The processing rules in 3.3 are intended to prevent both forms of
+   The processing rules in 4.3 are intended to prevent both forms of
    amplification: bundles received via the group MAC address are
    forwarded only by nodes explicitly configured as a next hop for the
    transmitting node, and are otherwise discarded without generating any
@@ -521,12 +527,15 @@ Table of Contents
    a network might deploy include IEEE 802.1X ([IEEE802dot1X]), which
    may be used to restrict access to the link to authorized
    participants, and IEEE 802.1AE ([IEEE802dot1AE]), which provides
-   origin authentication, integrity, and replay protection for each
-   frame and, optionally, confidentiality of the entire BTPU payload.
-   In some deployments, a link may be considered secure against on-link
-   attackers by virtue of its architecture, e.g. in cloud networking
-   configurations where access to the virtual link is the responsibility
-   of cloud security functions.
+   origin authentication and integrity for each frame and, optionally,
+   confidentiality of the entire BTPU payload.  IEEE 802.1AE can also
+   provide replay protection, but only when configured to do so and only
+   for frames outside the configured replay window; deployments relying
+   on it for this purpose need to enable replay protection with a window
+   sized appropriately for the link.  In some deployments, a link may be
+   considered secure against on-link attackers by virtue of its
+   architecture, e.g. in cloud networking configurations where access to
+   the virtual link is the responsibility of cloud security functions.
 
 7.5.  Packet Reordering, Duplication, and Replay
 
