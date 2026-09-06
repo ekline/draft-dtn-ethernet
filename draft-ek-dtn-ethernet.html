@@ -1328,16 +1328,29 @@ defined in <span>[<a href="#BTPU" class="cite xref">BTPU</a>]</span>.<a href="#s
 <figure id="figure-1">
         <div class="alignLeft art-text artwork" id="section-2-2.1">
 <pre>
-+-----------------+-----------------+-----------+-----------+-----+
-| Destination MAC | Source MAC      | [802.1Q]  | EtherType | ... |
-| (6 octets)      | (6 octets)      | (4 octets)| = TBD-ET  |     |
-+-----------------+-----------------+-----------+-----------+-----+
-| BTPU Link-layer PDU (one or more BTPU Messages)          | FCS |
-+----------------------------------------------------------+-----+
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    Destination MAC Address                    |
++                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +
+|                      Source MAC Address                       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|            802.1Q Tag (optional, may be repeated)             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|      EtherType = TBD-ET       |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +
+|                                                               |
+:        BTPU Link-layer PDU (one or more BTPU Messages)        :
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                  Frame Check Sequence (FCS)                   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
 </div>
 <figcaption><a href="#figure-1" class="selfRef">Figure 1</a>:
-<a href="#name-btpu-over-ethernet-frame-fo" class="selfRef">BTPU over Ethernet frame format</a>
+<a href="#name-btpu-over-ethernet-frame-fo" class="selfRef">BTPU over Ethernet frame format (shown with one 802.1Q tag)</a>
         </figcaption></figure>
 </div>
 <div id="minimum-frame-size">
