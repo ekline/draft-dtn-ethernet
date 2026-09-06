@@ -1,26 +1,24 @@
 ---
 title: >
-  Assignment of Ethernet Parameters for Bundle Transfer Protocol -
-  Unidirectional (BTP-U) over Ethernet
-abbrev: "BTPU-over-Ethernet"
-category: info
+  Bundle Transfer Protocol - Unidirectional (BTPU) over Ethernet
+abbrev: "BTPU over Ethernet"
+category: std
 
 docname: draft-ek-dtn-ethernet-latest
 submissiontype: IETF
 number:
 date:
-consensus: false
+consensus: true
 v: 3
 area: "Internet"
 workgroup: "Delay/Disruption Tolerant Networking"
 keyword:
- - Delay and Distruption Tolerant Networking
+ - Delay and Disruption Tolerant Networking
  - DTN
  - Bundle Protocol
  - BP
- - BTP-U
+ - BTPU
  - Ethernet
- - BTPoE
 venue:
   group: "Delay/Disruption Tolerant Networking"
   type: "Working Group"
@@ -36,33 +34,48 @@ author:
     email: ek.ietf@gmail.com
 
 normative:
-informative:
   BPv7: RFC9171
 
-  BTP-U: I-D.ietf-dtn-btpu
+  BTPU: I-D.ietf-dtn-btpu
 
+  RFC9542:
+
+  IEEE802dot3:
+    title: "IEEE Standard for Ethernet"
+    author:
+      org: IEEE
+    date: 2022-07
+    seriesinfo:
+      IEEE: Std 802.3-2022
+      DOI: 10.1109/IEEESTD.2022.9844436
+    target: https://doi.org/10.1109/IEEESTD.2022.9844436
+
+  IEEE802dot1Q:
+    title: "IEEE Standard for Local and Metropolitan Area Networks--Bridges and Bridged Networks"
+    author:
+      org: IEEE
+    date: 2022-12
+    seriesinfo:
+      IEEE: Std 802.1Q-2022
+      DOI: 10.1109/IEEESTD.2022.10004498
+    target: https://doi.org/10.1109/IEEESTD.2022.10004498
+
+informative:
   DGRAMCL: RFC7122
 
   UDPCLv2: I-D.ietf-dtn-udpcl
 
   TCPCL: RFC9174
 
-  RFC9542:
+  RFC1812:
+
+  RFC9172:
 
   IANA-IEEE802:
     title: "IEEE 802 Numbers"
     author:
       org: IANA
     target: https://www.iana.org/assignments/ieee-802-numbers/
-
-  IEEE802dot3:
-    title: "IEEE Standard for Ethernet"
-    author:
-      org: IEEE
-    date: 2018-08
-    seriesinfo:
-      IEEE: Std 802.3-2018
-    target: https://standards.ieee.org/standard/802_3-2018.html
 
   IEEE802dot1X:
     title: "IEEE Standard for Local and Metropolitan Area Networks--Port-Based Network Access Control"
@@ -81,20 +94,20 @@ informative:
       IEEE: Std 802.1AE-2018
 
   DVB-GSE:
-    title: "Digital Video Broadcasting (DVB); Generic Stream Encapsulation (GSE) Protocol"
+    title: "Digital Video Broadcasting (DVB); Generic Stream Encapsulation (GSE); Part 1: Protocol"
     author:
       org: ETSI
-    date: 2007-10
+    date: 2014-07
     seriesinfo:
-      ETSI: TS 102 606
+      ETSI: TS 102 606-1 V1.2.1
+    target: https://www.etsi.org/deliver/etsi_ts/102600_102699/10260601/01.02.01_60/ts_10260601v010201p.pdf
 
   3GPP-TS-23.501:
-    title: "System Architecture for the 5G System (5GS)"
+    title: "System architecture for the 5G System (5GS)"
     author:
       org: 3GPP
-    date: 2018-06
     seriesinfo:
-      3GPP: TS 23.501 V15.2.0
+      3GPP: TS 23.501
     target: https://www.3gpp.org/ftp/Specs/archive/23_series/23.501/
 
   SDA-OCT:
@@ -108,92 +121,208 @@ informative:
 
 --- abstract
 
-This memo requests allocation of an EtherType and multicast MAC address
-for Bundle Transfer Protocol - Unidirectional (BTP-U) to enable its use
-as a Convergence Layer on Ethernet networks. This provides an alternative
-to IP-based convergence layers for environments where Ethernet forwarding
-is operationally feasible but IP routing is unavailable or operationally
-undesirable.
+This document specifies the use of the Bundle Transfer Protocol -
+Unidirectional (BTPU) as a Convergence Layer directly over Ethernet, and
+requests allocation of an EtherType and a multicast MAC address for that
+purpose. This provides an alternative to IP-based convergence layers for
+environments where Ethernet forwarding is operationally feasible but IP
+routing is unavailable or operationally undesirable.
 
 --- middle
 
-<!--
--->
-
 # Introduction
 
-This memo requests Ethernet parameters to enable BTP-U [BTP-U] as a
-Convergence Layer for environments where Bundle Protocol nodes are
-connected by Ethernet or Ethernet-like technologies. Specifically:
+This document specifies how BTPU {{BTPU}} is carried directly in Ethernet
+frames, enabling its use as a Convergence Layer for environments where
+Bundle Protocol nodes are connected by Ethernet or Ethernet-like
+technologies. It defines the encapsulation ({{<encapsulation}}), the
+mapping of BTPU's logical channel onto Ethernet addressing, and
+Ethernet-specific operational and security considerations.
 
-- an EtherType to identify frames carrying BTP-U payloads
+To support this, the following Ethernet parameters are requested:
+
+- an EtherType to identify frames carrying BTPU payloads
   ({{<ethertype}})
-- a multicast MAC address for neighbor discovery and announcements
-  ({{<multicast_mac}})
+- a multicast MAC address for transmission to receivers whose unicast
+  MAC addresses are not yet known ({{<multicast_mac}})
 
 This convergence layer is applicable to:
 
-- Physical Ethernet LANs
-- Virtual Private Cloud (VPC) networks connecting Bundle Protocol Agents
-- Ground-Station-as-a-Service (GSaaS) infrastructure
-- Technologies supporting Ethernet framing, e.g., DVB-GSE ({{DVB-GSE}}),
-  3GPP 5G Ethernet PDU Session types ({{3GPP-TS-23.501}} §5.6.10.2), and
-  the US Space Development Agency's Optical Communications Terminal
-  standard ({{SDA-OCT}} §3.4.8).
+- physical Ethernet LANs;
+- Layer 2 services that present an Ethernet segment to Bundle Protocol
+  Agents, such as overlay networks, cloud-hosted virtual networks, or
+  Ground-Station-as-a-Service (GSaaS) infrastructure, provided the
+  service carries arbitrary EtherTypes (and, where the group MAC address
+  is to be used, non-IP multicast frames); and
+- technologies supporting Ethernet framing, e.g., DVB-GSE ({{DVB-GSE}}),
+  the 3GPP 5G Ethernet PDU Session type (Section 5.6.10.2 of
+  {{3GPP-TS-23.501}}), and the US Space Development Agency's Optical
+  Communications Terminal standard (Section 3.4.8 of {{SDA-OCT}}).
 
 Primary use cases include mission modeling, testbed environments, and
 deployments where IP routing is unavailable or adds unnecessary complexity.
 
+# Encapsulation
+{: #encapsulation}
+
+A BTPU Link-layer PDU (Section 2.1 of {{BTPU}}) is carried as the payload
+of an Ethernet frame {{IEEE802dot3}} whose EtherType field is set to the
+value assigned in {{<ethertype}}. The Link-layer PDU consists of the
+octets following the EtherType field (or following the last tag, if one
+or more 802.1Q tags are present) up to, but not including, the Frame
+Check Sequence (FCS). Its contents are a sequence of BTPU Messages as
+defined in {{BTPU}}.
+
+~~~
++-----------------+-----------------+-----------+-----------+-----+
+| Destination MAC | Source MAC      | [802.1Q]  | EtherType | ... |
+| (6 octets)      | (6 octets)      | (4 octets)| = TBD-ET  |     |
++-----------------+-----------------+-----------+-----------+-----+
+| BTPU Link-layer PDU (one or more BTPU Messages)          | FCS |
++----------------------------------------------------------+-----+
+~~~
+{: #frame-format title="BTPU over Ethernet frame format"}
+
+## Minimum Frame Size
+
+IEEE 802.3 requires a minimum frame size of 64 octets. A frame whose
+payload is shorter than 46 octets (42 octets when an 802.1Q tag is
+present) is extended by the transmitting MAC with a PAD field whose
+contents are unspecified by {{IEEE802dot3}}, although in practice they
+are conventionally zero-filled. Because EtherType-framed Ethernet carries
+no payload length indication, a receiver cannot distinguish such MAC
+padding from BTPU payload.
+
+To avoid relying on MAC padding behavior, senders SHOULD ensure that
+every Link-layer PDU is at least 46 octets long by appending a Definite
+Padding Message (Section 8.5 of {{BTPU}}) as needed. Receivers MUST
+tolerate trailing octets that do not parse as a BTPU Message in frames
+of minimum size, and SHOULD treat trailing zero octets as an Indefinite
+Padding Message (Section 8.6 of {{BTPU}}).
+
+Beyond the minimum frame size, Ethernet frames are variable length and
+no further padding is required.
+
 # Applicability and Limitations
 
-## BTP-U Protocol Compliance
+## BTPU Protocol Compliance
 
-This document specifies Ethernet encapsulation for {{BTP-U}}. All protocol
-requirements, features, and recommendations defined in {{BTP-U}} apply to
+This document specifies Ethernet encapsulation for {{BTPU}}. All protocol
+requirements, features, and recommendations defined in {{BTPU}} apply to
 this Ethernet profile.
 
-Implementations MUST implement all mandatory {{BTP-U}} features and SHOULD
-implement all recommended features, including {{BTP-U}} Segmentation for
-handling Bundles that exceed the Ethernet MTU.
+Because Bundles commonly exceed the Ethernet MTU ({{<mtu}}),
+implementations MUST support BTPU segmentation (Section 4 of {{BTPU}})
+for both transmission and reception. BTPU's 20-bit Message Length field
+does not constrain Ethernet use, as it comfortably exceeds any Ethernet
+frame size.
 
-## BTP-U Virtual Channels
+## BTPU Logical Channels
+{: #logical_channel}
 
-{{BTP-U}} Transfer Numbers are unique within a "virtual channel." For
-Ethernet, the virtual channel is identified by:
+{{BTPU}} operates over a logical channel between a sender and one or more
+receivers; each logical channel is an independent instance of the
+protocol with its own Transfer Number sequence and Transfer Window
+(Sections 4 and 5 of {{BTPU}}). For Ethernet, the logical channel is
+identified by the tuple of:
 
-- Source MAC address (6 octets)
-- Destination MAC address (6 octets)
-- C-VLAN ID (12 bits, if 802.1Q tag present)
+- the interface on which the frame is transmitted or received, where each
+  VLAN, as identified by the VLAN Identifier(s) of any 802.1Q tag(s)
+  present, constitutes a distinct interface;
+- the source MAC address; and
+- the destination MAC address.
 
-Each unique combination defines a separate virtual channel with
-independent Transfer Number sequencing.
+Each unique combination defines a separate logical channel. In
+particular, frames from the same sender addressed to a peer's unicast
+MAC address and frames addressed to the group MAC address
+({{<multicast_mac}}) belong to different logical channels, and a
+receiver maintains independent BTPU state for each.
 
-Other technologies that support Ethernet-like framing and use of this
-EtherType ({{<ethertype}}) but which lack the above virtual channel
-identifers MUST define the equivalent virtual channel identifiers,
-e.g. technology-specific source and/or destination as well as any
-protocol-specific channel discriminators.
+The Priority Code Point (PCP) and Drop Eligible Indicator (DEI) fields of
+an 802.1Q tag do not identify the logical channel. Because a single
+Link-layer PDU can carry Messages belonging to several Transfers of
+differing priority, this document makes no recommendation about how
+those fields are set.
 
-When using the multicast MAC address ({{<multicast_mac}}) for
-transmitting to receivers whose MAC addresses have not yet been learned,
-all receivers in the broadcast domain share the same destination address
-(and therefore the same virtual channel).
-Receiving Bundle Protocol Agents validate the Bundle destination EID,
-to determine whether received bundles are intended for local processing.
-Once a sender learns a peer's MAC address, implementations SHOULD switch to
-unicast transmission so as to minimize processing overhead by other
-listeners.
+The logical channel governs the sequencing and windowing of segmented
+Transfers. Bundle Messages (Section 8.1 of {{BTPU}}) carry no Transfer
+Number and require no per-channel state at the receiver beyond that
+needed to identify the transmitting node.
+
+The Transfer Window size is configured out of band (Section 5 of
+{{BTPU}}). Absent such configuration, implementations SHOULD use the
+default recommended by {{BTPU}}. Note that a receiver whose Transfer
+Window is smaller than the sender's will prematurely discard in-progress
+Transfers; this is of particular concern for channels using the group
+MAC address, where a single sender's frames are processed by many
+independently configured receivers.
+
+Technologies that carry Ethernet-framed payloads and use this EtherType
+({{<ethertype}}) but lack the above channel identifiers need to define
+an equivalent logical channel identifier, e.g. from technology-specific
+source and destination identifiers and any protocol-specific channel
+discriminators. Such definitions are outside the scope of this document.
+
+## Use of the Group MAC Address
+{: #group_mac_use}
+
+A sender that does not know the unicast MAC address of the intended
+next-hop node MAY transmit BTPU frames to the group MAC address assigned
+in {{<multicast_mac}}. All BTPU receivers in the broadcast domain will
+receive such frames; from the perspective of each receiver they share a
+single logical channel identified by the sender's source MAC address and
+the group destination address ({{<logical_channel}}).
+
+A node that receives a bundle in a frame addressed to the group MAC
+address processes it as follows:
+
+- If the bundle's destination EID identifies an endpoint of which the
+  receiving node is a member, the bundle is delivered as specified in
+  {{BPv7}}.
+- Otherwise, if the receiving node has been explicitly configured to act
+  as a next hop for the transmitting node (as identified by the frame's
+  source MAC address and logical channel), the bundle is forwarded as
+  specified in {{BPv7}}. Implementations MUST NOT enable such forwarding
+  by default.
+- Otherwise, the receiving node MUST discard the bundle without further
+  processing. In particular, it MUST NOT forward the bundle and MUST NOT
+  generate any status report concerning it; the bundle is treated as
+  though it had never been received.
+
+Without this rule, a single frame carrying a bundle addressed to a
+singleton endpoint would be forwarded by every node in the broadcast
+domain that is not the destination, producing as many copies as there
+are receivers (see {{<mcast_amplification}}). This mirrors the
+prohibition on forwarding link-layer broadcasts that carry unicast
+destinations in Section 5.3.4 of {{RFC1812}}.
+
+A sender learns the unicast MAC address of a peer either through
+configuration or by observing the source MAC address of BTPU frames
+received from that peer; the latter requires the peer to transmit, which
+BTPU does not itself guarantee. Once a peer's unicast MAC address is
+known, senders SHOULD transmit to it by unicast so as to avoid
+unnecessary processing by other nodes and unnecessary flooding by
+switches, which cannot prune non-IP multicast traffic.
 
 ## Congestion Control
 {: #cc}
 
-BTP-U lacks a congestion control mechanism and presumes sending rate is
-externally managed. Ethernet flow control mechanisms exist but, may not be
-operationally applicable in all situations (e.g. high delay links).
+BTPU provides no congestion control and assumes that the sending rate is
+managed by a mechanism outside the protocol (Section 11 of {{BTPU}}).
+Ethernet offers only hop-by-hop flow control, namely PAUSE frames
+(Clause 31 of {{IEEE802dot3}}) and Priority-based Flow Control
+({{IEEE802dot1Q}}). These mechanisms act on a single link rather than end
+to end across a bridged network, may be disabled by operators to avoid
+head-of-line blocking of unrelated traffic, and are ineffective over
+links whose delay is large relative to available buffering. They are
+therefore not a substitute for congestion control.
 
-For deployments where congestion control cannot be managed by a mechanism
-outside of BTP-U, network operators MUST consider alternate
-Convergence Layers.
+Consistent with Section 11 of {{BTPU}}, BTPU over Ethernet MUST NOT be
+deployed on a segment where congestion can occur unless the sending rate
+is bounded by an external mechanism, such as static rate limiting or a
+schedule agreed among the nodes sharing the segment. Where no such
+mechanism is available, a convergence layer providing congestion control
+(e.g., {{TCPCL}}) is recommended instead.
 
 ## Relationship to IP-based Convergence Layers
 
@@ -202,158 +331,226 @@ recommended where IP infrastructure exists. This Ethernet convergence
 layer addresses scenarios where:
 
 - no operational IP addressing or routing is available
-- only IPv4 or IPv6 link-local addresses exist and peer discovery is
-  unspecified
+- only link-local IP addresses are available and no peer discovery
+  mechanism is deployed
 - direct Ethernet operation simplifies deployment and management
 
-Header overhead savings (28-48+ bytes) are secondary to operational
-utility in non-IP environments.
-
-<!-- XXX -->
+Header overhead savings (28 octets for IPv4/UDP, 48 octets for IPv6/UDP,
+plus any convergence-layer framing) are secondary to operational utility
+in non-IP environments.
 
 # Conventions and Definitions
 
 {::boilerplate bcp14-tagged}
 
-As this memo is Informational it uses BCP14 langauge only for clarity.
-
 # Assignment Considerations
 
-Allocation of the following Ethernet parameters is requested.
+This document requests one EtherType from the IEEE Registration Authority
+and one multicast MAC address from IANA, as described below.
 
 ## IEEE Assignment Considerations
 
 ### EtherType
 {: #ethertype}
 
-(per {{RFC9542}})
-The IESG is requested to approve applying to the IEEE
-Registration Authority for an EtherType for BTP-U.  (The IESG
-should communicate its approval to IANA and to those concerned
-with this document.  IANA will forward the IESG Approval to the
-registry expert of the "EtherType" registry from the "IEEE 802
-Numbers" registry group who will make the application to the
+Following the procedure in Section 5.5 of {{RFC9542}}: the IESG is
+requested to approve applying to the IEEE Registration Authority for an
+EtherType for BTPU. (The IESG should communicate its approval to IANA and
+to those concerned with this document. IANA will forward the IESG
+Approval to the registry expert of the "EtherType" registry from the
+"IEEE 802 Numbers" registry group who will make the application to the
 IEEE Registration Authority, keeping IANA informed.)
 
-(if approved)
-The following entry has been added to the "ETHER TYPES" subregistry
-of the "IEEE 802 Numbers" registry {{IANA-IEEE802}}:
+Upon assignment, IANA is requested to record the following entry in the
+"EtherType" registry of the "IEEE 802 Numbers" registry group
+{{IANA-IEEE802}}:
 
-   Ethertype (decimal): YYYY
+| Ethertype (decimal) | Ethertype (hex) | Description | Reference |
+|---|---|---|---|
+| TBD-ET-DEC | TBD-ET | Bundle Transfer Protocol - Unidirectional (BTPU) | RFC XXXX |
+{: #ethertype-entry title="EtherType registry entry"}
 
-   Ethertype (hex): YYYY
-
-   Exp. Ethernet (decimal): -
-
-   Exp. Ethernet (octal): -
-
-   Description: BTP-U payloads
-
-   References: RFC ZZZZ (this document)
+\[RFC Editor: please replace TBD-ET-DEC and TBD-ET throughout this
+document with the assigned EtherType, and RFC XXXX with this document's
+RFC number; then remove this note.\]
 
 ## IANA Considerations
 
 ### Multicast MAC Address
 {: #multicast_mac}
 
-One multicast MAC address is requested to enable neighbor discovery and
-Bundle availability announcements within a broadcast domain. This allows
-BTP-U senders to reach all capable receivers without prior knowledge of
-individual MAC addresses.
+IANA is requested to assign one multicast EUI-48 identifier under the
+IANA OUI, from the block used for very small assignments
+(01-00-5E-90-00-00 through 01-00-5E-90-00-FF; Section 2.1.3 of
+{{RFC9542}}), and to record it in the "IANA Multicast 48-bit MAC
+Addresses" registry with this document as the reference. Per Section
+2.1.5 of {{RFC9542}}, this assignment is subject to Expert Review.
 
-Following the recommended format given as the EUI-48 Identifier template
-in {{RFC9542}}:
+The address allows BTPU senders to reach all BTPU receivers within a
+broadcast domain without prior knowledge of their individual unicast MAC
+addresses, as described in {{<group_mac_use}}. A dedicated group address
+is requested, rather than use of the broadcast address, so that stations
+not participating in BTPU can filter these frames in hardware.
 
-Applicant Name: IETF DTN Working Group
+\[RFC Editor: please replace TBD-MAC below with the assigned address and
+remove this note.\]
 
-Applicant Email: dtn@ietf.org
+Assigned address: TBD-MAC
 
-Applicant Telephone: (none)
+The completed template of Appendix A.1 of {{RFC9542}} follows:
 
-Use Name: Bundle Transfer Protocol - Unidirectional
+Applicant Name:
+: IETF DTN Working Group
 
-Document: {{BTP-U}}
+Applicant Email:
+: dtn@ietf.org
 
-This memo is an application for one multicast EUI-48 identifier.
+Applicant Telephone:
+: (to be supplied at submission)
+
+Use Name:
+: Bundle Transfer Protocol - Unidirectional (BTPU) over Ethernet
+
+Document:
+: RFC XXXX (this document)
+
+EUI-48 or EUI-64:
+: EUI-48
+
+Size of Block requested:
+: 1 (2**0)
+
+Multicast, unicast, or both:
+: Multicast
 
 # Operational Considerations
 
 ## Checksums
+{: #checksums}
 
-To reiterate the observation in §3.5 of {{DGRAMCL}}, the Bundle Protocol
-specifications assume that Bundles "are transmitted over an erasure
-channel, i.e., a channel that either delivers packets correctly or not at
-all".
+As noted in Section 3.5 of {{DGRAMCL}}, the Bundle Protocol assumes that
+Bundles are transmitted over an erasure channel, i.e., one that either
+delivers a PDU correctly or not at all.
 
-Ethernet's Frame Check Sequence (FCS) minimally meets this requirement to
-ensure Bundles are not corrupted in transmission.  Use of stronger integrity
-checks are left to BTP-U and its extensions.
+The Ethernet Frame Check Sequence (FCS) provides this property for a
+single link. However, the FCS is verified and regenerated at each bridge,
+so it does not detect corruption that occurs within a bridge, and the
+error-detection strength of its 32-bit CRC diminishes as frame length
+increases. Deployments requiring end-to-end integrity assurance SHOULD
+rely on Bundle-layer mechanisms such as block CRCs ({{BPv7}}) or BPSec
+Block Integrity Blocks ({{RFC9172}}) rather than on the FCS alone.
 
 ## MTU and Jumbo Frames
+{: #mtu}
 
-Implementations MUST support transmission and reception of frames with
-payload sizes up to 1500 octets (standard Ethernet MTU minus Ethernet
-header), as required by {{IEEE802dot3}}.
+Implementations MUST support transmission and reception of Link-layer
+PDUs of up to 1500 octets, the maximum payload size of a basic Ethernet
+frame {{IEEE802dot3}}. This limit applies to the BTPU Link-layer PDU
+itself; 802.1Q tags, if present, do not reduce it.
 
-Implementations MAY support jumbo frames with payload sizes up to 9000
-octets or larger, but SHOULD only enable this capability when explicitly
-configured where operators have verified that the network path supports
-the larger frame size.
+Implementations MAY support non-standard "jumbo" frames (commonly with
+payloads of up to 9000 octets), but SHOULD do so only when explicitly
+configured by an operator who has verified that every link and bridge on
+the path supports the larger size.
 
-Since {{BTP-U}} has no path MTU discovery mechanism and Ethernet networks
-silently drop oversized frames, implementations SHOULD default to 1500
-octets. Link Layer Discovery Protocol (LLDP) MAY be used to discover
-directly-connected link and neighbor parameters.
+BTPU has no path MTU discovery mechanism, and Ethernet bridges silently
+discard frames that exceed their supported size. Implementations
+therefore SHOULD default to a 1500-octet Link-layer PDU.
 
 # Security Considerations
 
-This document requests assignment of an EtherType and Multicast MAC address
-for BTP-U datagrams.  It has no incremental implications for security
-beyond those already documented in {{BPv7}} and {{BTP-U}}.
+The security considerations of {{BPv7}} and {{BTPU}} apply. BTPU itself
+provides no security mechanisms and relies on lower and/or upper layers
+(Section 10 of {{BTPU}}). The following considerations are specific to
+carrying BTPU over Ethernet.
 
 ## Denial of Service
 
-BTP-U assumes the sending rate is controlled by a mechanism out of scope for
+BTPU assumes the sending rate is controlled by a mechanism out of scope for
 the protocol and has no built-in mechanism for identifying or mitigating any
-congestion a sender might cause. Use of this protocol on some networks,
-a shared LAN segment for example, may cause a Denial-of-Service by
-flooding Ethernet switches and stations.
+congestion a sender might cause ({{<cc}}). Use of this protocol on some
+networks, a shared LAN segment for example, may cause a Denial-of-Service
+by flooding Ethernet switches and stations.
+
+## Multicast Amplification
+{: #mcast_amplification}
+
+A single frame sent to the group MAC address ({{<multicast_mac}}) is
+delivered to every BTPU receiver in the broadcast domain. If receivers
+were to process such bundles exactly as they process unicast-received
+bundles, an attacker (or a misconfigured node) could obtain significant
+amplification from a single frame:
+
+- each receiver that is not the bundle's destination would attempt to
+  forward the bundle toward that destination, producing as many copies
+  as there are receivers; and
+- each receiver that subsequently deletes the bundle could emit a status
+  report to the bundle's report-to endpoint, if one was requested,
+  producing as many status reports as there are receivers.
+
+The processing rules in {{<group_mac_use}} are intended to prevent both
+forms of amplification: bundles received via the group MAC address are
+forwarded only by nodes explicitly configured as a next hop for the
+transmitting node, and are otherwise discarded without generating any
+status report. Implementations MUST NOT enable such forwarding by
+default. Operators SHOULD limit the number of nodes configured to
+forward on behalf of any given transmitting node.
+
+## Frame Injection and Spoofing
+{: #spoofing}
+
+Ethernet provides no authentication of the source MAC address. An
+attacker with access to the link can observe the source and destination
+MAC addresses and Transfer Numbers in use on a logical channel and inject
+frames with a forged source address. Such an attacker can corrupt an
+in-progress Transfer by injecting a Transfer Segment Message, abort it by
+injecting a Transfer Cancel Message, or cause the receiver to discard all
+in-progress Transfers from that sender by injecting a Message with a
+Transfer Number far ahead of the current window (Section 5 of {{BTPU}}).
+Corrupted bundles can be detected by Bundle-layer integrity mechanisms
+({{<checksums}}), but the transfers themselves are lost.
+
+Any attacker with access to the link, or with sufficient knowledge of
+local Bundle forwarding configuration so as to inject BTPU frames and
+cause them to be sent to an Ethernet peer, may also overwhelm the
+receiver to the point of Denial of Service to other on-link senders.
+
+These attacks are mitigated by restricting link access and authenticating
+frame origin using the mechanisms described in {{<link-security}}, or by
+architectural properties of the link that exclude untrusted stations.
 
 ## Link-layer Security
 {: #link-security}
 
-Any attacker with access to the link, or with sufficient knowledge of local
-Bundle forwarding configuration so as to inject BTP-U frames and cause them
-to be sent to an Ethernet peer, may overwhelm the receiver to the point of
-Denial of Service to other onlink senders.
-
 IEEE standards include several security mechanisms that may be used in
-Ethernet networks.  Examples of recommended Ethernet-level security
-mechanisms a network might deploy include: IEEE 802.1X ({{IEEE802dot1X}}),
-which may be used restrict access to the link to authorized participants,
-and IEEE 802.1AE ({{IEEE802dot1AE}}), which offers confidentiality of
-the entire BTP-U payload. In some deployments, and link may be considered
-secure against on-link attackers by virtue of its architecture, e.g. in
-cloud networking configurations where access to the virtual link is the
-responsibility of cloud security functions.
+Ethernet networks. Examples of Ethernet-level security mechanisms a
+network might deploy include IEEE 802.1X ({{IEEE802dot1X}}), which may be
+used to restrict access to the link to authorized participants, and IEEE
+802.1AE ({{IEEE802dot1AE}}), which provides origin authentication,
+integrity, and replay protection for each frame and, optionally,
+confidentiality of the entire BTPU payload. In some deployments, a link
+may be considered secure against on-link attackers by virtue of its
+architecture, e.g. in cloud networking configurations where access to
+the virtual link is the responsibility of cloud security functions.
 
 ## Packet Reordering, Duplication, and Replay
 
-Packet reordering and duplicaton are handled by the BTP-U protocol.
+Packet reordering and duplication are handled by the BTPU protocol.
 However, an on-link attacker may replay traffic to effectively repeat a
-Bundle transfer. Even if a link can be made secure ({{<link-security}})
+Bundle transfer. Even if a link can be made secure ({{<link-security}}),
 repeat delivery of specific Bundles may happen for other reasons.
-Duplicate Bundle detection is handled by the Bundle Protocol Agent as
-specified in {{BPv7}} using the Bundle's unique identifier (source node
-ID and creation timestamp). This mechanism operates independently of
-the convergence layer.
+Duplicate bundles can be detected by the Bundle Protocol Agent using the
+bundle identifier (Section 4.2.4 of {{BPv7}}); whether and for how long
+to retain such state is a matter of BPA policy and is independent of the
+convergence layer.
 
 ## Filtering
 
 A common security paradigm is to "default deny" all traffic patterns that,
-broadly, do not conform to operator expectations.  In such environments the
-BTP-U EtherType needs to be explicitly permitted to be used on a given
-Ethernet segment before BTP-U messages can be successfully transmitted.
+broadly, do not conform to operator expectations. In such environments the
+BTPU EtherType and, where used, the group MAC address ({{<multicast_mac}})
+need to be explicitly permitted on a given Ethernet segment before BTPU
+Messages can be successfully transmitted.
 
 --- back
 
@@ -362,7 +559,7 @@ Ethernet segment before BTP-U messages can be successfully transmitted.
 
 Thanks to
 Wes Eddy,
-Jeorg Ott,
+Jörg Ott,
 Brian Sipos,
 and
 Rick Taylor
