@@ -161,6 +161,10 @@ This convergence layer is applicable to:
 Primary use cases include mission modeling, testbed environments, and
 deployments where IP routing is unavailable or adds unnecessary complexity.
 
+# Conventions and Definitions
+
+{::boilerplate bcp14-tagged}
+
 # Encapsulation
 {: #encapsulation}
 
@@ -347,13 +351,14 @@ layer addresses scenarios where:
   mechanism is deployed
 - direct Ethernet operation simplifies deployment and management
 
-Header overhead savings (28 octets for IPv4/UDP, 48 octets for IPv6/UDP,
-plus any convergence-layer framing) are secondary to operational utility
-in non-IP environments.
-
-# Conventions and Definitions
-
-{::boilerplate bcp14-tagged}
+Direct Ethernet encapsulation also avoids the 28 octets (IPv4/UDP) or 48
+octets (IPv6/UDP) of network- and transport-layer headers per frame, plus
+any convergence-layer framing. In many deployments this saving is minor,
+but it can be significant where the usable payload per frame is small,
+where link capacity is scarce, or where eliminating IP and UDP header
+processing simplifies line-rate hardware implementation. The primary
+motivation for this specification, however, remains operation in
+environments where IP is unavailable or undesirable.
 
 # Assignment Considerations
 
@@ -538,9 +543,13 @@ IEEE standards include several security mechanisms that may be used in
 Ethernet networks. Examples of Ethernet-level security mechanisms a
 network might deploy include IEEE 802.1X ({{IEEE802dot1X}}), which may be
 used to restrict access to the link to authorized participants, and IEEE
-802.1AE ({{IEEE802dot1AE}}), which provides origin authentication,
-integrity, and replay protection for each frame and, optionally,
-confidentiality of the entire BTPU payload. In some deployments, a link
+802.1AE ({{IEEE802dot1AE}}), which provides origin authentication and
+integrity for each frame and, optionally, confidentiality of the entire
+BTPU payload. IEEE 802.1AE can also provide replay protection, but only
+when configured to do so and only for frames outside the configured
+replay window; deployments relying on it for this purpose need to enable
+replay protection with a window sized appropriately for the link. In
+some deployments, a link
 may be considered secure against on-link attackers by virtue of its
 architecture, e.g. in cloud networking configurations where access to
 the virtual link is the responsibility of cloud security functions.
