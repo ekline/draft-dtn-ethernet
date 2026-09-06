@@ -173,14 +173,27 @@ Check Sequence (FCS). Its contents are a sequence of BTPU Messages as
 defined in {{BTPU}}.
 
 ~~~
-+-----------------+-----------------+-----------+-----------+-----+
-| Destination MAC | Source MAC      | [802.1Q]  | EtherType | ... |
-| (6 octets)      | (6 octets)      | (4 octets)| = TBD-ET  |     |
-+-----------------+-----------------+-----------+-----------+-----+
-| BTPU Link-layer PDU (one or more BTPU Messages)          | FCS |
-+----------------------------------------------------------+-----+
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    Destination MAC Address                    |
++                               +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                               |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +
+|                      Source MAC Address                       |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|            802.1Q Tag (optional, may be repeated)             |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|      EtherType = TBD-ET       |                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+                               +
+|                                                               |
+:        BTPU Link-layer PDU (one or more BTPU Messages)        :
+|                                                               |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                  Frame Check Sequence (FCS)                   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
-{: #frame-format title="BTPU over Ethernet frame format"}
+{: #frame-format title="BTPU over Ethernet frame format (shown with one 802.1Q tag)"}
 
 ## Minimum Frame Size
 
